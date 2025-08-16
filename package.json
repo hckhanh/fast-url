@@ -24,7 +24,7 @@
     "bench": "vitest bench",
     "build": "tsdown",
     "format": "biome check --write",
-    "release": "bun run build && changset publish",
+    "release": "bun run build && changeset publish",
     "test": "vitest"
   },
   "dependencies": {
