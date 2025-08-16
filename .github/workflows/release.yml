@@ -29,6 +29,7 @@ jobs:
         with:
           publish: bun release
           commitMode: 'github-api'
+          title: 'Bump new version'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
