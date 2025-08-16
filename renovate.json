@@ -1,5 +1,15 @@
 {
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base"
+    "config:js-lib",
+    ":automergePr",
+    ":automergeMinor",
+    ":automergeTypes",
+    "npm:unpublishSafe",
+    "group:definitelyTyped",
+    "schedule:nonOfficeHours",
+    ":separateMultipleMajorReleases",
+    "schedule:automergeNonOfficeHours",
+    ":automergeRequireAllStatusChecks"
   ]
 }

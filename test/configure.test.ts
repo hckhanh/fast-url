@@ -1,4 +1,5 @@
-import { configure } from '../src';
+import {describe, it, expect} from 'vitest';
+import {configure} from '../src';
 
 describe('configure', () => {
   it('Should create decorator for urlcat with a configuration', () => {

@@ -1,4 +1,5 @@
 import urlcat from '../src';
+import {describe, it, expect} from 'vitest';
 
 describe('urlcat', () => {
 
