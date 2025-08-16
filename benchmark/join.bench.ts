@@ -7,6 +7,5 @@ describe('join benchmarks', () => {
     () => {
       join('first,', ',', ',second')
     },
-    { iterations: 100000 },
   )
 })
