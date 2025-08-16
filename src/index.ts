@@ -1,9 +1,12 @@
-import qs, { IStringifyOptions } from 'qs';
+import qs, { type IStringifyOptions } from 'qs'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type ParamMap = Record<string, any>;
-export type UrlCatConfiguration =
-  Partial<Pick<IStringifyOptions, 'arrayFormat'> & { objectFormat: Partial<Pick<IStringifyOptions, 'format'>> }>
+export type ParamMap = Record<string, any>
+export type UrlCatConfiguration = Partial<
+  Pick<IStringifyOptions, 'arrayFormat'> & {
+    objectFormat: Partial<Pick<IStringifyOptions, 'format'>>
+  }
+>
 
 /**
  * Builds a URL using the base template and specified parameters.
@@ -20,7 +23,7 @@ export type UrlCatConfiguration =
  * // -> 'http://api.example.com/users/42?search=foo
  * ```
  */
-export default function urlcat(baseTemplate: string, params: ParamMap): string;
+export default function urlcat(baseTemplate: string, params: ParamMap): string
 
 /**
  * Concatenates the base URL and the path specified using '/' as a separator.
@@ -37,7 +40,7 @@ export default function urlcat(baseTemplate: string, params: ParamMap): string;
  * // -> 'http://api.example.com/users
  * ```
  */
-export default function urlcat(baseUrl: string, path: string): string;
+export default function urlcat(baseUrl: string, path: string): string
 
 /**
  * Concatenates the base URL and the path specified using '/' as a separator.
@@ -61,8 +64,8 @@ export default function urlcat(baseUrl: string, path: string): string;
 export default function urlcat(
   baseUrl: string,
   pathTemplate: string,
-  params: ParamMap
-): string;
+  params: ParamMap,
+): string
 
 /**
  * Concatenates the base URL and the path specified using '/' as a separator.
@@ -88,24 +91,24 @@ export default function urlcat(
   baseUrlOrTemplate: string,
   pathTemplateOrParams: string | ParamMap,
   maybeParams: ParamMap,
-  config: UrlCatConfiguration
-): string;
+  config: UrlCatConfiguration,
+): string
 
 export default function urlcat(
   baseUrlOrTemplate: string,
   pathTemplateOrParams: string | ParamMap,
   maybeParams: ParamMap = {},
-  config: UrlCatConfiguration = {}
+  config: UrlCatConfiguration = {},
 ): string {
   if (typeof pathTemplateOrParams === 'string') {
-    const baseUrl = baseUrlOrTemplate;
-    const pathTemplate = pathTemplateOrParams;
-    const params = maybeParams;
-    return urlcatImpl(pathTemplate, params, baseUrl, config);
+    const baseUrl = baseUrlOrTemplate
+    const pathTemplate = pathTemplateOrParams
+    const params = maybeParams
+    return urlcatImpl(pathTemplate, params, baseUrl, config)
   } else {
-    const baseTemplate = baseUrlOrTemplate;
-    const params = pathTemplateOrParams;
-    return urlcatImpl(baseTemplate, params, undefined, config);
+    const baseTemplate = baseUrlOrTemplate
+    const params = pathTemplateOrParams
+    return urlcatImpl(baseTemplate, params, undefined, config)
   }
 }
 
@@ -125,16 +128,24 @@ export function configure(rootConfig: UrlCatConfiguration) {
   return (
     baseUrlOrTemplate: string,
     pathTemplateOrParams: string | ParamMap,
-    maybeParams: ParamMap = {}, config: UrlCatConfiguration = {}
+    maybeParams: ParamMap = {},
+    config: UrlCatConfiguration = {},
   ): string =>
-    urlcat(baseUrlOrTemplate, pathTemplateOrParams, maybeParams, { ...rootConfig, ...config });
+    urlcat(baseUrlOrTemplate, pathTemplateOrParams, maybeParams, {
+      ...rootConfig,
+      ...config,
+    })
 }
 
-function joinFullUrl(renderedPath: string, baseUrl: string, pathAndQuery: string): string {
+function joinFullUrl(
+  renderedPath: string,
+  baseUrl: string,
+  pathAndQuery: string,
+): string {
   if (renderedPath.length) {
-    return join(baseUrl, '/', pathAndQuery);
+    return join(baseUrl, '/', pathAndQuery)
   } else {
-    return join(baseUrl, '?', pathAndQuery);
+    return join(baseUrl, '?', pathAndQuery)
   }
 }
 
@@ -142,14 +153,16 @@ function urlcatImpl(
   pathTemplate: string,
   params: ParamMap,
   baseUrl: string | undefined,
-  config: UrlCatConfiguration
+  config: UrlCatConfiguration,
 ) {
-  const { renderedPath, remainingParams } = path(pathTemplate, params);
-  const cleanParams = removeNullOrUndef(remainingParams);
-  const renderedQuery = query(cleanParams, config);
-  const pathAndQuery = join(renderedPath, '?', renderedQuery);
+  const { renderedPath, remainingParams } = path(pathTemplate, params)
+  const cleanParams = removeNullOrUndef(remainingParams)
+  const renderedQuery = query(cleanParams, config)
+  const pathAndQuery = join(renderedPath, '?', renderedQuery)
 
-  return baseUrl ? joinFullUrl(renderedPath, baseUrl, pathAndQuery) : pathAndQuery;
+  return baseUrl
+    ? joinFullUrl(renderedPath, baseUrl, pathAndQuery)
+    : pathAndQuery
 }
 
 /**
@@ -176,10 +189,10 @@ export function query(params: ParamMap, config?: UrlCatConfiguration): string {
 
   const qsConfiguration: IStringifyOptions = {
     format: config?.objectFormat?.format ?? 'RFC1738', // RDC1738 is urlcat's current default. Breaking change if default is changed
-    arrayFormat: config?.arrayFormat
+    arrayFormat: config?.arrayFormat,
   }
 
-  return qs.stringify(params, qsConfiguration);
+  return qs.stringify(params, qsConfiguration)
 }
 
 /**
@@ -197,37 +210,38 @@ export function query(params: ParamMap, config?: UrlCatConfiguration): string {
  * ```
  */
 export function subst(template: string, params: ParamMap): string {
-  const { renderedPath } = path(template, params);
-  return renderedPath;
+  const { renderedPath } = path(template, params)
+  return renderedPath
 }
 
 function path(template: string, params: ParamMap) {
-  const remainingParams = { ...params };
+  const remainingParams = { ...params }
 
-  const renderedPath = template.replace(/:[_A-Za-z]+[_A-Za-z0-9]*/g, p => {  // do not replace "::"
-    const key = p.slice(1);
-    validatePathParam(params, key);
-    delete remainingParams[key];
-    return encodeURIComponent(params[key]);
-  });
+  const renderedPath = template.replace(/:[_A-Za-z]+[_A-Za-z0-9]*/g, (p) => {
+    // do not replace "::"
+    const key = p.slice(1)
+    validatePathParam(params, key)
+    delete remainingParams[key]
+    return encodeURIComponent(params[key])
+  })
 
-  return { renderedPath, remainingParams };
+  return { renderedPath, remainingParams }
 }
 
 function validatePathParam(params: ParamMap, key: string) {
-  const allowedTypes = ['boolean', 'string', 'number'];
+  const allowedTypes = ['boolean', 'string', 'number']
 
-  if (!Object.prototype.hasOwnProperty.call(params, key)) {
-    throw new Error(`Missing value for path parameter ${key}.`);
+  if (!Object.hasOwn(params, key)) {
+    throw new Error(`Missing value for path parameter ${key}.`)
   }
   if (!allowedTypes.includes(typeof params[key])) {
     throw new TypeError(
       `Path parameter ${key} cannot be of type ${typeof params[key]}. ` +
-      `Allowed types are: ${allowedTypes.join(', ')}.`
-    );
+        `Allowed types are: ${allowedTypes.join(', ')}.`,
+    )
   }
   if (typeof params[key] === 'string' && params[key].trim() === '') {
-    throw new Error(`Path parameter ${key} cannot be an empty string.`);
+    throw new Error(`Path parameter ${key} cannot be an empty string.`)
   }
 }
 
@@ -251,24 +265,23 @@ function validatePathParam(params: ParamMap, key: string) {
 export function join(part1: string, separator: string, part2: string): string {
   const p1 = part1.endsWith(separator)
     ? part1.slice(0, -separator.length)
-    : part1;
-  const p2 = part2.startsWith(separator)
-    ? part2.slice(separator.length)
-    : part2;
-  return p1 === '' || p2 === ''
-    ? p1 + p2
-    : p1 + separator + p2;
+    : part1
+  const p2 = part2.startsWith(separator) ? part2.slice(separator.length) : part2
+  return p1 === '' || p2 === '' ? p1 + p2 : p1 + separator + p2
 }
 
 function removeNullOrUndef<P extends ParamMap>(params: P) {
-  return Object.entries(params).reduce((result, [key, value]) => {
-    if (nullOrUndefined(value)) {
-      return result;
-    }
-    return Object.assign(result, { [key]: value });
-  }, {} as { [K in keyof P]: NonNullable<P[K]> });
+  return Object.entries(params).reduce(
+    (result, [key, value]) => {
+      if (nullOrUndefined(value)) {
+        return result
+      }
+      return Object.assign(result, { [key]: value })
+    },
+    {} as { [K in keyof P]: NonNullable<P[K]> },
+  )
 }
- 
+
 function nullOrUndefined<T>(v: T) {
-  return v === undefined || v === null;
+  return v === undefined || v === null
 }

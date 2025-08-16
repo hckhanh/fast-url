@@ -3,10 +3,7 @@
     "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "node",
-    "lib": [
-      "ES2023",
-      "DOM"
-    ],
+    "lib": ["ES2023", "ES2022.Object", "DOM"],
     "strict": true,
     "exactOptionalPropertyTypes": true,
     "noImplicitOverride": true,
@@ -22,15 +19,8 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
+    "skipLibCheck": true
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "test",
-    "dist",
-    "dist-test"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "test", "dist", "dist-test"]
 }
