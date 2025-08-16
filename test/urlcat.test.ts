@@ -72,7 +72,7 @@ describe('urlcat', () => {
   })
 
   it('Escapes both path and query parameters', () => {
-    const expected = 'http://example.com/path/a%20b?q=b+c'
+    const expected = 'http://example.com/path/a%20b?q=b%20c'
     const actual = urlcat('http://example.com/', '/path/:p', {
       p: 'a b',
       q: 'b c',
@@ -104,7 +104,7 @@ describe('urlcat', () => {
   })
 
   it('Provides an overload (baseTemplate, params) that works correctly', () => {
-    const expected = 'http://example.com/path/a%20b?q=b+c'
+    const expected = 'http://example.com/path/a%20b?q=b%20c'
     const actual = urlcat('http://example.com/path/:p', { p: 'a b', q: 'b c' })
     expect(actual).toBe(expected)
   })

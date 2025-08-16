@@ -12,7 +12,7 @@ fast-url is a tiny JavaScript/TypeScript library that makes building URLs conven
 
 ## Features
 
-- Lightweight: Only one dependency and under 11KB minified and gzipped
+- Lightweight: Only one dependency (fast-querystring) and minimal bundle size
 - Type safe: Written in TypeScript with full type definitions
 - URL safe: Automatically escapes parameters and handles edge cases
 - Flexible: Multiple ways to build URLs for different use cases
@@ -20,6 +20,10 @@ fast-url is a tiny JavaScript/TypeScript library that makes building URLs conven
 ## Installation
 
 ```bash
+# Using bun (recommended)
+bun add fast-url
+
+# Using npm
 npm install fast-url
 ```
 
@@ -55,7 +59,7 @@ const urlcat = require('fast-url').default
 ### Utility functions
 
 ```javascript
-import { query, subst, join, configure } from 'fast-url'
+import { query, subst, join } from 'fast-url'
 
 // Build query strings
 query({ name: 'John', age: 30 })
@@ -68,22 +72,17 @@ subst('/users/:id/posts/:postId', { id: 123, postId: 456 })
 // Join URL parts
 join('https://api.example.com/', '/', '/users')
 // → 'https://api.example.com/users'
-
-// Configure defaults (e.g., RFC3986 formatting)
-const u = configure({ objectFormat: { format: 'RFC3986' } })
-u('https://api.example.com', '/q', { q: 'a b' })
-// → 'https://api.example.com/q?q=a%20b'
 ```
 
 ## API
 
-### `urlcat(baseUrl, pathTemplate, params?, config?)`
+### `urlcat(baseUrl, pathTemplate, params?)`
 Build a complete URL by combining a base URL, path template, and parameters.
 
-### `urlcat(baseTemplate, params, config?)`
+### `urlcat(baseTemplate, params)`
 Use a single template containing path parameters; unused params become query parameters.
 
-### `query(params, config?)`
+### `query(params)`
 Build a query string from an object of key-value pairs.
 
 ### `subst(template, params)`
@@ -91,9 +90,6 @@ Substitute path parameters in a template string.
 
 ### `join(part1, separator, part2)`
 Join two URL parts with exactly one separator.
-
-### `configure(rootConfig)`
-Create a preconfigured urlcat function with default options (arrayFormat and objectFormat.format per qs).
 
 ## Why fast-url?
 

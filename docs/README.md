@@ -106,7 +106,11 @@ The library handles:
 Currently, the package is distributed via npm. Zip downloads and a CDN are coming soon.
 
 ```bash
-npm install --save urlcat
+# Using bun (recommended)
+bun add fast-url
+
+# Using npm
+npm install fast-url
 ```
 
 ### Usage with Node
