@@ -20,8 +20,8 @@ export type ParamMap = Record<string, unknown>
 export default function urlcat(baseTemplate: string, params: ParamMap): string
 
 /**
- * Concatenates the base URL and the path specified using '/' as a separator.
- * If a '/' occurs at the concatenation boundary in either parameter, it is removed.
+ * Concatenates the base URL and the path specified using `/` as a separator.
+ * If `/` occurs at the concatenation boundary in either parameter, it is removed.
  *
  * @param {String} baseUrl the first part of the URL
  * @param {String} path the second part of the URL
@@ -37,8 +37,8 @@ export default function urlcat(baseTemplate: string, params: ParamMap): string
 export default function urlcat(baseUrl: string, path: string): string
 
 /**
- * Concatenates the base URL and the path specified using '/' as a separator.
- * If a '/' occurs at the concatenation boundary in either parameter, it is removed.
+ * Concatenates the base URL and the path specified using `/` as a separator.
+ * If `/` occurs at the concatenation boundary in either parameter, it is removed.
  * Substitutes path parameters with the properties of the @see params object and appends
  * unused properties in the path as query params.
  *
@@ -76,11 +76,9 @@ function joinFullUrl(
   baseUrl: string,
   pathAndQuery: string,
 ): string {
-  if (renderedPath.length) {
-    return join(baseUrl, '/', pathAndQuery)
-  } else {
-    return join(baseUrl, '?', pathAndQuery)
-  }
+  return renderedPath.length
+    ? join(baseUrl, '/', pathAndQuery)
+    : join(baseUrl, '?', pathAndQuery)
 }
 
 function urlcatImpl(
@@ -112,16 +110,7 @@ function urlcatImpl(
  * ```
  */
 export function query(params: ParamMap): string {
-  /* NOTE: Handle quirk of `new UrlSearchParams(params).toString()` in Webkit 602.x.xx
-   *       versions which returns stringified object when params is empty object
-   */
-  if (Object.keys(params).length < 1) {
-    return ''
-  }
-
-  // fast-querystring has a simpler API than qs
-  // It automatically handles encoding and arrays
-  return stringify(params)
+  return Object.keys(params).length ? stringify(params) : ''
 }
 
 /**
@@ -145,31 +134,27 @@ export function subst(template: string, params: ParamMap): string {
 
 function path(template: string, params: ParamMap) {
   const remainingParams = { ...params }
-
   const renderedPath = template.replace(/:[_A-Za-z]+\w*/g, (p) => {
-    // do not replace "::"
     const key = p.slice(1)
     validatePathParam(params, key)
     delete remainingParams[key]
     return encodeURIComponent(params[key] as string | number | boolean)
   })
-
   return { renderedPath, remainingParams }
 }
 
 function validatePathParam(params: ParamMap, key: string) {
-  const allowedTypes = ['boolean', 'string', 'number']
-
   if (!Object.hasOwn(params, key)) {
     throw new Error(`Missing value for path parameter ${key}.`)
   }
-  if (!allowedTypes.includes(typeof params[key])) {
+  const type = typeof params[key]
+  if (type !== 'boolean' && type !== 'string' && type !== 'number') {
     throw new TypeError(
-      `Path parameter ${key} cannot be of type ${typeof params[key]}. ` +
-        `Allowed types are: ${allowedTypes.join(', ')}.`,
+      `Path parameter ${key} cannot be of type ${type}. ` +
+        'Allowed types are: boolean, string, number.',
     )
   }
-  if (typeof params[key] === 'string' && params[key].trim() === '') {
+  if (type === 'string' && (params[key] as string).trim() === '') {
     throw new Error(`Path parameter ${key} cannot be an empty string.`)
   }
 }
@@ -196,7 +181,7 @@ export function join(part1: string, separator: string, part2: string): string {
     ? part1.slice(0, -separator.length)
     : part1
   const p2 = part2.startsWith(separator) ? part2.slice(separator.length) : part2
-  return p1 === '' || p2 === '' ? p1 + p2 : p1 + separator + p2
+  return !p1 || !p2 ? p1 + p2 : p1 + separator + p2
 }
 
 /**
@@ -215,8 +200,6 @@ export function join(part1: string, separator: string, part2: string): string {
  */
 function removeNullOrUndef<P extends ParamMap>(params: P) {
   return Object.fromEntries(
-    Object.entries(params).filter(
-      ([, value]) => value !== null && value !== undefined,
-    ),
+    Object.entries(params).filter(([, value]) => value != null),
   ) as { [K in keyof P]: NonNullable<P[K]> }
 }
