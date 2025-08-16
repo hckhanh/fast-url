@@ -4,6 +4,7 @@ A folk version of the [urlcat](https://github.com/balazsbotond/urlcat) focuses o
 Build correct URLs easily. A fast, minimal fork of urlcat focused on performance and simplicity.
 
 [![Test](https://github.com/hckhanh/fast-url/actions/workflows/test.yml/badge.svg)](https://github.com/hckhanh/fast-url/actions/workflows/test.yml)
+[![codecov](https://codecov.io/github/hckhanh/fast-url/graph/badge.svg?token=6W7S96H6OT)](https://codecov.io/github/hckhanh/fast-url)
 [![npm version](https://img.shields.io/npm/v/fast-url.svg?style=flat)](https://www.npmjs.com/package/fast-url)
 [![Bundle Size](https://badgen.net/bundlephobia/minzip/fast-url)](https://bundlephobia.com/result?p=fast-url)
 [![CodSpeed](https://img.shields.io/endpoint?url=https://codspeed.io/badge.json)](https://codspeed.io/hckhanh/fast-url)
