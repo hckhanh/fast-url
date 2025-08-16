@@ -7,6 +7,6 @@ describe('subst benchmarks', () => {
     () => {
       subst('/:p/:q/:r', { p: 1, q: 'a', r: false })
     },
-    { iterations: 10000 },
+    { iterations: 100000 },
   )
 })

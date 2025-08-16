@@ -20,6 +20,6 @@ describe('urlcat benchmarks', () => {
         numberKey: 256,
       })
     },
-    { iterations: 10000 },
+    { iterations: 100000 },
   )
 })
