@@ -81,16 +81,9 @@ export default function urlcat(
   maybeParams: ParamMap = {},
   config: UrlCatConfiguration = {},
 ): string {
-  if (typeof pathTemplateOrParams === 'string') {
-    const baseUrl = baseUrlOrTemplate
-    const pathTemplate = pathTemplateOrParams
-    const params = maybeParams
-    return urlcatImpl(pathTemplate, params, baseUrl, config)
-  } else {
-    const baseTemplate = baseUrlOrTemplate
-    const params = pathTemplateOrParams
-    return urlcatImpl(baseTemplate, params, undefined, config)
-  }
+  return typeof pathTemplateOrParams === 'string'
+    ? urlcatImpl(pathTemplateOrParams, maybeParams, baseUrlOrTemplate, config)
+    : urlcatImpl(baseUrlOrTemplate, pathTemplateOrParams, undefined, config)
 }
 
 function joinFullUrl(
