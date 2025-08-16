@@ -190,7 +190,6 @@ export function join(part1: string, separator: string, part2: string): string {
  * returning a new object containing only defined values.
  *
  * @param {ParamMap} params The parameter map to filter
- * @returns {ParamMap} A new object with null and undefined values removed
  *
  * @example
  * ```ts
