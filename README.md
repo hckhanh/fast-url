@@ -1,5 +1,6 @@
 # fast-url
 
+A folk version of the [urlcat](https://github.com/balazsbotond/urlcat) focuses on performance and simplicity.
 Build correct URLs easily. A fast, minimal fork of urlcat focused on performance and simplicity.
 
 [![Test](https://github.com/hckhanh/fast-url/actions/workflows/test.yml/badge.svg)](https://github.com/hckhanh/fast-url/actions/workflows/test.yml)

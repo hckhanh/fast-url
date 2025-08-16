@@ -26,6 +26,7 @@
     "bench": "vitest bench",
     "build": "tsdown",
     "format": "biome check --write",
+    "release": "bun run build && changset publish",
     "test": "vitest"
   },
   "dependencies": {
@@ -33,7 +34,9 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.0",
-    "@codspeed/vitest-plugin": "^4.0.1",
+    "@changesets/cli": "2.29.5",
+    "@changesets/config": "3.1.1",
+    "@codspeed/vitest-plugin": "4.0.1",
     "@vitest/coverage-v8": "3.2.4",
     "syncpack": "13.0.4",
     "tsdown": "0.14.1",

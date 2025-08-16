@@ -12,11 +12,13 @@ jobs:
     name: Run tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: moonrepo/setup-toolchain@v0
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Setup Toolchains
+        uses: moonrepo/setup-toolchain@v0
         with:
           auto-install: true
-      - name: Install dependencies
+      - name: Install Dependencies
         run: bun ci
-      - name: Run tests
+      - name: Run Tests
         run: bun test --coverage
