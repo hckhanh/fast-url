@@ -21,4 +21,9 @@ jobs:
       - name: Install Dependencies
         run: bun ci
       - name: Run Tests
-        run: bun test --coverage
+        run: bun test --coverage --reporter=junit --reporter-outfile=test-report.junit.xml
+      - name: Upload test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/test-results-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
