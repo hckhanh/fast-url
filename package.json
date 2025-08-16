@@ -12,6 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/hckhanh/fast-url.git"
   },
+  "private": false,
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
