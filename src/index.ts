@@ -173,7 +173,7 @@ function validatePathParam(params: ParamMap, key: string) {
   if (!allowedTypes.includes(typeof params[key])) {
     throw new TypeError(
       `Path parameter ${key} cannot be of type ${typeof params[key]}. ` +
-      `Allowed types are: ${allowedTypes.join(', ')}.`,
+        `Allowed types are: ${allowedTypes.join(', ')}.`,
     )
   }
   if (typeof params[key] === 'string' && params[key].trim() === '') {
@@ -207,15 +207,9 @@ export function join(part1: string, separator: string, part2: string): string {
 }
 
 function removeNullOrUndef<P extends ParamMap>(params: P) {
-  return Object.entries(params).reduce(
-    (result, [key, value]) => {
-      if (value === null || value === undefined) {
-        return result
-      }
-
-      result[key] = value
-      return result
-    },
-    {} as { [K in keyof P]: NonNullable<P[K]> },
-  )
+  return Object.fromEntries(
+    Object.entries(params).filter(
+      ([, value]) => value !== null && value !== undefined,
+    ),
+  ) as { [K in keyof P]: NonNullable<P[K]> }
 }
