@@ -1,4 +1,4 @@
-import { stringify } from 'fast-querystring'
+import {stringify} from 'fast-querystring'
 
 export type ParamMap = Record<string, unknown>
 
@@ -43,7 +43,7 @@ export default function urlcat(baseUrl: string, path: string): string
  * unused properties in the path as query params.
  *
  * @param {String} baseUrl the first part of the URL
- * @param {String} path the second part of the URL
+ * @param {String} pathTemplate the second part of the URL
  * @param {Object} params Object with properties that correspond to the :params
  *   in the base template. Unused properties become query params.
  *
@@ -66,16 +66,7 @@ export default function urlcat(
   pathTemplateOrParams: string | ParamMap,
   maybeParams: ParamMap = {},
 ): string {
-  if (typeof pathTemplateOrParams === 'string') {
-    const baseUrl = baseUrlOrTemplate
-    const pathTemplate = pathTemplateOrParams
-    const params = maybeParams
-    return urlcatImpl(pathTemplate, params, baseUrl)
-  } else {
-    const baseTemplate = baseUrlOrTemplate
-    const params = pathTemplateOrParams
-    return urlcatImpl(baseTemplate, params, undefined)
-  }
+  return typeof pathTemplateOrParams === 'string' ? urlcatImpl(pathTemplateOrParams, maybeParams, baseUrlOrTemplate) : urlcatImpl(baseUrlOrTemplate, pathTemplateOrParams, undefined);
 }
 
 function joinFullUrl(
@@ -206,6 +197,20 @@ export function join(part1: string, separator: string, part2: string): string {
   return p1 === '' || p2 === '' ? p1 + p2 : p1 + separator + p2
 }
 
+/**
+ * Removes null and undefined values from a parameter map.
+ * This function filters out any properties with null or undefined values,
+ * returning a new object containing only defined values.
+ *
+ * @param {ParamMap} params The parameter map to filter
+ * @returns {ParamMap} A new object with null and undefined values removed
+ *
+ * @example
+ * ```ts
+ * removeNullOrUndef({ a: 'hello', b: null, c: undefined, d: 'world' })
+ * // -> { a: 'hello', d: 'world' }
+ * ```
+ */
 function removeNullOrUndef<P extends ParamMap>(params: P) {
   return Object.fromEntries(
     Object.entries(params).filter(
