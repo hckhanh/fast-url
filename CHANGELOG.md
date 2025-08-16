@@ -1,5 +1,11 @@
 # fast-url
 
+## 4.0.1
+
+### Patch Changes
+
+- 5c5463b: Add `sideEffects: false` to enable better tree-shaking optimization
+
 ## 4.0.0
 
 ### Major Changes
