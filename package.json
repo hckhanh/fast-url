@@ -12,6 +12,10 @@
     "type": "git",
     "url": "git+https://github.com/hckhanh/fast-url.git"
   },
+  "bugs": {
+    "url": "https://github.com/hckhanh/fast-url/issues",
+    "email": "hi@khanh.id"
+  },
   "private": false,
   "type": "module",
   "main": "./dist/index.js",
@@ -58,5 +62,8 @@
     "concat",
     "concatenate"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
 }

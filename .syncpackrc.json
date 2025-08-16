@@ -8,6 +8,7 @@
     "author",
     "homepage",
     "repository",
+    "bugs",
     "private",
     "sideEffects",
     "type",
@@ -48,5 +49,7 @@
       "dependencies": ["**"],
       "packages": ["**"]
     }
-  ]
+  ],
+  "formatBugs": false,
+  "formatRepository": false
 }
