@@ -20,6 +20,10 @@ fast-url is a tiny JavaScript/TypeScript library that makes building URLs conven
 ## Installation
 
 ```bash
+# Using bun (recommended)
+bun add fast-url
+
+# Using npm
 npm install fast-url
 ```
 
