@@ -1,58 +1,36 @@
-<h1 align="center">
-  <br>
-  <img src="docs/cat.svg" alt="urlcat">
-  <br>
-  urlcat
-  <br>
-</h1>
+# fast-url
 
-<h4 align="center">Build correct URLs easily.</h4>
+Build correct URLs easily. A fast, minimal fork of urlcat focused on performance and simplicity.
 
-<p align="center">
-  <a href="https://github.com/balazsbotond/urlcat/actions">
-    <img src="https://github.com/balazsbotond/urlcat/actions/workflows/ci.yml/badge.svg" alt="Build Status">
-  </a>
-  <a href="https://www.npmjs.com/package/urlcat">
-    <img src="https://img.shields.io/npm/v/urlcat.svg?style=flat" alt="npm version">
-  </a>
-  <a href="https://bundlephobia.com/result?p=urlcat">
-    <img src="https://badgen.net/bundlephobia/minzip/urlcat" alt="Bundle Size">
-  </a>
-  <a href="https://coveralls.io/github/balazsbotond/urlcat?branch=master">
-    <img src="https://coveralls.io/repos/github/balazsbotond/urlcat/badge.svg?branch=master" alt="Coverage Status">
-  </a>
-  <a href="https://codspeed.io/hckhanh/fast-url">
-    <img src="https://img.shields.io/endpoint?url=https://codspeed.io/badge.json" alt="CodSpeed Badge">
-  </a>
-</p>
+[![Test](https://github.com/hckhanh/fast-url/actions/workflows/test.yml/badge.svg)](https://github.com/hckhanh/fast-url/actions/workflows/test.yml)
+[![npm version](https://img.shields.io/npm/v/fast-url.svg?style=flat)](https://www.npmjs.com/package/fast-url)
+[![Bundle Size](https://badgen.net/bundlephobia/minzip/fast-url)](https://bundlephobia.com/result?p=fast-url)
+[![CodSpeed](https://img.shields.io/endpoint?url=https://codspeed.io/badge.json)](https://codspeed.io/hckhanh/fast-url)
 
-*urlcat* is a tiny JavaScript library that makes building URLs very convenient and prevents common mistakes.
+fast-url is a tiny JavaScript/TypeScript library that makes building URLs convenient and prevents common mistakes.
 
 ## Features
 
-- **Lightweight**: Only one dependency and under 11KB minified and gzipped
-- **Type Safe**: Written in TypeScript with full type definitions
-- **URL Safe**: Automatically escapes parameters and handles edge cases
-- **Flexible**: Multiple ways to build URLs for different use cases
+- Lightweight: Only one dependency and under 11KB minified and gzipped
+- Type safe: Written in TypeScript with full type definitions
+- URL safe: Automatically escapes parameters and handles edge cases
+- Flexible: Multiple ways to build URLs for different use cases
 
 ## Installation
 
 ```bash
-npm install urlcat
+npm install fast-url
 ```
 
 ## Usage
 
-<br>
-<p align="center">
-  <img src="docs/urlcat-basic-usage.svg#gh-light-mode-only" alt="Basic usage example">
-  <img src="docs/urlcat-basic-usage-dark.svg#gh-dark-mode-only" alt="Basic usage example (dark mode)">
-</p>
+![Basic usage example](docs/urlcat-basic-usage.svg#gh-light-mode-only)
+![Basic usage example (dark mode)](docs/urlcat-basic-usage-dark.svg#gh-dark-mode-only)
 
-### Basic URL Building
+### Basic URL building
 
 ```javascript
-import urlcat from 'urlcat';
+import urlcat from 'fast-url'
 
 // Path parameters
 urlcat('https://api.example.com', '/users/:id', { id: 123 })
@@ -70,13 +48,13 @@ urlcat('https://api.example.com', '/users/:id/posts', { id: 123, limit: 10 })
 ### CommonJS
 
 ```javascript
-const urlcat = require('urlcat').default;
+const urlcat = require('fast-url').default
 ```
 
-### Utility Functions
+### Utility functions
 
 ```javascript
-import { query, subst, join } from 'urlcat';
+import { query, subst, join, configure } from 'fast-url'
 
 // Build query strings
 query({ name: 'John', age: 30 })
@@ -89,42 +67,49 @@ subst('/users/:id/posts/:postId', { id: 123, postId: 456 })
 // Join URL parts
 join('https://api.example.com/', '/', '/users')
 // → 'https://api.example.com/users'
+
+// Configure defaults (e.g., RFC3986 formatting)
+const u = configure({ objectFormat: { format: 'RFC3986' } })
+u('https://api.example.com', '/q', { q: 'a b' })
+// → 'https://api.example.com/q?q=a%20b'
 ```
 
 ## API
 
-### `urlcat(baseUrl, pathTemplate, params?)`
-
+### `urlcat(baseUrl, pathTemplate, params?, config?)`
 Build a complete URL by combining a base URL, path template, and parameters.
 
-### `query(params)`
+### `urlcat(baseTemplate, params, config?)`
+Use a single template containing path parameters; unused params become query parameters.
 
+### `query(params, config?)`
 Build a query string from an object of key-value pairs.
 
 ### `subst(template, params)`
-
 Substitute path parameters in a template string.
 
 ### `join(part1, separator, part2)`
-
 Join two URL parts with exactly one separator.
 
-## Why urlcat?
+### `configure(rootConfig)`
+Create a preconfigured urlcat function with default options (arrayFormat and objectFormat.format per qs).
+
+## Why fast-url?
 
 Building URLs manually is error-prone:
 
 ```javascript
 // ❌ Error-prone manual approach
-const url = `${baseUrl}/users/${id}/posts?limit=${limit}&offset=${offset}`;
+const url = `${baseUrl}/users/${id}/posts?limit=${limit}&offset=${offset}`
 // Issues: double slashes, unescaped parameters, complex concatenation
 ```
 
 ```javascript
-// ✅ Clean and safe with urlcat
-const url = urlcat(baseUrl, '/users/:id/posts', { id, limit, offset });
+// ✅ Clean and safe with fast-url
+const url = urlcat(baseUrl, '/users/:id/posts', { id, limit, offset })
 ```
 
-urlcat handles:
+fast-url handles:
 - Automatic parameter escaping
 - Proper URL segment joining
 - Clean separation of path and query parameters
