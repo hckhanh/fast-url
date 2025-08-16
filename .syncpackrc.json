@@ -10,6 +10,7 @@
     "repository",
     "bugs",
     "private",
+    "publishConfig",
     "sideEffects",
     "type",
     "main",

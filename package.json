@@ -17,6 +17,9 @@
     "email": "hi@khanh.id"
   },
   "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -33,7 +36,7 @@
     "test": "vitest"
   },
   "dependencies": {
-    "qs": "6.14.0"
+    "fast-querystring": "1.1.2"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.0",
@@ -62,8 +65,5 @@
     "concat",
     "concatenate"
   ],
-  "license": "MIT",
-  "publishConfig": {
-    "access": "public"
-  }
+  "license": "MIT"
 }

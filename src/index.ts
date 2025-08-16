@@ -1,12 +1,6 @@
-import qs, { type IStringifyOptions } from 'qs'
+import { stringify } from 'fast-querystring'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type ParamMap = Record<string, any>
-export type UrlCatConfiguration = Partial<
-  Pick<IStringifyOptions, 'arrayFormat'> & {
-    objectFormat: Partial<Pick<IStringifyOptions, 'format'>>
-  }
->
+export type ParamMap = Record<string, unknown>
 
 /**
  * Builds a URL using the base template and specified parameters.
@@ -67,74 +61,21 @@ export default function urlcat(
   params: ParamMap,
 ): string
 
-/**
- * Concatenates the base URL and the path specified using '/' as a separator.
- * If a '/' occurs at the concatenation boundary in either parameter, it is removed.
- * Substitutes path parameters with the properties of the @see params object and appends
- * unused properties in the path as query params.
- *
- * @param {String} baseUrl the first part of the URL
- * @param {String} path the second part of the URL
- * @param {Object} params Object with properties that correspond to the :params
- *   in the base template. Unused properties become query params.
- * @param {Object} config urlcat configuration object
- *
- * @returns {String} URL with path params substituted and query params appended
- *
- * @example
- * ```ts
- * urlcat('http://api.example.com/', '/users/:id', { id: 42, search: 'foo' }, {objectFormat: {format: 'RFC1738'}})
- * // -> 'http://api.example.com/users/42?search=foo
- * ```
- */
-export default function urlcat(
-  baseUrlOrTemplate: string,
-  pathTemplateOrParams: string | ParamMap,
-  maybeParams: ParamMap,
-  config: UrlCatConfiguration,
-): string
-
 export default function urlcat(
   baseUrlOrTemplate: string,
   pathTemplateOrParams: string | ParamMap,
   maybeParams: ParamMap = {},
-  config: UrlCatConfiguration = {},
 ): string {
   if (typeof pathTemplateOrParams === 'string') {
     const baseUrl = baseUrlOrTemplate
     const pathTemplate = pathTemplateOrParams
     const params = maybeParams
-    return urlcatImpl(pathTemplate, params, baseUrl, config)
+    return urlcatImpl(pathTemplate, params, baseUrl)
   } else {
     const baseTemplate = baseUrlOrTemplate
     const params = pathTemplateOrParams
-    return urlcatImpl(baseTemplate, params, undefined, config)
+    return urlcatImpl(baseTemplate, params, undefined)
   }
-}
-
-/**
- * Factory function providing a pre configured urlcat function
- *
- * @param {Object} config Configuration object for urlcat
- *
- * @returns {Function} urlcat decorator function
- *
- * @example
- * ```ts
- * configure({arrayFormat: 'brackets', objectFormat: {format: 'RFC1738'}})
- * ```
- */
-export function configure(rootConfig: UrlCatConfiguration) {
-  return (
-    baseUrlOrTemplate: string,
-    pathTemplateOrParams: string | ParamMap,
-    maybeParams: ParamMap = {},
-    config: UrlCatConfiguration = {},
-  ): string =>
-    urlcat(baseUrlOrTemplate, pathTemplateOrParams, maybeParams, {
-      ...rootConfig,
-      ...config,
-    })
 }
 
 function joinFullUrl(
@@ -153,11 +94,10 @@ function urlcatImpl(
   pathTemplate: string,
   params: ParamMap,
   baseUrl: string | undefined,
-  config: UrlCatConfiguration,
 ) {
   const { renderedPath, remainingParams } = path(pathTemplate, params)
   const cleanParams = removeNullOrUndef(remainingParams)
-  const renderedQuery = query(cleanParams, config)
+  const renderedQuery = query(cleanParams)
   const pathAndQuery = join(renderedPath, '?', renderedQuery)
 
   return baseUrl
@@ -169,7 +109,6 @@ function urlcatImpl(
  * Creates a query string from the specified object.
  *
  * @param {Object} params an object to convert into a query string.
- * @param {Object} config configuration to stringify the query params.
  *
  * @returns {String} Query string.
  *
@@ -179,7 +118,7 @@ function urlcatImpl(
  * // -> 'id=42&search=foo'
  * ```
  */
-export function query(params: ParamMap, config?: UrlCatConfiguration): string {
+export function query(params: ParamMap): string {
   /* NOTE: Handle quirk of `new UrlSearchParams(params).toString()` in Webkit 602.x.xx
    *       versions which returns stringified object when params is empty object
    */
@@ -187,12 +126,9 @@ export function query(params: ParamMap, config?: UrlCatConfiguration): string {
     return ''
   }
 
-  const qsConfiguration: IStringifyOptions = {
-    format: config?.objectFormat?.format ?? 'RFC1738', // RDC1738 is urlcat's current default. Breaking change if default is changed
-    arrayFormat: config?.arrayFormat,
-  }
-
-  return qs.stringify(params, qsConfiguration)
+  // fast-querystring has a simpler API than qs
+  // It automatically handles encoding and arrays
+  return stringify(params)
 }
 
 /**
@@ -222,7 +158,7 @@ function path(template: string, params: ParamMap) {
     const key = p.slice(1)
     validatePathParam(params, key)
     delete remainingParams[key]
-    return encodeURIComponent(params[key])
+    return encodeURIComponent(params[key] as string | number | boolean)
   })
 
   return { renderedPath, remainingParams }
@@ -237,7 +173,7 @@ function validatePathParam(params: ParamMap, key: string) {
   if (!allowedTypes.includes(typeof params[key])) {
     throw new TypeError(
       `Path parameter ${key} cannot be of type ${typeof params[key]}. ` +
-        `Allowed types are: ${allowedTypes.join(', ')}.`,
+      `Allowed types are: ${allowedTypes.join(', ')}.`,
     )
   }
   if (typeof params[key] === 'string' && params[key].trim() === '') {
@@ -273,15 +209,13 @@ export function join(part1: string, separator: string, part2: string): string {
 function removeNullOrUndef<P extends ParamMap>(params: P) {
   return Object.entries(params).reduce(
     (result, [key, value]) => {
-      if (nullOrUndefined(value)) {
+      if (value === null || value === undefined) {
         return result
       }
-      return Object.assign(result, { [key]: value })
+
+      result[key] = value
+      return result
     },
     {} as { [K in keyof P]: NonNullable<P[K]> },
   )
-}
-
-function nullOrUndefined<T>(v: T) {
-  return v === undefined || v === null
 }
