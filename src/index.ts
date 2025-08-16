@@ -1,4 +1,4 @@
-import {stringify} from 'fast-querystring'
+import { stringify } from 'fast-querystring'
 
 export type ParamMap = Record<string, unknown>
 
@@ -66,7 +66,9 @@ export default function urlcat(
   pathTemplateOrParams: string | ParamMap,
   maybeParams: ParamMap = {},
 ): string {
-  return typeof pathTemplateOrParams === 'string' ? urlcatImpl(pathTemplateOrParams, maybeParams, baseUrlOrTemplate) : urlcatImpl(baseUrlOrTemplate, pathTemplateOrParams, undefined);
+  return typeof pathTemplateOrParams === 'string'
+    ? urlcatImpl(pathTemplateOrParams, maybeParams, baseUrlOrTemplate)
+    : urlcatImpl(baseUrlOrTemplate, pathTemplateOrParams, undefined)
 }
 
 function joinFullUrl(
