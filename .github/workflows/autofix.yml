@@ -1,0 +1,33 @@
+name: autofix.ci
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  apply:
+    name: Apply automated fixes
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Setup toolchains
+        uses: moonrepo/setup-toolchain@v0
+        with:
+          auto-install: true
+      - name: Install Dependencies
+        run: bun ci
+      - name: Format code
+        run: bun biome check --write
+      - name: Fix package.json
+        run: bun syncpack fix
+      - name: Format package.json
+        run: bun syncpack format
+      - name: Update package lock file
+        run: bun i
+      - name: Submit autofix
+        uses: autofix-ci/action@v1
