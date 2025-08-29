@@ -5,6 +5,7 @@ Build correct URLs easily. A fast, minimal fork of urlcat focused on performance
 
 [![Test](https://github.com/hckhanh/fast-url/actions/workflows/test.yml/badge.svg)](https://github.com/hckhanh/fast-url/actions/workflows/test.yml)
 [![codecov](https://codecov.io/github/hckhanh/fast-url/graph/badge.svg?token=6W7S96H6OT)](https://codecov.io/github/hckhanh/fast-url)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=hckhanh_fast-url&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=hckhanh_fast-url)
 [![Bundle Size](https://badgen.net/bundlephobia/minzip/fast-url)](https://bundlephobia.com/result?p=fast-url)
 [![CodSpeed](https://img.shields.io/endpoint?url=https://codspeed.io/badge.json)](https://codspeed.io/hckhanh/fast-url)
 
