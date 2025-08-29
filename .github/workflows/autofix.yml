@@ -16,10 +16,15 @@ jobs:
     name: Apply automated fixes
     runs-on: ubuntu-latest
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
+        with:
+          egress-policy: audit
+
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: Setup toolchains
-        uses: moonrepo/setup-toolchain@v0
+        uses: moonrepo/setup-toolchain@827700d97fe7dd1c3030018529e43e23c377c308 # v0.5.0
         with:
           auto-install: true
       - name: Install Dependencies
@@ -33,4 +38,4 @@ jobs:
       - name: Update package lock file
         run: bun i
       - name: Submit autofix
-        uses: autofix-ci/action@v1
+        uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27 # v1.3.2

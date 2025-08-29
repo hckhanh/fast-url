@@ -19,16 +19,21 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
+        with:
+          egress-policy: audit
+
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: Setup Toolchains
-        uses: moonrepo/setup-toolchain@v0
+        uses: moonrepo/setup-toolchain@827700d97fe7dd1c3030018529e43e23c377c308 # v0.5.0
         with:
           auto-install: true
       - name: Install Dependencies
         run: bun ci
       - name: Create Release Pull Request or Publish to npm
-        uses: changesets/action@v1
+        uses: changesets/action@e0145edc7d9d8679003495b11f87bd8ef63c0cba # v1.5.3
         with:
           publish: bun release
           commitMode: 'github-api'
