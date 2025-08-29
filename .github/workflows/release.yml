@@ -35,7 +35,7 @@ jobs:
       - name: Install Dependencies
         run: bun ci
       - name: Create Release Pull Request or Publish to npm
-        uses: step-security/changeset-action@v1.5.3
+        uses: step-security/changeset-action@531a275d3847d9291b64e729d0ee55cd0dc93b16 # v1.5.3
         with:
           publish: bun release
           commitMode: 'github-api'
