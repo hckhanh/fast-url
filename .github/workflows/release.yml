@@ -31,7 +31,7 @@ jobs:
           node-version-file: 'package.json'
           registry-url: https://registry.npmjs.org/
       - name: Setup Bun
-        uses: step-security/setup-bun@a961ff54612b97ac3259f517fb6a81be3b657a59 # v2.0.2
+        uses: step-security/setup-bun@81c6b5758214d7e8b68a403c6a55a040e9b8879a # v2.0.3
       - name: Install Dependencies
         run: bun ci
       - name: Create Release Pull Request or Publish to npm
