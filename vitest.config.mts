@@ -1,4 +1,5 @@
 import path from 'node:path'
+import url from 'node:url'
 import codspeed from '@codspeed/vitest-plugin'
 import {
   coverageConfigDefaults,
@@ -16,7 +17,10 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      '@': path.resolve(
+        path.dirname(url.fileURLToPath(import.meta.url)),
+        './src',
+      ),
     },
   },
 })
