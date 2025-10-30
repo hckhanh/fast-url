@@ -12,7 +12,7 @@ This pull request introduces a major update to the querystring module, aligning 
 
 **Testing & Benchmarking Enhancements**
 
-* Expanded the test suite to 95 tests, including new cases for the `isHexTable` export, and introduced comprehensive benchmarks comparing old, new, and optimized implementations. All tests pass and benchmarks confirm negligible real-world performance differences.
+* Expanded the test suite to 95 tests and introduced comprehensive benchmarks comparing old, new, and optimized implementations. All tests pass and benchmarks confirm negligible real-world performance differences.
 
 **Developer Experience & Tooling**
 
