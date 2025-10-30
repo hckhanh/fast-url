@@ -7,9 +7,9 @@ function getAsPrimitive(value: any) {
     // Length check is handled inside encodeString function
     return encodeString(value)
   } else if (type === 'bigint' || type === 'boolean') {
-    return '' + value
+    return value.toString()
   } else if (type === 'number' && Number.isFinite(value)) {
-    return value < 1e21 ? '' + value : encodeString('' + value)
+    return value < 1e21 ? value.toString() : encodeString(value.toString())
   }
 
   return ''
