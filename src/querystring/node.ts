@@ -43,7 +43,7 @@ export function encodeString(str: string): string {
   let i = 0
 
   outer: for (; i < len; i++) {
-    let c = str.codePointAt(i) as number
+    let c = str.charCodeAt(i)
 
     // ASCII
     while (c < 0x80) {
@@ -57,7 +57,7 @@ export function encodeString(str: string): string {
 
       if (++i === len) break outer
 
-      c = str.codePointAt(i) as number
+      c = str.charCodeAt(i)
     }
 
     if (lastPos < i) {
