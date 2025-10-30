@@ -110,7 +110,7 @@ function urlcatImpl(
  * ```
  */
 export function query(params: ParamMap): string {
-  return Object.keys(params).length ? stringify(params) : ''
+  return stringify(params)
 }
 
 /**
