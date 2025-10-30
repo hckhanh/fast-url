@@ -26,41 +26,15 @@ const noEscape = new Int8Array([
   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, // 112 - 127
 ])
 
-// Hex validation lookup table for decoding
-// biome-ignore format: the array should not be formatted
-export const isHexTable = new Int8Array([
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 0 - 15
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 16 - 31
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 32 - 47
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, // 48 - 63 (digits)
-  0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 64 - 79 (A-F)
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 80 - 95
-  0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 96 - 111 (a-f)
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 112 - 127
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 128+
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-])
-
 /**
  * Encodes a string for use in URL query strings.
  * Based on Node.js internal querystring implementation.
+ * Optimized version with direct table access for maximum performance.
  *
  * @param str - The string to encode
- * @param noEscapeTable - Lookup table for characters that don't need escaping
- * @param hexTable - Lookup table for hex encoding
  * @returns The encoded string
  */
-function encodeStr(
-  str: string,
-  noEscapeTable: Int8Array,
-  hexTable: string[],
-): string {
+export function encodeString(str: string): string {
   const len = str.length
   if (len === 0) return ''
 
@@ -73,7 +47,7 @@ function encodeStr(
 
     // ASCII
     while (c < 0x80) {
-      if (noEscapeTable[c] !== 1) {
+      if (noEscape[c] !== 1) {
         if (lastPos < i) {
           out += str.slice(lastPos, i)
         }
@@ -124,15 +98,4 @@ function encodeStr(
   if (lastPos === 0) return str
   if (lastPos < len) return out + str.slice(lastPos)
   return out
-}
-
-/**
- * Encodes a string for use in URL query strings.
- * This is the main export that uses the default encoding tables.
- *
- * @param str - The string to encode
- * @returns The encoded string
- */
-export function encodeString(str: string): string {
-  return encodeStr(str, noEscape, hexTable)
 }

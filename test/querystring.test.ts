@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { encodeString, isHexTable } from '@/querystring/node'
+import { encodeString } from '@/querystring/node'
 import { stringify } from '@/querystring/stringify'
 
 describe('encodeString', () => {
@@ -468,52 +468,5 @@ describe('stringify', () => {
       expect(result).toContain('items=item0')
       expect(result).toContain('items=item49')
     })
-  })
-})
-
-describe('isHexTable', () => {
-  it('Correctly identifies hex digits 0-9', () => {
-    for (let i = '0'.charCodeAt(0); i <= '9'.charCodeAt(0); i++) {
-      expect(isHexTable[i]).toBe(1)
-    }
-  })
-
-  it('Correctly identifies hex letters A-F', () => {
-    for (let i = 'A'.charCodeAt(0); i <= 'F'.charCodeAt(0); i++) {
-      expect(isHexTable[i]).toBe(1)
-    }
-  })
-
-  it('Correctly identifies hex letters a-f', () => {
-    for (let i = 'a'.charCodeAt(0); i <= 'f'.charCodeAt(0); i++) {
-      expect(isHexTable[i]).toBe(1)
-    }
-  })
-
-  it('Returns 0 for non-hex characters', () => {
-    expect(isHexTable['G'.charCodeAt(0)]).toBe(0)
-    expect(isHexTable['g'.charCodeAt(0)]).toBe(0)
-    expect(isHexTable['Z'.charCodeAt(0)]).toBe(0)
-    expect(isHexTable['z'.charCodeAt(0)]).toBe(0)
-    expect(isHexTable[' '.charCodeAt(0)]).toBe(0)
-    expect(isHexTable['!'.charCodeAt(0)]).toBe(0)
-  })
-
-  it('Returns 0 for characters before digits', () => {
-    expect(isHexTable['/'.charCodeAt(0)]).toBe(0) // char before '0'
-  })
-
-  it('Returns 0 for characters after digits', () => {
-    expect(isHexTable[':'.charCodeAt(0)]).toBe(0) // char after '9'
-  })
-
-  it('Has correct length (256)', () => {
-    expect(isHexTable.length).toBe(256)
-  })
-
-  it('Returns 0 for all ASCII control characters', () => {
-    for (let i = 0; i < 32; i++) {
-      expect(isHexTable[i]).toBe(0)
-    }
   })
 })

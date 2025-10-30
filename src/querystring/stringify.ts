@@ -15,18 +15,7 @@ function getAsPrimitive(value: any) {
   return ''
 }
 
-export function stringify(
-  input: Record<
-    string,
-    | string
-    | number
-    | bigint
-    | boolean
-    | ReadonlyArray<string | number | boolean>
-    | null
-    | undefined
-  >,
-) {
+export function stringify(input: Record<string, unknown>) {
   let result = ''
 
   if (input === null || typeof input !== 'object') {
