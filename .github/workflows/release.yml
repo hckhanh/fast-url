@@ -12,7 +12,7 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   npm:
-    name: Publish to npm
+    name: NPM
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -29,6 +29,8 @@ jobs:
         uses: jdx/mise-action@e3d7b8d67a7958d1207f6ed871e83b1ea780e7b0 # v3.3.1
       - name: Install Dependencies
         run: bun ci
+      - name: Update npm
+        run: npm install -g npm@latest
       - name: Create Release Pull Request or Publish to npm
         uses: changesets/action@v1.5.3
         with:
