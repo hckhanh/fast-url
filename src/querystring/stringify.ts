@@ -1,6 +1,6 @@
 import { encodeString } from '@/querystring/node'
 
-function getAsPrimitive(value) {
+function getAsPrimitive(value: any) {
   const type = typeof value
 
   if (type === 'string') {
@@ -15,12 +15,18 @@ function getAsPrimitive(value) {
   return ''
 }
 
-/**
- * @param {Record<string, string | number | boolean
- * | ReadonlyArray<string | number | boolean> | null>} input
- * @returns {string}
- */
-export function stringify(input) {
+export function stringify(
+  input: Record<
+    string,
+    | string
+    | number
+    | bigint
+    | boolean
+    | ReadonlyArray<string | number | boolean>
+    | null
+    | undefined
+  >,
+) {
   let result = ''
 
   if (input === null || typeof input !== 'object') {

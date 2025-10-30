@@ -24,7 +24,7 @@ const noEscape = new Int8Array([
   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, // 112 - 127
 ]);
 
-export function encodeString(str) {
+export function encodeString(str: string) {
   const len = str.length
   if (len === 0) return ''
 
