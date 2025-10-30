@@ -37,7 +37,7 @@
     "test": "vitest"
   },
   "dependencies": {
-    "fast-qs": "2.1.2"
+    "fast-querystring": "1.1.2"
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.2",

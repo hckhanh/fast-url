@@ -31,4 +31,10 @@ describe('query', () => {
     const actual = query({ key: 'a "special" value' })
     expect(actual).toBe(expected)
   })
+
+  it('Escapes the key', () => {
+    const expected = 'a%20%22special%22%20key=value'
+    const actual = query({ 'a "special" key': 'value' })
+    expect(actual).toBe(expected)
+  })
 })

@@ -1,4 +1,4 @@
-import { stringify } from 'fast-qs'
+import { stringify } from 'fast-querystring'
 
 export type ParamMap = Record<string, unknown>
 
