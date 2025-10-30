@@ -214,8 +214,7 @@ describe('query benchmarks', () => {
 
     bench('Long values (50 chars)', () => {
       query({
-        description:
-          'This is a very long description that contains many words',
+        description: 'This is a very long description that contains many words',
         content: 'Another long string with lots of characters in it here',
         text: 'Yet another really long value to test performance with',
       })

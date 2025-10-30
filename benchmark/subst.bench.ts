@@ -193,31 +193,25 @@ describe('subst benchmarks', () => {
     })
 
     bench('Complex multi-level template', () => {
-      subst(
-        '/:category/:subcategory/:itemId/details/:section',
-        {
-          category: 'electronics',
-          subcategory: 'laptops',
-          itemId: 'mbp-2024',
-          section: 'specs',
-        },
-      )
+      subst('/:category/:subcategory/:itemId/details/:section', {
+        category: 'electronics',
+        subcategory: 'laptops',
+        itemId: 'mbp-2024',
+        section: 'specs',
+      })
     })
 
     bench('Very deep template (8 levels)', () => {
-      subst(
-        '/:l1/:l2/:l3/:l4/:l5/:l6/:l7/:l8',
-        {
-          l1: 'a',
-          l2: 'b',
-          l3: 'c',
-          l4: 'd',
-          l5: 'e',
-          l6: 'f',
-          l7: 'g',
-          l8: 'h',
-        },
-      )
+      subst('/:l1/:l2/:l3/:l4/:l5/:l6/:l7/:l8', {
+        l1: 'a',
+        l2: 'b',
+        l3: 'c',
+        l4: 'd',
+        l5: 'e',
+        l6: 'f',
+        l7: 'g',
+        l8: 'h',
+      })
     })
   })
 
