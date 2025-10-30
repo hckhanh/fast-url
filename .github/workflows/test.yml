@@ -11,6 +11,18 @@ permissions:
   contents: read
 
 jobs:
+  knip:
+    name: Knip
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: Setup toolchains
+        uses: jdx/mise-action@e3d7b8d67a7958d1207f6ed871e83b1ea780e7b0 # v3.3.1
+      - name: Install Dependencies
+        run: bun ci
+      - name: Run Knip
+        run: bun knip-bun
   test:
     name: Test
     runs-on: ubuntu-latest
