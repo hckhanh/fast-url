@@ -14,6 +14,9 @@ jobs:
   benchmarks:
     name: Run tests
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
@@ -26,9 +29,9 @@ jobs:
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@5a1091511ad55cbe89839c7260b706298ca349f7 # v5.5.1
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          use_oidc: true
       - name: Upload test results to Codecov
         uses: codecov/test-results-action@47f89e9acb64b76debcd5ea40642d25a4adced9f # v1.1.1
         if: ${{ !cancelled() }}
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          use_oidc: true
