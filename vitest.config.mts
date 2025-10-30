@@ -1,3 +1,4 @@
+import path from 'node:path'
 import codspeed from '@codspeed/vitest-plugin'
 import {
   coverageConfigDefaults,
@@ -11,6 +12,11 @@ export default defineConfig({
     exclude: [...defaultExclude, 'tsdown.config.*'],
     coverage: {
       exclude: [...coverageConfigDefaults.exclude, 'tsdown.config.*'],
+    },
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
     },
   },
 })
