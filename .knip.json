@@ -1,0 +1,6 @@
+{
+  "$schema": "./node_modules/knip/schema.json",
+  "entry": ["test/**/*.ts", "benchmark/**/*.ts"],
+  "project": ["src/**", "test/**", "benchmark/**"],
+  "ignoreDependencies": ["@changesets/config"]
+}
