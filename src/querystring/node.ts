@@ -93,15 +93,15 @@ function encodeStr(
     // Multi-byte characters
     if (c < 0x800) {
       lastPos = i + 1
-      out += hexTable[0xC0 | (c >> 6)] + hexTable[0x80 | (c & 0x3F)]
+      out += hexTable[0xc0 | (c >> 6)] + hexTable[0x80 | (c & 0x3f)]
       continue
     }
-    if (c < 0xD800 || c >= 0xE000) {
+    if (c < 0xd800 || c >= 0xe000) {
       lastPos = i + 1
       out +=
-        hexTable[0xE0 | (c >> 12)] +
-        hexTable[0x80 | ((c >> 6) & 0x3F)] +
-        hexTable[0x80 | (c & 0x3F)]
+        hexTable[0xe0 | (c >> 12)] +
+        hexTable[0x80 | ((c >> 6) & 0x3f)] +
+        hexTable[0x80 | (c & 0x3f)]
       continue
     }
     // Surrogate pair
@@ -111,15 +111,15 @@ function encodeStr(
       throw new Error('URI malformed')
     }
 
-    const c2 = str.charCodeAt(i) & 0x3FF
+    const c2 = str.charCodeAt(i) & 0x3ff
 
     lastPos = i + 1
-    c = 0x10000 + (((c & 0x3FF) << 10) | c2)
+    c = 0x10000 + (((c & 0x3ff) << 10) | c2)
     out +=
-      hexTable[0xF0 | (c >> 18)] +
-      hexTable[0x80 | ((c >> 12) & 0x3F)] +
-      hexTable[0x80 | ((c >> 6) & 0x3F)] +
-      hexTable[0x80 | (c & 0x3F)]
+      hexTable[0xf0 | (c >> 18)] +
+      hexTable[0x80 | ((c >> 12) & 0x3f)] +
+      hexTable[0x80 | ((c >> 6) & 0x3f)] +
+      hexTable[0x80 | (c & 0x3f)]
   }
   if (lastPos === 0) return str
   if (lastPos < len) return out + str.slice(lastPos)
