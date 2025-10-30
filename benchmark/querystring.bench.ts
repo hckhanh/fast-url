@@ -47,7 +47,7 @@ describe('encodeString benchmarks', () => {
     })
 
     bench('Heavy special characters (75% encoding)', () => {
-      encodeString('!@#$%^&*()+={}[]|\\:;"<>?,/')
+      encodeString(String.raw`!@#$%^&*()+={}[]|\:;"'<>?,/`)
     })
   })
 
@@ -473,7 +473,7 @@ describe('stringify benchmarks', () => {
         zero: 0,
         negative: -42,
         float: Math.PI,
-        nan: NaN,
+        nan: Number.NaN,
         infinity: Infinity,
         negInfinity: -Infinity,
       })

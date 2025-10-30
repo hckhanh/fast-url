@@ -77,7 +77,7 @@ describe('encodeString', () => {
     })
 
     it('Encodes backslash', () => {
-      expect(encodeString('back\\slash')).toBe('back%5Cslash')
+      expect(encodeString(String.raw`back\slash`)).toBe('back%5Cslash')
     })
 
     it('Encodes caret', () => {
@@ -273,7 +273,7 @@ describe('stringify', () => {
     })
 
     it('Handles NaN as empty string', () => {
-      expect(stringify({ value: NaN })).toBe('value=')
+      expect(stringify({ value: Number.NaN })).toBe('value=')
     })
 
     it('Handles Infinity as empty string', () => {
