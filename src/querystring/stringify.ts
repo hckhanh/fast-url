@@ -1,21 +1,21 @@
 import { encodeString } from '@/querystring/node'
 
-function getAsPrimitive(value: any) {
+function getAsPrimitive(value: unknown) {
   const type = typeof value
 
   if (type === 'string') {
-    // Length check is handled inside encodeString function
-    return encodeString(value)
+    // Length check is handled inside the encodeString function
+    return encodeString(value as string)
   } else if (type === 'bigint' || type === 'boolean') {
-    return value.toString()
+    return '' + value
   } else if (type === 'number' && Number.isFinite(value)) {
-    return value < 1e21 ? value.toString() : encodeString(value.toString())
+    return (value as number) < 1e21 ? '' + value : encodeString('' + value)
   }
 
   return ''
 }
 
-export function stringify(input: Record<string, unknown>) {
+export function stringify(input: unknown) {
   let result = ''
 
   if (input === null || typeof input !== 'object') {
@@ -29,7 +29,7 @@ export function stringify(input: Record<string, unknown>) {
 
   for (let i = 0; i < keyLength; i++) {
     const key = keys[i]
-    const value = input[key]
+    const value = (input as Record<string, unknown>)[key]
     const encodedKey = encodeString(key) + '='
 
     if (i) {

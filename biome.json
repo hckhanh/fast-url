@@ -23,6 +23,7 @@
         }
       },
       "style": {
+        "useTemplate": "off",
         "useConsistentTypeDefinitions": {
           "level": "warn",
           "fix": "safe"

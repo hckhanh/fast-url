@@ -191,10 +191,10 @@ describe('stringify', () => {
     })
 
     it('Returns empty string for non-object inputs', () => {
-      expect(stringify('string' as any)).toBe('')
-      expect(stringify(123 as any)).toBe('')
-      expect(stringify(true as any)).toBe('')
-      expect(stringify(undefined as any)).toBe('')
+      expect(stringify('string')).toBe('')
+      expect(stringify(123)).toBe('')
+      expect(stringify(true)).toBe('')
+      expect(stringify(undefined)).toBe('')
     })
 
     it('Handles single string parameter', () => {
@@ -451,11 +451,13 @@ describe('stringify', () => {
     })
 
     it('Handles large number of parameters', () => {
-      const params = {}
+      const params: Record<`param${number}`, `value${number}`> = {}
       for (let i = 0; i < 100; i++) {
         params[`param${i}`] = `value${i}`
       }
+
       const result = stringify(params)
+
       expect(result.split('&')).toHaveLength(100)
       expect(result).toContain('param0=value0')
       expect(result).toContain('param99=value99')
@@ -463,7 +465,9 @@ describe('stringify', () => {
 
     it('Handles arrays with many elements', () => {
       const items = Array.from({ length: 50 }, (_, i) => `item${i}`)
+
       const result = stringify({ items })
+
       expect(result.split('&')).toHaveLength(50)
       expect(result).toContain('items=item0')
       expect(result).toContain('items=item49')
