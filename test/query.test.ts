@@ -20,15 +20,15 @@ describe('query', () => {
     expect(actual).toBe(expected)
   })
 
-  it('Escapes the value', () => {
-    const expected = 'key=a%20%22special%22%20value'
-    const actual = query({ key: 'a "special" value' })
+  it('Can handle array value', () => {
+    const expected = 'p1=v1&p1=v2&p1=v3'
+    const actual = query({ p1: ['v1', 'v2', 'v3'] })
     expect(actual).toBe(expected)
   })
 
-  it('Escapes the key', () => {
-    const expected = 'a%20%22special%22%20key=value'
-    const actual = query({ 'a "special" key': 'value' })
+  it('Escapes the value', () => {
+    const expected = 'key=a%20%22special%22%20value'
+    const actual = query({ key: 'a "special" value' })
     expect(actual).toBe(expected)
   })
 })
