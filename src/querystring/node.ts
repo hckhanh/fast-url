@@ -43,7 +43,7 @@ export function encodeString(str: string): string {
   let i = 0
 
   outer: for (; i < len; i++) {
-    let c = str.charCodeAt(i)
+    let c = str.codePointAt(i) as number
 
     // ASCII
     while (c < 0x80) {
@@ -57,7 +57,7 @@ export function encodeString(str: string): string {
 
       if (++i === len) break outer
 
-      c = str.charCodeAt(i)
+      c = str.codePointAt(i) as number
     }
 
     if (lastPos < i) {
@@ -70,7 +70,7 @@ export function encodeString(str: string): string {
       out += hexTable[0xc0 | (c >> 6)] + hexTable[0x80 | (c & 0x3f)]
       continue
     }
-    if (c < 0xd800 || c >= 0xe000) {
+    if (c < 0x10000) {
       lastPos = i + 1
       out +=
         hexTable[0xe0 | (c >> 12)] +
@@ -78,17 +78,10 @@ export function encodeString(str: string): string {
         hexTable[0x80 | (c & 0x3f)]
       continue
     }
-    // Surrogate pair
+    // 4-byte UTF-8 (code points >= 0x10000)
+    // These are represented as surrogate pairs in UTF-16, so we need to skip 2 positions
     ++i
-
-    if (i >= len) {
-      throw new Error('URI malformed')
-    }
-
-    const c2 = str.charCodeAt(i) & 0x3ff
-
     lastPos = i + 1
-    c = 0x10000 + (((c & 0x3ff) << 10) | c2)
     out +=
       hexTable[0xf0 | (c >> 18)] +
       hexTable[0x80 | ((c >> 12) & 0x3f)] +

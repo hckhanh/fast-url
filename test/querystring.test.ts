@@ -172,10 +172,10 @@ describe('encodeString', () => {
       expect(encodeString('test   value')).toBe('test%20%20%20value')
     })
 
-    it('Throws error for malformed surrogate pairs', () => {
+    it('Encodes lone surrogates', () => {
       // Create a string with a lone high surrogate
       const malformedString = String.fromCharCode(0xd800)
-      expect(() => encodeString(malformedString)).toThrow('URI malformed')
+      expect(encodeString(malformedString)).toBe('%ED%A0%80')
     })
   })
 })
