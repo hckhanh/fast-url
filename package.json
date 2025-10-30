@@ -40,20 +40,15 @@
     "fast-querystring": "1.1.2"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.2.3",
+    "@biomejs/biome": "2.3.2",
     "@changesets/cli": "2.29.7",
     "@changesets/config": "3.1.1",
-    "@codspeed/vitest-plugin": "4.0.1",
+    "@codspeed/vitest-plugin": "5.0.1",
     "@vitest/coverage-v8": "3.2.4",
-    "syncpack": "14.0.0-alpha.19",
-    "tsdown": "0.14.2",
-    "typescript": "5.9.2",
+    "syncpack": "14.0.0-alpha.23",
+    "tsdown": "0.15.12",
+    "typescript": "5.9.3",
     "vitest": "3.2.4"
-  },
-  "engines": {
-    "node": "22.19.0",
-    "npm": "11.6.0",
-    "bun": "1.2.20"
   },
   "files": [
     "dist"
