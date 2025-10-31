@@ -1,6 +1,6 @@
-// This file is adapted from Node.js project.
-// Full implementation can be found from https://github.com/nodejs/node/blob/main/lib/internal/querystring.js
-// Updated to latest version with browser and server compatibility
+// This file is adapted from the Node.js project.
+// The full implementation can be found from https://github.com/nodejs/node/blob/main/lib/internal/querystring.js
+// Updated to the latest version with browser and server compatibility
 
 // Hex encoding lookup table
 const hexTable = new Array(256)
@@ -38,9 +38,9 @@ export function encodeString(str: string): string {
   const len = str.length
   if (len === 0) return ''
 
-  let out = ''
-  let lastPos = 0
-  let i = 0
+  let i = 0,
+    out = '',
+    lastPos = 0
 
   outer: for (; i < len; i++) {
     let c = str.codePointAt(i) as number
@@ -51,6 +51,7 @@ export function encodeString(str: string): string {
         if (lastPos < i) {
           out += str.slice(lastPos, i)
         }
+
         lastPos = i + 1
         out += hexTable[c]
       }
@@ -78,6 +79,7 @@ export function encodeString(str: string): string {
         hexTable[0x80 | (c & 0x3f)]
       continue
     }
+
     // 4-byte UTF-8 (code points >= 0x10000)
     // These are represented as surrogate pairs in UTF-16, so we need to skip 2 positions
     ++i
@@ -88,7 +90,14 @@ export function encodeString(str: string): string {
       hexTable[0x80 | ((c >> 6) & 0x3f)] +
       hexTable[0x80 | (c & 0x3f)]
   }
-  if (lastPos === 0) return str
-  if (lastPos < len) return out + str.slice(lastPos)
+
+  if (lastPos === 0) {
+    return str
+  }
+
+  if (lastPos < len) {
+    return out + str.slice(lastPos)
+  }
+
   return out
 }
