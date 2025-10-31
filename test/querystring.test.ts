@@ -192,7 +192,7 @@ describe('encodeString', () => {
 
     it('Handles lone surrogate followed by regular character', () => {
       // Lone high surrogate + ASCII
-      const str = String.fromCharCode(0xd800) + 'a'
+      const str = String.fromCodePoint(0xd800) + 'a'
       expect(encodeString(str)).toBe('%ED%A0%80a')
     })
   })
