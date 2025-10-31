@@ -177,6 +177,18 @@ describe('encodeString', () => {
       const malformedString = String.fromCodePoint(0xd800)
       expect(encodeString(malformedString)).toBe('%ED%A0%80')
     })
+
+    it('Handles string with multibyte char followed by ASCII needing no encoding', () => {
+      expect(encodeString('日a')).toBe('%E6%97%A5a')
+    })
+
+    it('Handles string with only multibyte characters', () => {
+      expect(encodeString('日本')).toBe('%E6%97%A5%E6%9C%AC')
+    })
+
+    it('Handles emoji followed by ASCII', () => {
+      expect(encodeString('🚀test')).toBe('%F0%9F%9A%80test')
+    })
   })
 })
 
