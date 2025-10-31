@@ -42,7 +42,7 @@ export function encodeString(str: string): string {
     out = '',
     lastPos = 0
 
-  for (; i < len; i++) {
+  while (i < len) {
     let c = str.codePointAt(i) as number
 
     // ASCII
@@ -75,6 +75,7 @@ export function encodeString(str: string): string {
     if (c < 0x800) {
       lastPos = i + 1
       out += hexTable[0xc0 | (c >> 6)] + hexTable[0x80 | (c & 0x3f)]
+      i++
       continue
     }
     if (c < 0x10000) {
@@ -83,6 +84,7 @@ export function encodeString(str: string): string {
         hexTable[0xe0 | (c >> 12)] +
         hexTable[0x80 | ((c >> 6) & 0x3f)] +
         hexTable[0x80 | (c & 0x3f)]
+      i++
       continue
     }
 
@@ -95,6 +97,7 @@ export function encodeString(str: string): string {
       hexTable[0x80 | ((c >> 12) & 0x3f)] +
       hexTable[0x80 | ((c >> 6) & 0x3f)] +
       hexTable[0x80 | (c & 0x3f)]
+    i++
   }
 
   if (lastPos === 0) {
