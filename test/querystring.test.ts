@@ -189,6 +189,12 @@ describe('encodeString', () => {
     it('Handles emoji followed by ASCII', () => {
       expect(encodeString('🚀test')).toBe('%F0%9F%9A%80test')
     })
+
+    it('Handles lone surrogate followed by regular character', () => {
+      // Lone high surrogate + ASCII
+      const str = String.fromCharCode(0xd800) + 'a'
+      expect(encodeString(str)).toBe('%ED%A0%80a')
+    })
   })
 })
 
