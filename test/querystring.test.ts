@@ -174,7 +174,7 @@ describe('encodeString', () => {
 
     it('Encodes lone surrogates', () => {
       // Create a string with a lone high surrogate
-      const malformedString = String.fromCharCode(0xd800)
+      const malformedString = String.fromCodePoint(0xd800)
       expect(encodeString(malformedString)).toBe('%ED%A0%80')
     })
   })
