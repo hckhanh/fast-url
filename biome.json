@@ -21,14 +21,25 @@
           "level": "warn",
           "fix": "safe"
         }
+      },
+      "style": {
+        "useTemplate": "off",
+        "useConsistentTypeDefinitions": {
+          "level": "warn",
+          "fix": "safe"
+        },
+        "useNodejsImportProtocol": {
+          "level": "warn",
+          "fix": "safe"
+        },
+        "noUnusedTemplateLiteral": {
+          "level": "warn",
+          "fix": "safe"
+        }
+      },
+      "nursery": {
+        "recommended": true
       }
-    }
-  },
-  "javascript": {
-    "formatter": {
-      "quoteStyle": "single",
-      "semicolons": "asNeeded",
-      "arrowParentheses": "always"
     }
   },
   "assist": {
@@ -37,6 +48,13 @@
       "source": {
         "organizeImports": "on"
       }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "semicolons": "asNeeded",
+      "arrowParentheses": "always"
     }
   }
 }

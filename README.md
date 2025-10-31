@@ -16,6 +16,7 @@ fast-url is a tiny JavaScript/TypeScript library that makes building URLs conven
 - Lightweight: Only one dependency (fast-querystring) and minimal bundle size
 - Type safe: Written in TypeScript with full type definitions
 - URL safe: Automatically escapes parameters and handles edge cases
+- Unicode-aware: Uses `codePointAt` for proper Unicode handling, including graceful encoding of lone surrogates
 - Flexible: Multiple ways to build URLs for different use cases
 
 ## Installation
