@@ -90,6 +90,51 @@ function encodeMultibyteChar(c: number): { encoded: string; skip: number } {
 }
 
 /**
+ * Finalize the encoded string by appending any remaining unencoded portion
+ */
+function finalizeEncodedString(
+  str: string,
+  out: string,
+  lastPos: number,
+  len: number,
+): string {
+  if (lastPos === 0) {
+    return str
+  }
+
+  if (lastPos < len) {
+    return out + str.slice(lastPos)
+  }
+
+  return out
+}
+
+/**
+ * Process a multibyte character and update the encoding state
+ */
+function processMultibyteChar(
+  str: string,
+  c: number,
+  i: number,
+  lastPos: number,
+  out: string,
+): { i: number; out: string; lastPos: number } {
+  // Add unencoded portion before multibyte character
+  if (lastPos < i) {
+    out += str.slice(lastPos, i)
+  }
+
+  // Encode multibyte character
+  const { encoded, skip } = encodeMultibyteChar(c)
+  i += skip
+  lastPos = i + 1
+  out += encoded
+  i++
+
+  return { i, out, lastPos }
+}
+
+/**
  * Encodes a string for use in URL query strings.
  * Based on Node.js internal querystring implementation.
  * Optimized version with direct table access for maximum performance.
@@ -116,32 +161,17 @@ export function encodeString(str: string): string {
       lastPos = result.lastPos
 
       if (result.done) {
-        if (lastPos === 0) return str
-        return lastPos < len ? out + str.slice(lastPos) : out
+        return finalizeEncodedString(str, out, lastPos, len)
       }
       continue
     }
 
-    // Add unencoded portion before multibyte character
-    if (lastPos < i) {
-      out += str.slice(lastPos, i)
-    }
-
-    // Encode multibyte character
-    const { encoded, skip } = encodeMultibyteChar(c)
-    i += skip
-    lastPos = i + 1
-    out += encoded
-    i++
+    // Process multibyte character
+    const result = processMultibyteChar(str, c, i, lastPos, out)
+    i = result.i
+    out = result.out
+    lastPos = result.lastPos
   }
 
-  if (lastPos === 0) {
-    return str
-  }
-
-  if (lastPos < len) {
-    return out + str.slice(lastPos)
-  }
-
-  return out
+  return finalizeEncodedString(str, out, lastPos, len)
 }
