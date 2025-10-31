@@ -27,6 +27,69 @@ const noEscape = new Int8Array([
 ])
 
 /**
+ * Process consecutive ASCII characters and encode them if necessary
+ */
+function processAsciiChars(
+  str: string,
+  startIndex: number,
+  len: number,
+  out: string,
+  lastPos: number,
+): { i: number; out: string; lastPos: number; done: boolean } {
+  let i = startIndex
+  let c = str.codePointAt(i) as number
+
+  while (c < 0x80) {
+    if (noEscape[c] !== 1) {
+      if (lastPos < i) {
+        out += str.slice(lastPos, i)
+      }
+      lastPos = i + 1
+      out += hexTable[c]
+    }
+
+    if (++i === len) {
+      return { i, out, lastPos, done: true }
+    }
+
+    c = str.codePointAt(i) as number
+  }
+
+  return { i, out, lastPos, done: false }
+}
+
+/**
+ * Encode a multibyte UTF-8 character and return the encoded string with skip count
+ */
+function encodeMultibyteChar(c: number): { encoded: string; skip: number } {
+  if (c < 0x800) {
+    return {
+      encoded: hexTable[0xc0 | (c >> 6)] + hexTable[0x80 | (c & 0x3f)],
+      skip: 0,
+    }
+  }
+  if (c < 0x10000) {
+    return {
+      encoded:
+        hexTable[0xe0 | (c >> 12)] +
+        hexTable[0x80 | ((c >> 6) & 0x3f)] +
+        hexTable[0x80 | (c & 0x3f)],
+      skip: 0,
+    }
+  }
+  // 4-byte UTF-8 (code points >= 0x10000)
+  // These are represented as surrogate pairs in UTF-16, so we need to skip 2 positions
+  return {
+    encoded:
+      hexTable[0xf0 | (c >> 18)] +
+      hexTable[0x80 | ((c >> 12) & 0x3f)] +
+      hexTable[0x80 | ((c >> 6) & 0x3f)] +
+      hexTable[0x80 | (c & 0x3f)],
+    skip: 1,
+  }
+}
+
+/**
  * Encodes a string for use in URL query strings.
  * Based on Node.js internal querystring implementation.
  * Optimized version with direct table access for maximum performance.
@@ -43,60 +106,32 @@ export function encodeString(str: string): string {
     lastPos = 0
 
   while (i < len) {
-    let c = str.codePointAt(i) as number
+    const c = str.codePointAt(i) as number
 
-    // ASCII
-    while (c < 0x80) {
-      if (noEscape[c] !== 1) {
-        if (lastPos < i) {
-          out += str.slice(lastPos, i)
-        }
+    // Process ASCII characters
+    if (c < 0x80) {
+      const result = processAsciiChars(str, i, len, out, lastPos)
+      i = result.i
+      out = result.out
+      lastPos = result.lastPos
 
-        lastPos = i + 1
-        out += hexTable[c]
-      }
-
-      if (++i === len) {
-        if (lastPos === 0) {
-          return str
-        }
-
+      if (result.done) {
+        if (lastPos === 0) return str
         return lastPos < len ? out + str.slice(lastPos) : out
       }
-
-      c = str.codePointAt(i) as number
+      continue
     }
 
+    // Add unencoded portion before multibyte character
     if (lastPos < i) {
       out += str.slice(lastPos, i)
     }
 
-    // Multibyte characters
-    if (c < 0x800) {
-      lastPos = i + 1
-      out += hexTable[0xc0 | (c >> 6)] + hexTable[0x80 | (c & 0x3f)]
-      i++
-      continue
-    }
-    if (c < 0x10000) {
-      lastPos = i + 1
-      out +=
-        hexTable[0xe0 | (c >> 12)] +
-        hexTable[0x80 | ((c >> 6) & 0x3f)] +
-        hexTable[0x80 | (c & 0x3f)]
-      i++
-      continue
-    }
-
-    // 4-byte UTF-8 (code points >= 0x10000)
-    // These are represented as surrogate pairs in UTF-16, so we need to skip 2 positions
-    ++i
+    // Encode multibyte character
+    const { encoded, skip } = encodeMultibyteChar(c)
+    i += skip
     lastPos = i + 1
-    out +=
-      hexTable[0xf0 | (c >> 18)] +
-      hexTable[0x80 | ((c >> 12) & 0x3f)] +
-      hexTable[0x80 | ((c >> 6) & 0x3f)] +
-      hexTable[0x80 | (c & 0x3f)]
+    out += encoded
     i++
   }
 
