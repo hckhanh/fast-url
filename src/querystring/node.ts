@@ -43,26 +43,25 @@ export function encodeString(str: string): string {
     lastPos = 0
 
   outer: for (; i < len; i++) {
-    let c = str.codePointAt(i) as number
+    let c = str.charCodeAt(i)
 
-    // ASCII
+    // ASCII fast path - charCodeAt is faster than codePointAt
     while (c < 0x80) {
       if (noEscape[c] !== 1) {
-        if (lastPos < i) {
-          out += str.slice(lastPos, i)
-        }
-
+        if (lastPos < i) out += str.slice(lastPos, i)
         lastPos = i + 1
         out += hexTable[c]
       }
 
       if (++i === len) break outer
-
-      c = str.codePointAt(i) as number
+      c = str.charCodeAt(i)
     }
 
-    if (lastPos < i) {
-      out += str.slice(lastPos, i)
+    if (lastPos < i) out += str.slice(lastPos, i)
+
+    // For surrogates (0xD800-0xDFFF), use codePointAt to get the full code point
+    if (c >= 0xd800 && c < 0xe000) {
+      c = str.codePointAt(i) as number
     }
 
     // Multi-byte characters
@@ -91,13 +90,8 @@ export function encodeString(str: string): string {
       hexTable[0x80 | (c & 0x3f)]
   }
 
-  if (lastPos === 0) {
-    return str
-  }
-
-  if (lastPos < len) {
-    return out + str.slice(lastPos)
-  }
+  if (lastPos === 0) return str
+  if (lastPos < len) return out + str.slice(lastPos)
 
   return out
 }
