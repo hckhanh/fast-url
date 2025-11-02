@@ -1,6 +1,6 @@
 import { bench, describe } from 'vitest'
-import { encodeString } from '@/querystring/node'
-import { stringify } from '@/querystring/stringify'
+import { encodeString } from '../src/querystring/node.ts'
+import { stringify } from '../src/querystring/stringify.ts'
 
 describe('encodeString benchmarks', () => {
   describe('String length scaling', () => {

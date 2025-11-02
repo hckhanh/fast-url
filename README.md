@@ -22,7 +22,10 @@ fast-url is a tiny JavaScript/TypeScript library that makes building URLs conven
 ## Installation
 
 ```bash
-# Using bun (recommended)
+# Using JSR (recommended for Deno)
+deno add jsr:@hckhanh/fast-url
+
+# Using bun
 bun add fast-url
 
 # Using npm
