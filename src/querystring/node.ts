@@ -1,3 +1,13 @@
+/**
+ * URL encoding utilities adapted from Node.js.
+ *
+ * This module provides efficient string encoding for URL query strings,
+ * with optimized handling for both ASCII and multibyte UTF-8 characters.
+ * Based on Node.js internal querystring implementation.
+ *
+ * @module
+ */
+
 // This file is adapted from the Node.js project.
 // The full implementation can be found from https://github.com/nodejs/node/blob/main/lib/internal/querystring.js
 // Updated to the latest version with browser and server compatibility

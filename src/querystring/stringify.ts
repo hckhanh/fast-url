@@ -1,5 +1,21 @@
+/**
+ * Query string serialization utilities.
+ *
+ * This module provides functions to convert JavaScript objects into URL-encoded
+ * query strings, handling various data types including primitives and arrays.
+ *
+ * @module
+ */
+
 import { encodeString } from '@/querystring/node'
 
+/**
+ * Converts a value to its primitive string representation for query strings.
+ * Handles string, bigint, boolean, and number types.
+ *
+ * @param value - The value to convert
+ * @returns The encoded primitive string or empty string if invalid
+ */
 function getAsPrimitive(value: unknown) {
   const type = typeof value
 
@@ -15,6 +31,24 @@ function getAsPrimitive(value: unknown) {
   return ''
 }
 
+/**
+ * Converts an object into a URL-encoded query string.
+ *
+ * Handles various data types including strings, numbers, booleans, bigints, and arrays.
+ * Array values are serialized by repeating the key for each value.
+ *
+ * @param input - The object to stringify
+ * @returns The URL-encoded query string
+ *
+ * @example
+ * ```ts
+ * stringify({ name: 'John', age: 30 })
+ * // -> 'name=John&age=30'
+ *
+ * stringify({ tags: ['a', 'b', 'c'] })
+ * // -> 'tags=a&tags=b&tags=c'
+ * ```
+ */
 export function stringify(input: unknown) {
   let result = ''
 

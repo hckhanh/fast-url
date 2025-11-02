@@ -1,5 +1,27 @@
+/**
+ * Fast URL builder with type safety and performance optimization.
+ *
+ * This module provides utilities to build URLs safely and efficiently,
+ * handling path parameters, query strings, and URL joining operations.
+ *
+ * @example
+ * ```ts
+ * import urlcat from "fast-url";
+ *
+ * // Build URL with path and query parameters
+ * urlcat('https://api.example.com', '/users/:id', { id: 42, search: 'foo' })
+ * // -> 'https://api.example.com/users/42?search=foo'
+ * ```
+ *
+ * @module
+ */
+
 import { stringify } from '@/querystring/stringify'
 
+/**
+ * A map of parameters for URL building.
+ * Used for both path parameters and query string parameters.
+ */
 export type ParamMap = Record<string, unknown>
 
 /**
