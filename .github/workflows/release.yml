@@ -40,5 +40,5 @@ jobs:
       - name: Publish to JSR
         run: |
           bun tools/jsr.ts
-          bunx jsr publish
+          bunx jsr publish --allow-dirty
         if: steps.changesets.outputs.published == 'true'
