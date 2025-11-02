@@ -1,5 +1,11 @@
 # fast-url
 
+## 6.0.1
+
+### Patch Changes
+
+- 9d48494: Add `--allow-dirty` flag to fix JSR publish command
+
 ## 6.0.0
 
 ### Major Changes
