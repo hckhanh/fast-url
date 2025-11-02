@@ -12,7 +12,9 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 **fast-url** is a lightweight, high-performance JavaScript/TypeScript library for building URLs safely and conveniently. It's a modern fork of [urlcat](https://github.com/balazsbotond/urlcat) with a strong focus on performance optimization and code simplicity.
 
 <Callout title="Why fast-url?" type="info">
-Building URLs manually is error-prone and tedious. fast-url handles parameter escaping, proper URL segment joining, and clean separation of path and query parameters automatically.
+  Building URLs manually is error-prone and tedious. fast-url handles parameter
+  escaping, proper URL segment joining, and clean separation of path and query
+  parameters automatically.
 </Callout>
 
 ## Why This Fork Was Created
@@ -30,18 +32,21 @@ The original [urlcat](https://github.com/balazsbotond/urlcat) library is a solid
 
 **fast-url** was created to solve these problems while maintaining compatibility:
 
-1. **Performance-first approach**: 
+1. **Performance-first approach**:
+
    - Optimized query string encoding matching Node.js performance
    - Reduced function call overhead
    - Direct constant access for better V8 JIT optimization
    - 5-20% faster than previous implementations in many scenarios
 
 2. **Regular maintenance**:
+
    - Active development and quick bug fixes
    - Regular dependency updates
    - Modern TypeScript implementation
 
 3. **Simplified codebase**:
+
    - Minimal dependencies (only fast-querystring)
    - Clean, maintainable code
    - Focus on core functionality
@@ -54,41 +59,29 @@ The original [urlcat](https://github.com/balazsbotond/urlcat) library is a solid
 ## Key Features
 
 <Cards>
-  <Card 
-    title="Lightweight" 
-    icon="feather"
-  >
-    Only one dependency (fast-querystring) with minimal bundle size - perfect for performance-critical applications
+  <Card title="Lightweight" icon="feather">
+    Only one dependency (fast-querystring) with minimal bundle size - perfect
+    for performance-critical applications
   </Card>
-  <Card 
-    title="Type Safe" 
-    icon="shield-check"
-  >
-    Written in TypeScript with full type definitions for better development experience and compile-time safety
+  <Card title="Type Safe" icon="shield-check">
+    Written in TypeScript with full type definitions for better development
+    experience and compile-time safety
   </Card>
-  <Card 
-    title="URL Safe" 
-    icon="lock"
-  >
-    Automatically escapes parameters and handles edge cases - no more broken URLs from special characters
+  <Card title="URL Safe" icon="lock">
+    Automatically escapes parameters and handles edge cases - no more broken
+    URLs from special characters
   </Card>
-  <Card 
-    title="Unicode-aware" 
-    icon="globe"
-  >
-    Uses `codePointAt` for proper Unicode handling, including graceful encoding of lone surrogates and emojis
+  <Card title="Unicode-aware" icon="globe">
+    Uses `codePointAt` for proper Unicode handling, including graceful encoding
+    of lone surrogates and emojis
   </Card>
-  <Card 
-    title="Flexible" 
-    icon="wrench"
-  >
-    Multiple ways to build URLs for different use cases - from simple concatenation to complex path and query parameters
+  <Card title="Flexible" icon="wrench">
+    Multiple ways to build URLs for different use cases - from simple
+    concatenation to complex path and query parameters
   </Card>
-  <Card 
-    title="High Performance" 
-    icon="zap"
-  >
-    Optimized for speed with benchmarks showing significant improvements over the original implementation
+  <Card title="High Performance" icon="zap">
+    Optimized for speed with benchmarks showing significant improvements over
+    the original implementation
   </Card>
 </Cards>
 
@@ -102,6 +95,7 @@ const url = `${baseUrl}/users/${id}/posts?limit=${limit}&offset=${offset}`;
 ```
 
 **Issues with manual URL building:**
+
 - 🔴 Double slashes when joining paths
 - 🔴 Unescaped parameters breaking URLs
 - 🔴 Complex string concatenation logic
@@ -120,6 +114,7 @@ const url = createUrl(baseUrl, '/users/:id/posts', { id, limit, offset });
 ```
 
 **Benefits:**
+
 - ✅ Automatic parameter escaping
 - ✅ Proper URL segment joining
 - ✅ Clean separation of path and query parameters
@@ -127,7 +122,9 @@ const url = createUrl(baseUrl, '/users/:id/posts', { id, limit, offset });
 - ✅ Easy to read and maintain
 
 <Callout title="Performance Matters" type="success">
-In performance benchmarks, fast-url matches or exceeds the original urlcat implementation while providing additional safety features and better Unicode handling.
+  In performance benchmarks, fast-url matches or exceeds the original urlcat
+  implementation while providing additional safety features and better Unicode
+  handling.
 </Callout>
 
 ## When to Use fast-url

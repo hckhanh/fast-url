@@ -17,30 +17,15 @@ Get up and running with fast-url in minutes. This guide will walk you through in
 Install fast-url using your preferred package manager:
 
 <Tabs items={['bun', 'npm', 'yarn', 'pnpm']}>
-  <Tab value="bun">
-    ```bash
-    bun add fast-url
-    ```
-  </Tab>
-  <Tab value="npm">
-    ```bash
-    npm install fast-url
-    ```
-  </Tab>
-  <Tab value="yarn">
-    ```bash
-    yarn add fast-url
-    ```
-  </Tab>
-  <Tab value="pnpm">
-    ```bash
-    pnpm add fast-url
-    ```
-  </Tab>
+  <Tab value="bun">```bash bun add fast-url ```</Tab>
+  <Tab value="npm">```bash npm install fast-url ```</Tab>
+  <Tab value="yarn">```bash yarn add fast-url ```</Tab>
+  <Tab value="pnpm">```bash pnpm add fast-url ```</Tab>
 </Tabs>
 
 <Callout title="TypeScript Support" type="info">
-fast-url is written in TypeScript and includes type definitions out of the box. No need to install separate `@types` packages!
+  fast-url is written in TypeScript and includes type definitions out of the
+  box. No need to install separate `@types` packages!
 </Callout>
 
 ## Basic Usage
@@ -91,10 +76,10 @@ Add query string parameters to a URL:
 ```javascript
 import createUrl from 'fast-url';
 
-const url = createUrl('https://api.example.com', '/users', { 
-  limit: 10, 
+const url = createUrl('https://api.example.com', '/users', {
+  limit: 10,
   offset: 20,
-  sort: 'name'
+  sort: 'name',
 });
 console.log(url);
 // → 'https://api.example.com/users?limit=10&offset=20&sort=name'
@@ -107,10 +92,10 @@ Mix path substitution with query parameters:
 ```javascript
 import createUrl from 'fast-url';
 
-const url = createUrl('https://api.example.com', '/users/:id/posts', { 
-  id: 123, 
+const url = createUrl('https://api.example.com', '/users/:id/posts', {
+  id: 123,
   limit: 10,
-  published: true
+  published: true,
 });
 console.log(url);
 // → 'https://api.example.com/users/123/posts?limit=10&published=true'
@@ -213,9 +198,9 @@ import createUrl from 'fast-url';
 
 const url = createUrl('https://api.example.com', '/search', {
   q: 'javascript',
-  category: null,        // Will be omitted
-  author: undefined,     // Will be omitted
-  limit: 10
+  category: null, // Will be omitted
+  author: undefined, // Will be omitted
+  limit: 10,
 });
 console.log(url);
 // → 'https://api.example.com/search?q=javascript&limit=10'
@@ -230,7 +215,7 @@ import { query } from 'fast-url';
 
 const queryString = query({
   tags: ['javascript', 'typescript', 'node'],
-  limit: 10
+  limit: 10,
 });
 console.log(queryString);
 // → 'tags=javascript&tags=typescript&tags=node&limit=10'
@@ -243,10 +228,10 @@ Use the `query` helper when you only need a query string:
 ```javascript
 import { query } from 'fast-url';
 
-const params = query({ 
-  name: 'John Doe', 
+const params = query({
+  name: 'John Doe',
   age: 30,
-  city: 'New York'
+  city: 'New York',
 });
 console.log(params);
 // → 'name=John%20Doe&age=30&city=New%20York'
@@ -259,9 +244,9 @@ Use `subst` when you only need path parameter substitution:
 ```javascript
 import { subst } from 'fast-url';
 
-const path = subst('/users/:userId/posts/:postId', { 
-  userId: 123, 
-  postId: 456 
+const path = subst('/users/:userId/posts/:postId', {
+  userId: 123,
+  postId: 456,
 });
 console.log(path);
 // → '/users/123/posts/456'
@@ -294,19 +279,19 @@ import createUrl from 'fast-url';
 // Special characters are automatically encoded
 const url1 = createUrl('https://api.example.com', '/search', {
   q: 'hello world & goodbye',
-  filter: 'price>100'
+  filter: 'price>100',
 });
 // → 'https://api.example.com/search?q=hello%20world%20%26%20goodbye&filter=price%3E100'
 
 // Unicode characters are properly handled
 const url2 = createUrl('https://api.example.com', '/users/:name', {
-  name: '田中太郎'
+  name: '田中太郎',
 });
 // → 'https://api.example.com/users/%E7%94%B0%E4%B8%AD%E5%A4%AA%E9%83%8E'
 
 // Even emojis work correctly
 const url3 = createUrl('https://api.example.com', '/posts', {
-  mood: '😊🎉'
+  mood: '😊🎉',
 });
 // → 'https://api.example.com/posts?mood=%F0%9F%98%8A%F0%9F%8E%89'
 ```
@@ -328,8 +313,8 @@ try {
 
 try {
   // Invalid path parameter type
-  createUrl('https://api.example.com', '/users/:id', { 
-    id: { invalid: 'object' } 
+  createUrl('https://api.example.com', '/users/:id', {
+    id: { invalid: 'object' },
   });
 } catch (error) {
   console.error(error.message);
@@ -346,7 +331,8 @@ try {
 ```
 
 <Callout title="Type Safety" type="success">
-When using TypeScript, many of these errors can be caught at compile time thanks to fast-url's type definitions!
+  When using TypeScript, many of these errors can be caught at compile time
+  thanks to fast-url's type definitions!
 </Callout>
 
 ## Next Steps
