@@ -54,7 +54,7 @@ function createUrl(baseTemplate: string, params: ParamMap): string;
 **Example:**
 
 ```javascript
-import createUrl from 'fast-url';
+import { createUrl } from 'fast-url';
 
 const url = createUrl('http://api.example.com/users/:id', {
   id: 42,
@@ -83,7 +83,7 @@ function createUrl(baseUrl: string, path: string): string;
 **Example:**
 
 ```javascript
-import createUrl from 'fast-url';
+import { createUrl } from 'fast-url';
 
 // Handles trailing/leading slashes
 const url1 = createUrl('http://api.example.com/', '/users');
@@ -119,7 +119,7 @@ function createUrl(
 **Example:**
 
 ```javascript
-import createUrl from 'fast-url';
+import { createUrl } from 'fast-url';
 
 const url = createUrl('http://api.example.com/', '/users/:id', {
   id: 42,
@@ -358,7 +358,7 @@ console.log(text);
 ### Building Complex API Clients
 
 ```typescript
-import createUrl, { query } from 'fast-url';
+import { createUrl, query } from 'fast-url';
 
 class GitHubAPI {
   private baseUrl = 'https://api.github.com';
@@ -431,7 +431,7 @@ console.log(
 ### Dynamic Route Building
 
 ```typescript
-import createUrl from 'fast-url';
+import { createUrl } from 'fast-url';
 
 // Route configuration
 const routes = {
@@ -463,7 +463,7 @@ console.log(route('search', { q: 'typescript', tag: 'tutorial' }));
 ### Pagination Helper
 
 ```typescript
-import createUrl from 'fast-url';
+import { createUrl } from 'fast-url';
 
 function buildPaginatedUrl(
   baseUrl: string,

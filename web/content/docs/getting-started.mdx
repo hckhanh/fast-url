@@ -41,13 +41,13 @@ Install fast-url using your preferred package manager:
   </Tab>
   <Tab value="CommonJS">
     ```javascript
-    const createUrl = require('fast-url').default;
+    const { createUrl } = require('fast-url');
     const { query, subst, join } = require('fast-url');
     ```
   </Tab>
   <Tab value="TypeScript">
     ```typescript
-    import createUrl, { query, subst, join, type ParamMap } from 'fast-url';
+    import { createUrl, query, subst, join, type ParamMap } from 'fast-url';
     ```
   </Tab>
 </Tabs>
