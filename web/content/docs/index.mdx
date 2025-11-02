@@ -1,13 +1,56 @@
 ---
-title: Hello World
-description: Your first document
+title: fast-url Documentation
+description: Build correct URLs easily with this fast, type-safe URL builder for JavaScript and TypeScript
 ---
 
-Welcome to the docs! You can start writing documents in `/content/docs`.
+import { Callout } from 'fumadocs-ui/components/callout';
 
-## What is Next?
+# fast-url
+
+A high-performance, type-safe URL building library for JavaScript and TypeScript. Build correct URLs easily while preventing common mistakes.
+
+<Callout title="Quick Start" type="info">
+```bash
+npm install fast-url
+```
+</Callout>
+
+## Why fast-url?
+
+fast-url is a modern fork of [urlcat](https://github.com/balazsbotond/urlcat) focused on:
+- ⚡ **Performance** - 5-20% faster than the original implementation
+- 🔒 **Type Safety** - Full TypeScript support with comprehensive type definitions  
+- 🪶 **Lightweight** - Minimal bundle size with only one dependency
+- 🌍 **Unicode-aware** - Proper handling of international characters and emojis
+
+## Quick Example
+
+```javascript
+import urlcat from 'fast-url';
+
+// Path parameters
+urlcat('https://api.example.com', '/users/:id', { id: 123 });
+// → 'https://api.example.com/users/123'
+
+// Query parameters
+urlcat('https://api.example.com', '/users', { limit: 10, offset: 20 });
+// → 'https://api.example.com/users?limit=10&offset=20'
+
+// Combined
+urlcat('https://api.example.com', '/users/:id/posts', { id: 123, limit: 10 });
+// → 'https://api.example.com/users/123/posts?limit=10'
+```
+
+## Get Started
 
 <Cards>
-  <Card title="Learn more about Next.js" href="https://nextjs.org/docs" />
-  <Card title="Learn more about Fumadocs" href="https://fumadocs.dev" />
+  <Card title="Introduction" href="/docs/introduction">
+    Learn why fast-url was created and its key features
+  </Card>
+  <Card title="Getting Started" href="/docs/getting-started">
+    Quick start guide with installation and usage examples
+  </Card>
+  <Card title="API Reference" href="/docs/api-reference">
+    Complete API documentation with detailed examples
+  </Card>
 </Cards>
