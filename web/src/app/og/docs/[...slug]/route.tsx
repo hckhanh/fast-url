@@ -15,9 +15,9 @@ export async function GET(
 
   return new ImageResponse(
     <DefaultImage
-      title={page.data.title}
       description={page.data.description}
       site="fast-url"
+      title={page.data.title}
     />,
     {
       width: 1200,
