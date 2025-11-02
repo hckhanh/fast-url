@@ -6,6 +6,7 @@ description: Learn about fast-url - a high-performance URL building library that
 import { Callout } from 'fumadocs-ui/components/callout';
 import { Cards, Card } from 'fumadocs-ui/components/card';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { Feather, ShieldCheck, Lock, Globe, Wrench, Zap } from 'lucide-react';
 
 # Introduction
 
@@ -59,27 +60,27 @@ The original [urlcat](https://github.com/balazsbotond/urlcat) library is a solid
 ## Key Features
 
 <Cards>
-  <Card title="Lightweight" icon="feather">
+  <Card title="Lightweight" icon={<Feather />}>
     Only one dependency (fast-querystring) with minimal bundle size - perfect
     for performance-critical applications
   </Card>
-  <Card title="Type Safe" icon="shield-check">
+  <Card title="Type Safe" icon={<ShieldCheck />}>
     Written in TypeScript with full type definitions for better development
     experience and compile-time safety
   </Card>
-  <Card title="URL Safe" icon="lock">
+  <Card title="URL Safe" icon={<Lock />}>
     Automatically escapes parameters and handles edge cases - no more broken
     URLs from special characters
   </Card>
-  <Card title="Unicode-aware" icon="globe">
+  <Card title="Unicode-aware" icon={<Globe />}>
     Uses `codePointAt` for proper Unicode handling, including graceful encoding
     of lone surrogates and emojis
   </Card>
-  <Card title="Flexible" icon="wrench">
+  <Card title="Flexible" icon={<Wrench />}>
     Multiple ways to build URLs for different use cases - from simple
     concatenation to complex path and query parameters
   </Card>
-  <Card title="High Performance" icon="zap">
+  <Card title="High Performance" icon={<Zap />}>
     Optimized for speed with benchmarks showing significant improvements over
     the original implementation
   </Card>
@@ -92,6 +93,8 @@ Building URLs manually is error-prone and difficult to maintain:
 ```javascript
 // ❌ Error-prone manual approach
 const url = `${baseUrl}/users/${id}/posts?limit=${limit}&offset=${offset}`;
+
+await fetch(url);
 ```
 
 **Issues with manual URL building:**
@@ -111,6 +114,8 @@ fast-url provides a clean, safe API for URL construction:
 import createUrl from 'fast-url';
 
 const url = createUrl(baseUrl, '/users/:id/posts', { id, limit, offset });
+
+await fetch(url);
 ```
 
 **Benefits:**
