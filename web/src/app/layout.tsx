@@ -1,6 +1,14 @@
 import { RootProvider } from 'fumadocs-ui/provider/next'
 import './global.css'
 import type { Metadata } from 'next'
+import localFont from 'next/font/local'
+
+const jetbrainsMono = localFont({
+  src: '../fonts/jetbrains-mono-latin-wght-normal.woff2',
+  display: 'swap',
+  variable: '--font-jetbrains-mono',
+  weight: '100 800',
+})
 
 export const metadata: Metadata = {
   title: {
@@ -52,7 +60,7 @@ export const metadata: Metadata = {
 
 export default function Layout({ children }: LayoutProps<'/'>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={jetbrainsMono.variable}>
       <body className="flex flex-col min-h-screen">
         <RootProvider>{children}</RootProvider>
       </body>

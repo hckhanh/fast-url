@@ -1,3 +1,14 @@
 @import "tailwindcss";
 @import "fumadocs-ui/css/ocean.css";
 @import "fumadocs-ui/css/preset.css";
+
+@layer base {
+  body {
+    font-family: var(--font-jetbrains-mono), monospace;
+  }
+
+  code,
+  pre {
+    font-family: var(--font-jetbrains-mono), monospace;
+  }
+}
