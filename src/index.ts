@@ -36,7 +36,7 @@ export type ParamMap = Record<string, unknown>
  * @example
  * ```ts
  * urlcat('http://api.example.com/users/:id', { id: 42, search: 'foo' })
- * // -> 'http://api.example.com/users/42?search=foo
+ * // -> 'http://api.example.com/users/42?search=foo'
  * ```
  */
 export default function urlcat(baseTemplate: string, params: ParamMap): string
@@ -53,7 +53,7 @@ export default function urlcat(baseTemplate: string, params: ParamMap): string
  * @example
  * ```ts
  * urlcat('http://api.example.com/', '/users')
- * // -> 'http://api.example.com/users
+ * // -> 'http://api.example.com/users'
  * ```
  */
 export default function urlcat(baseUrl: string, path: string): string
@@ -74,7 +74,7 @@ export default function urlcat(baseUrl: string, path: string): string
  * @example
  * ```ts
  * urlcat('http://api.example.com/', '/users/:id', { id: 42, search: 'foo' })
- * // -> 'http://api.example.com/users/42?search=foo
+ * // -> 'http://api.example.com/users/42?search=foo'
  * ```
  */
 export default function urlcat(
