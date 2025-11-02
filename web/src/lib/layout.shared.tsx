@@ -6,7 +6,7 @@ export function baseOptions(): BaseLayoutProps {
     nav: {
       title: (
         <span>
-          🔗<span className='ml-10'>fast-url</span>
+          🔗<span className='ml-2'>fast-url</span>
         </span>
       ),
       url: '/docs',
