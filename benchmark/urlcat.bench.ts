@@ -1,5 +1,5 @@
 import { bench, describe } from 'vitest'
-import createUrl from '../src'
+import { createUrl } from '../src'
 
 describe('createUrl benchmarks', () => {
   describe('Simple cases', () => {

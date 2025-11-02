@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import createUrl from '../src'
+import { createUrl } from '../src'
 
 describe('createUrl', () => {
   it('Concatenates the base URL and the path if no params are passed', () => {

@@ -37,7 +37,7 @@ npm install fast-url
 ### Basic URL building
 
 ```javascript
-import createUrl from "fast-url";
+import { createUrl } from "fast-url";
 
 // Path parameters
 createUrl("https://api.example.com", "/users/:id", { id: 123 });
@@ -55,7 +55,7 @@ createUrl("https://api.example.com", "/users/:id/posts", { id: 123, limit: 10 })
 ### CommonJS
 
 ```javascript
-const createUrl = require("fast-url").default;
+const { createUrl } = require("fast-url");
 ```
 
 ### Utility functions

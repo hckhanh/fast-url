@@ -6,7 +6,7 @@
  *
  * @example
  * ```ts
- * import createUrl from "fast-url";
+ * import { createUrl } from "fast-url";
  *
  * // Build URL with path and query parameters
  * createUrl('https://api.example.com', '/users/:id', { id: 42, search: 'foo' })
@@ -16,7 +16,7 @@
  * @module
  */
 
-import { stringify } from '@/querystring/stringify'
+import { stringify } from './querystring/stringify.ts'
 
 /**
  * A map of parameters for URL building.
@@ -39,10 +39,7 @@ export type ParamMap = Record<string, unknown>
  * // -> 'http://api.example.com/users/42?search=foo'
  * ```
  */
-export default function createUrl(
-  baseTemplate: string,
-  params: ParamMap,
-): string
+export function createUrl(baseTemplate: string, params: ParamMap): string
 
 /**
  * Concatenates the base URL and the path specified using `/` as a separator.
@@ -59,7 +56,7 @@ export default function createUrl(
  * // -> 'http://api.example.com/users'
  * ```
  */
-export default function createUrl(baseUrl: string, path: string): string
+export function createUrl(baseUrl: string, path: string): string
 
 /**
  * Concatenates the base URL and the path specified using `/` as a separator.
@@ -80,13 +77,13 @@ export default function createUrl(baseUrl: string, path: string): string
  * // -> 'http://api.example.com/users/42?search=foo'
  * ```
  */
-export default function createUrl(
+export function createUrl(
   baseUrl: string,
   pathTemplate: string,
   params: ParamMap,
 ): string
 
-export default function createUrl(
+export function createUrl(
   baseUrlOrTemplate: string,
   pathTemplateOrParams: string | ParamMap,
   maybeParams: ParamMap = {},

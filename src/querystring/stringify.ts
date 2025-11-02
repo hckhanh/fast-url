@@ -7,7 +7,7 @@
  * @module
  */
 
-import { encodeString } from '@/querystring/node'
+import { encodeString } from './node.ts'
 
 /**
  * Converts a value to its primitive string representation for query strings.

@@ -2,7 +2,7 @@
 "fast-url": major
 ---
 
-**BREAKING CHANGE**: Renamed default export from `urlcat` to `createUrl` for better clarity and JSR.io compliance
+**BREAKING CHANGE**: Renamed default export from `urlcat` to `createUrl` and changed from default export to named export for better clarity and JSR.io compliance
 
 ### JSR.io Compliance
 
@@ -16,14 +16,15 @@ Made the package fully compliant with JSR.io (JavaScript Registry) requirements:
 
 ### Breaking Changes
 
-- **Renamed**: Default export changed from `urlcat` to `createUrl`
+- **Renamed**: Function changed from `urlcat` to `createUrl`
+- **Export Type**: Changed from default export to named export
   ```typescript
   // Before
   import urlcat from 'fast-url';
   urlcat('https://api.example.com', '/users/:id', { id: 42 });
   
   // After
-  import createUrl from 'fast-url';
+  import { createUrl } from 'fast-url';
   createUrl('https://api.example.com', '/users/:id', { id: 42 });
   ```
 
@@ -31,9 +32,9 @@ Made the package fully compliant with JSR.io (JavaScript Registry) requirements:
 
 Update your imports and function calls:
 
-1. Replace `import urlcat from 'fast-url'` with `import createUrl from 'fast-url'`
+1. Replace `import urlcat from 'fast-url'` with `import { createUrl } from 'fast-url'`
 2. Replace all `urlcat(...)` calls with `createUrl(...)`
-3. For CommonJS: Replace `const urlcat = require('fast-url').default` with `const createUrl = require('fast-url').default`
+3. For CommonJS: Replace `const urlcat = require('fast-url').default` with `const { createUrl } = require('fast-url')`
 
 The API and all utility functions (`query`, `subst`, `join`) remain unchanged and fully compatible.
 
