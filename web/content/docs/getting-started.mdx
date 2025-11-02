@@ -49,19 +49,19 @@ fast-url is written in TypeScript and includes type definitions out of the box. 
 <Tabs items={['ES Modules', 'CommonJS', 'TypeScript']}>
   <Tab value="ES Modules">
     ```javascript
-    import urlcat from 'fast-url';
+    import createUrl from 'fast-url';
     import { query, subst, join } from 'fast-url';
     ```
   </Tab>
   <Tab value="CommonJS">
     ```javascript
-    const urlcat = require('fast-url').default;
+    const createUrl = require('fast-url').default;
     const { query, subst, join } = require('fast-url');
     ```
   </Tab>
   <Tab value="TypeScript">
     ```typescript
-    import urlcat, { query, subst, join, type ParamMap } from 'fast-url';
+    import createUrl, { query, subst, join, type ParamMap } from 'fast-url';
     ```
   </Tab>
 </Tabs>
@@ -75,10 +75,10 @@ Here are some common use cases to get you started:
 Replace placeholders in a URL path with actual values:
 
 ```javascript
-import urlcat from 'fast-url';
+import createUrl from 'fast-url';
 
 const userId = 123;
-const url = urlcat('https://api.example.com', '/users/:id', { id: userId });
+const url = createUrl('https://api.example.com', '/users/:id', { id: userId });
 console.log(url);
 // → 'https://api.example.com/users/123'
 ```
@@ -88,9 +88,9 @@ console.log(url);
 Add query string parameters to a URL:
 
 ```javascript
-import urlcat from 'fast-url';
+import createUrl from 'fast-url';
 
-const url = urlcat('https://api.example.com', '/users', { 
+const url = createUrl('https://api.example.com', '/users', { 
   limit: 10, 
   offset: 20,
   sort: 'name'
@@ -104,9 +104,9 @@ console.log(url);
 Mix path substitution with query parameters:
 
 ```javascript
-import urlcat from 'fast-url';
+import createUrl from 'fast-url';
 
-const url = urlcat('https://api.example.com', '/users/:id/posts', { 
+const url = createUrl('https://api.example.com', '/users/:id/posts', { 
   id: 123, 
   limit: 10,
   published: true
@@ -126,7 +126,7 @@ Let's build a simple REST API client using fast-url:
     Start by creating a basic API client structure:
     
     ```typescript
-    import urlcat from 'fast-url';
+    import createUrl from 'fast-url';
     
     class BlogAPI {
       private baseUrl = 'https://api.blog.com';
@@ -141,11 +141,11 @@ Let's build a simple REST API client using fast-url:
   <Step>
     ### Add a Method to Fetch Posts
     
-    Use urlcat to build the endpoint URL with query parameters:
+    Use createUrl to build the endpoint URL with query parameters:
     
     ```typescript
     async getPosts(options = {}) {
-      const url = urlcat(this.baseUrl, '/posts', {
+      const url = createUrl(this.baseUrl, '/posts', {
         page: options.page || 1,
         limit: options.limit || 10,
         tag: options.tag
@@ -167,7 +167,7 @@ Let's build a simple REST API client using fast-url:
     
     ```typescript
     async getPost(postId: number) {
-      const url = urlcat(this.baseUrl, '/posts/:id', { id: postId });
+      const url = createUrl(this.baseUrl, '/posts/:id', { id: postId });
       
       const response = await fetch(url, {
         headers: { 'Authorization': `Bearer ${this.apiKey}` }
@@ -208,9 +208,9 @@ Let's build a simple REST API client using fast-url:
 fast-url automatically filters out `null` and `undefined` values:
 
 ```javascript
-import urlcat from 'fast-url';
+import createUrl from 'fast-url';
 
-const url = urlcat('https://api.example.com', '/search', {
+const url = createUrl('https://api.example.com', '/search', {
   q: 'javascript',
   category: null,        // Will be omitted
   author: undefined,     // Will be omitted
@@ -288,23 +288,23 @@ console.log(query);
 fast-url properly handles special characters and Unicode:
 
 ```javascript
-import urlcat from 'fast-url';
+import createUrl from 'fast-url';
 
 // Special characters are automatically encoded
-const url1 = urlcat('https://api.example.com', '/search', {
+const url1 = createUrl('https://api.example.com', '/search', {
   q: 'hello world & goodbye',
   filter: 'price>100'
 });
 // → 'https://api.example.com/search?q=hello%20world%20%26%20goodbye&filter=price%3E100'
 
 // Unicode characters are properly handled
-const url2 = urlcat('https://api.example.com', '/users/:name', {
+const url2 = createUrl('https://api.example.com', '/users/:name', {
   name: '田中太郎'
 });
 // → 'https://api.example.com/users/%E7%94%B0%E4%B8%AD%E5%A4%AA%E9%83%8E'
 
 // Even emojis work correctly
-const url3 = urlcat('https://api.example.com', '/posts', {
+const url3 = createUrl('https://api.example.com', '/posts', {
   mood: '😊🎉'
 });
 // → 'https://api.example.com/posts?mood=%F0%9F%98%8A%F0%9F%8E%89'
@@ -315,11 +315,11 @@ const url3 = urlcat('https://api.example.com', '/posts', {
 fast-url validates path parameters and throws helpful errors:
 
 ```javascript
-import urlcat from 'fast-url';
+import createUrl from 'fast-url';
 
 try {
   // Missing required path parameter
-  urlcat('https://api.example.com', '/users/:id', {});
+  createUrl('https://api.example.com', '/users/:id', {});
 } catch (error) {
   console.error(error.message);
   // → "Missing value for path parameter id."
@@ -327,7 +327,7 @@ try {
 
 try {
   // Invalid path parameter type
-  urlcat('https://api.example.com', '/users/:id', { 
+  createUrl('https://api.example.com', '/users/:id', { 
     id: { invalid: 'object' } 
   });
 } catch (error) {
@@ -337,7 +337,7 @@ try {
 
 try {
   // Empty string path parameter
-  urlcat('https://api.example.com', '/users/:id', { id: '' });
+  createUrl('https://api.example.com', '/users/:id', { id: '' });
 } catch (error) {
   console.error(error.message);
   // → "Path parameter id cannot be an empty string."

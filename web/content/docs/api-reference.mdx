@@ -31,7 +31,7 @@ All parameter values are converted to strings during URL encoding. The following
 
 ## Main Functions
 
-### `urlcat()`
+### `createUrl()`
 
 The primary function for building URLs with multiple overloads for different use cases.
 
@@ -40,7 +40,7 @@ The primary function for building URLs with multiple overloads for different use
 Build a URL using only a template string with path parameters. Unused parameters become query parameters.
 
 ```typescript
-function urlcat(baseTemplate: string, params: ParamMap): string
+function createUrl(baseTemplate: string, params: ParamMap): string
 ```
 
 **Parameters:**
@@ -52,9 +52,9 @@ function urlcat(baseTemplate: string, params: ParamMap): string
 **Example:**
 
 ```javascript
-import urlcat from 'fast-url';
+import createUrl from 'fast-url';
 
-const url = urlcat('http://api.example.com/users/:id', { 
+const url = createUrl('http://api.example.com/users/:id', { 
   id: 42, 
   search: 'foo',
   active: true
@@ -68,7 +68,7 @@ console.log(url);
 Concatenate a base URL and path using `/` as separator. Handles duplicate slashes automatically.
 
 ```typescript
-function urlcat(baseUrl: string, path: string): string
+function createUrl(baseUrl: string, path: string): string
 ```
 
 **Parameters:**
@@ -80,15 +80,15 @@ function urlcat(baseUrl: string, path: string): string
 **Example:**
 
 ```javascript
-import urlcat from 'fast-url';
+import createUrl from 'fast-url';
 
 // Handles trailing/leading slashes
-const url1 = urlcat('http://api.example.com/', '/users');
+const url1 = createUrl('http://api.example.com/', '/users');
 console.log(url1);
 // → 'http://api.example.com/users'
 
 // Works without slashes too
-const url2 = urlcat('http://api.example.com', 'users');
+const url2 = createUrl('http://api.example.com', 'users');
 console.log(url2);
 // → 'http://api.example.com/users'
 ```
@@ -98,7 +98,7 @@ console.log(url2);
 Build a complete URL by combining base URL, path template, and parameters.
 
 ```typescript
-function urlcat(
+function createUrl(
   baseUrl: string,
   pathTemplate: string,
   params: ParamMap
@@ -115,9 +115,9 @@ function urlcat(
 **Example:**
 
 ```javascript
-import urlcat from 'fast-url';
+import createUrl from 'fast-url';
 
-const url = urlcat('http://api.example.com/', '/users/:id', { 
+const url = createUrl('http://api.example.com/', '/users/:id', { 
   id: 42, 
   search: 'foo',
   limit: 10,
@@ -347,7 +347,7 @@ console.log(text);
 ### Building Complex API Clients
 
 ```typescript
-import urlcat, { query } from 'fast-url';
+import createUrl, { query } from 'fast-url';
 
 class GitHubAPI {
   private baseUrl = 'https://api.github.com';
@@ -360,7 +360,7 @@ class GitHubAPI {
     per_page?: number;
     page?: number;
   } = {}) {
-    return urlcat(this.baseUrl, '/users/:username/repos', {
+    return createUrl(this.baseUrl, '/users/:username/repos', {
       username,
       ...options
     });
@@ -368,7 +368,7 @@ class GitHubAPI {
   
   // Get a specific commit
   getCommit(owner: string, repo: string, sha: string) {
-    return urlcat(this.baseUrl, '/repos/:owner/:repo/commits/:sha', {
+    return createUrl(this.baseUrl, '/repos/:owner/:repo/commits/:sha', {
       owner,
       repo,
       sha
@@ -381,7 +381,7 @@ class GitHubAPI {
     order?: 'asc' | 'desc';
     per_page?: number;
   } = {}) {
-    return urlcat(this.baseUrl, '/search/repositories', {
+    return createUrl(this.baseUrl, '/search/repositories', {
       q,
       ...options
     });
@@ -410,7 +410,7 @@ console.log(github.searchRepos('fast-url language:typescript', {
 ### Dynamic Route Building
 
 ```typescript
-import urlcat from 'fast-url';
+import createUrl from 'fast-url';
 
 // Route configuration
 const routes = {
@@ -426,7 +426,7 @@ function route(
   name: keyof typeof routes, 
   params: Record<string, any> = {}
 ) {
-  return urlcat('https://myblog.com', routes[name], params);
+  return createUrl('https://myblog.com', routes[name], params);
 }
 
 console.log(route('home'));
@@ -445,7 +445,7 @@ console.log(route('search', { q: 'typescript', tag: 'tutorial' }));
 ### Pagination Helper
 
 ```typescript
-import urlcat from 'fast-url';
+import createUrl from 'fast-url';
 
 function buildPaginatedUrl(
   baseUrl: string,
@@ -454,7 +454,7 @@ function buildPaginatedUrl(
   pageSize: number,
   filters: Record<string, any> = {}
 ) {
-  return urlcat(baseUrl, path, {
+  return createUrl(baseUrl, path, {
     ...filters,
     page,
     per_page: pageSize,

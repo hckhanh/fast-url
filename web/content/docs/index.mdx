@@ -26,18 +26,18 @@ fast-url is a modern fork of [urlcat](https://github.com/balazsbotond/urlcat) fo
 ## Quick Example
 
 ```javascript
-import urlcat from 'fast-url';
+import createUrl from 'fast-url';
 
 // Path parameters
-urlcat('https://api.example.com', '/users/:id', { id: 123 });
+createUrl('https://api.example.com', '/users/:id', { id: 123 });
 // → 'https://api.example.com/users/123'
 
 // Query parameters
-urlcat('https://api.example.com', '/users', { limit: 10, offset: 20 });
+createUrl('https://api.example.com', '/users', { limit: 10, offset: 20 });
 // → 'https://api.example.com/users?limit=10&offset=20'
 
 // Combined
-urlcat('https://api.example.com', '/users/:id/posts', { id: 123, limit: 10 });
+createUrl('https://api.example.com', '/users/:id/posts', { id: 123, limit: 10 });
 // → 'https://api.example.com/users/123/posts?limit=10'
 ```
 

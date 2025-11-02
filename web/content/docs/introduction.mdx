@@ -113,9 +113,9 @@ fast-url provides a clean, safe API for URL construction:
 
 ```javascript
 // ✅ Clean and safe with fast-url
-import urlcat from 'fast-url';
+import createUrl from 'fast-url';
 
-const url = urlcat(baseUrl, '/users/:id/posts', { id, limit, offset });
+const url = createUrl(baseUrl, '/users/:id/posts', { id, limit, offset });
 ```
 
 **Benefits:**
@@ -146,14 +146,14 @@ Here's a real-world example showing how fast-url simplifies URL building:
 <Tabs items={['API Client', 'Manual Approach']}>
   <Tab value="API Client">
     ```typescript
-    import urlcat from 'fast-url';
+    import createUrl from 'fast-url';
     
     class UserAPI {
       private baseUrl = 'https://api.example.com';
       
       getUserPosts(userId: number, page = 1, limit = 10) {
         return fetch(
-          urlcat(this.baseUrl, '/users/:userId/posts', {
+          createUrl(this.baseUrl, '/users/:userId/posts', {
             userId,
             page,
             limit,
