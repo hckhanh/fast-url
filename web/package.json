@@ -11,7 +11,7 @@
     "format": "biome format --write"
   },
   "dependencies": {
-    "fumadocs-core": "16.0.6",
+    "fumadocs-core": "16.0.7",
     "fumadocs-mdx": "13.0.3",
     "fumadocs-ui": "16.0.6",
     "lucide-react": "^0.548.0",
