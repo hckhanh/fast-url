@@ -1,19 +1,19 @@
 {
-	"$schema": "../node_modules/@biomejs/biome/configuration_schema.json",
-	"extends": ["../biome.json"],
-	"root": false,
-	"files": {
-		"ignoreUnknown": true,
-		"includes": ["**", "!node_modules", "!.next", "!dist", "!build", "!.source"]
-	},
-	"linter": {
-		"enabled": true,
-		"rules": {
-			"recommended": true
-		},
-		"domains": {
-			"next": "recommended",
-			"react": "recommended"
-		}
-	}
+  "$schema": "../node_modules/@biomejs/biome/configuration_schema.json",
+  "extends": "//",
+  "root": false,
+  "files": {
+    "ignoreUnknown": true,
+    "includes": ["**", "!node_modules", "!.next", "!dist", "!build", "!.source"]
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true
+    },
+    "domains": {
+      "next": "recommended",
+      "react": "recommended"
+    }
+  }
 }
