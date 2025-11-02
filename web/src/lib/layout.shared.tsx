@@ -4,7 +4,11 @@ export function baseOptions(): BaseLayoutProps {
   return {
     githubUrl: 'https://github.com/hckhanh/fast-url',
     nav: {
-      title: 'fast-url',
+      title: (
+        <span>
+          🔗<span className='ml-10'>fast-url</span>
+        </span>
+      ),
       url: '/docs',
     },
   }

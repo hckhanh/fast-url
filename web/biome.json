@@ -36,5 +36,10 @@
     "parser": {
       "tailwindDirectives": true
     }
+  },
+  "javascript": {
+    "formatter": {
+      "jsxQuoteStyle": "single"
+    }
   }
 }
