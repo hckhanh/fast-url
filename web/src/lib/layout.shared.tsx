@@ -2,20 +2,10 @@ import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
 
 export function baseOptions(): BaseLayoutProps {
 	return {
-		nav: {
+    githubUrl: 'https://github.com/hckhanh/fast-url',
+    nav: {
 			title: "fast-url",
+      url: '/docs',
 		},
-		links: [
-			{
-				text: "Documentation",
-				url: "/docs",
-				active: "nested-url",
-			},
-			{
-				text: "GitHub",
-				url: "https://github.com/hckhanh/fast-url",
-				external: true,
-			},
-		],
 	};
 }
