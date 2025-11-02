@@ -23,6 +23,18 @@ jobs:
         run: bun ci
       - name: Run Knip
         run: bun knip-bun
+  deno:
+    name: Deno
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: Setup toolchains
+        uses: jdx/mise-action@be3be2260bc02bc3fbf94c5e2fed8b7964baf074 # v3.4.0
+      - name: Install Dependencies
+        run: bun ci
+      - name: Run Deno Check
+        run: bunx deno check src/index.ts
   test:
     name: Test
     runs-on: ubuntu-latest
