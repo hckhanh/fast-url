@@ -6,7 +6,7 @@ const withMDX = createMDX()
 
 /** @type {import('next').NextConfig} */
 const config = {
-	reactStrictMode: true,
+  reactStrictMode: true,
   redirects() {
     return [
       {
@@ -15,7 +15,7 @@ const config = {
         permanent: true,
       },
     ]
-  }
-};
+  },
+}
 
 export default withMDX(config)
