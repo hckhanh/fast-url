@@ -16,12 +16,32 @@ Get up and running with fast-url in minutes. This guide will walk you through in
 
 Install fast-url using your preferred package manager:
 
-<Tabs items={['jsr', 'bun', 'npm', 'yarn', 'pnpm']}>
-  <Tab value="jsr">```bash deno add jsr:@hckhanh/fast-url ```</Tab>
-  <Tab value="bun">```bash bun add fast-url ```</Tab>
-  <Tab value="npm">```bash npm install fast-url ```</Tab>
-  <Tab value="yarn">```bash yarn add fast-url ```</Tab>
-  <Tab value="pnpm">```bash pnpm add fast-url ```</Tab>
+<Tabs items={['bun', 'pnpm', 'yarn', 'npm', 'jsr']}>
+  <Tab value="bun">
+    ```bash
+    bun add fast-url
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm add fast-url
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn add fast-url
+    ```
+  </Tab>
+  <Tab value="npm">
+    ```bash
+    npm install fast-url
+    ```
+  </Tab>
+  <Tab value="jsr">
+    ```bash
+    deno add jsr:@hckhanh/fast-url
+    ```
+  </Tab>
 </Tabs>
 
 <Callout title="TypeScript Support" type="info">
@@ -37,18 +57,16 @@ Install fast-url using your preferred package manager:
   <Tab value="ES Modules">
     ```javascript
     import { createUrl } from 'fast-url';
-    import { query, subst, join } from 'fast-url';
     ```
   </Tab>
   <Tab value="CommonJS">
     ```javascript
     const { createUrl } = require('fast-url');
-    const { query, subst, join } = require('fast-url');
     ```
   </Tab>
   <Tab value="TypeScript">
     ```typescript
-    import { createUrl, query, subst, join, type ParamMap } from 'fast-url';
+    import { createUrl } from 'fast-url';
     ```
   </Tab>
 </Tabs>
