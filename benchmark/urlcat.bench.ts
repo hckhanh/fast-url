@@ -1,28 +1,28 @@
 import { bench, describe } from 'vitest'
-import urlcat from '../src'
+import createUrl from '../src'
 
-describe('urlcat benchmarks', () => {
+describe('createUrl benchmarks', () => {
   describe('Simple cases', () => {
     bench('Concatenate base URL and path only', () => {
-      urlcat('http://example.com', '/path')
+      createUrl('http://example.com', '/path')
     })
 
     bench('Base URL with trailing slash + path', () => {
-      urlcat('http://example.com/', '/path')
+      createUrl('http://example.com/', '/path')
     })
 
     bench('Single path parameter', () => {
-      urlcat('http://example.com/', '/users/:id', { id: 123 })
+      createUrl('http://example.com/', '/users/:id', { id: 123 })
     })
 
     bench('Single query parameter', () => {
-      urlcat('http://example.com/path', { search: 'test' })
+      createUrl('http://example.com/path', { search: 'test' })
     })
   })
 
   describe('Medium complexity', () => {
     bench('Two path params + two query params', () => {
-      urlcat('http://example.com/', '/users/:userId/posts/:postId', {
+      createUrl('http://example.com/', '/users/:userId/posts/:postId', {
         userId: 123,
         postId: 456,
         sort: 'date',
@@ -31,7 +31,7 @@ describe('urlcat benchmarks', () => {
     })
 
     bench('Multiple query params (5 params)', () => {
-      urlcat('http://example.com/api/search', {
+      createUrl('http://example.com/api/search', {
         q: 'javascript',
         category: 'programming',
         limit: 20,
@@ -41,7 +41,7 @@ describe('urlcat benchmarks', () => {
     })
 
     bench('Path params with special characters', () => {
-      urlcat('http://example.com/', '/search/:query', {
+      createUrl('http://example.com/', '/search/:query', {
         query: 'hello world',
         filter: 'tag:important',
       })
@@ -50,24 +50,28 @@ describe('urlcat benchmarks', () => {
 
   describe('Complex cases', () => {
     bench('Complex URL with many params (original test)', () => {
-      urlcat('http://example.com/', '/users/:userId/posts/:postId/comments', {
-        userId: 123,
-        postId: 987,
-        authorId: 456,
-        limit: 10,
-        offset: 120,
-        frappucino: 'muffin',
-        goat: 'scone',
-        pond: 'moose',
-        foo: ['bar', 'baz', 'bal'],
-        bool: true,
-        bigIntKey: BigInt(100),
-        numberKey: 256,
-      })
+      createUrl(
+        'http://example.com/',
+        '/users/:userId/posts/:postId/comments',
+        {
+          userId: 123,
+          postId: 987,
+          authorId: 456,
+          limit: 10,
+          offset: 120,
+          frappucino: 'muffin',
+          goat: 'scone',
+          pond: 'moose',
+          foo: ['bar', 'baz', 'bal'],
+          bool: true,
+          bigIntKey: BigInt(100),
+          numberKey: 256,
+        },
+      )
     })
 
     bench('Deep path with 5 parameters', () => {
-      urlcat(
+      createUrl(
         'http://example.com/',
         '/api/:version/users/:userId/projects/:projectId/tasks/:taskId/comments/:commentId',
         {
@@ -83,7 +87,7 @@ describe('urlcat benchmarks', () => {
     })
 
     bench('Large query string (15 params)', () => {
-      urlcat('http://example.com/api/data', {
+      createUrl('http://example.com/api/data', {
         param1: 'value1',
         param2: 'value2',
         param3: 'value3',
@@ -105,7 +109,7 @@ describe('urlcat benchmarks', () => {
 
   describe('Real-world patterns', () => {
     bench('REST API endpoint with pagination', () => {
-      urlcat('http://api.example.com/', '/v1/users', {
+      createUrl('http://api.example.com/', '/v1/users', {
         page: 1,
         limit: 50,
         sort: 'created_at',
@@ -114,7 +118,7 @@ describe('urlcat benchmarks', () => {
     })
 
     bench('Search endpoint with filters', () => {
-      urlcat('http://api.example.com/', '/search', {
+      createUrl('http://api.example.com/', '/search', {
         q: 'typescript',
         type: 'repository',
         language: 'typescript',
@@ -124,7 +128,7 @@ describe('urlcat benchmarks', () => {
     })
 
     bench('Resource with ID and nested resource', () => {
-      urlcat('http://api.example.com/', '/users/:id/posts/:postId', {
+      createUrl('http://api.example.com/', '/users/:id/posts/:postId', {
         id: 42,
         postId: 123,
         include: 'comments,author',
@@ -132,7 +136,7 @@ describe('urlcat benchmarks', () => {
     })
 
     bench('URL with port number', () => {
-      urlcat('http://localhost:8080/', '/api/:version/health', {
+      createUrl('http://localhost:8080/', '/api/:version/health', {
         version: 'v1',
         verbose: true,
       })
@@ -141,18 +145,18 @@ describe('urlcat benchmarks', () => {
 
   describe('Edge cases', () => {
     bench('Base template only (no path)', () => {
-      urlcat('http://example.com/:resource', {
+      createUrl('http://example.com/:resource', {
         resource: 'users',
         page: 1,
       })
     })
 
     bench('Empty params object', () => {
-      urlcat('http://example.com/', '/path')
+      createUrl('http://example.com/', '/path')
     })
 
     bench('Boolean and number params', () => {
-      urlcat('http://example.com/', '/settings/:feature', {
+      createUrl('http://example.com/', '/settings/:feature', {
         feature: 'dark-mode',
         enabled: true,
         opacity: 0.8,
@@ -161,7 +165,7 @@ describe('urlcat benchmarks', () => {
     })
 
     bench('Array in query params', () => {
-      urlcat('http://example.com/filter', {
+      createUrl('http://example.com/filter', {
         tags: ['javascript', 'typescript', 'node'],
         active: true,
       })

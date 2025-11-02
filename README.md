@@ -37,25 +37,25 @@ npm install fast-url
 ### Basic URL building
 
 ```javascript
-import urlcat from "fast-url";
+import createUrl from "fast-url";
 
 // Path parameters
-urlcat("https://api.example.com", "/users/:id", { id: 123 });
+createUrl("https://api.example.com", "/users/:id", { id: 123 });
 // → 'https://api.example.com/users/123'
 
 // Query parameters
-urlcat("https://api.example.com", "/users", { limit: 10, offset: 20 });
+createUrl("https://api.example.com", "/users", { limit: 10, offset: 20 });
 // → 'https://api.example.com/users?limit=10&offset=20'
 
 // Combined path and query parameters
-urlcat("https://api.example.com", "/users/:id/posts", { id: 123, limit: 10 });
+createUrl("https://api.example.com", "/users/:id/posts", { id: 123, limit: 10 });
 // → 'https://api.example.com/users/123/posts?limit=10'
 ```
 
 ### CommonJS
 
 ```javascript
-const urlcat = require("fast-url").default;
+const createUrl = require("fast-url").default;
 ```
 
 ### Utility functions
@@ -78,11 +78,11 @@ join("https://api.example.com/", "/", "/users");
 
 ## API
 
-### `urlcat(baseUrl, pathTemplate, params?)`
+### `createUrl(baseUrl, pathTemplate, params?)`
 
 Build a complete URL by combining a base URL, path template, and parameters.
 
-### `urlcat(baseTemplate, params)`
+### `createUrl(baseTemplate, params)`
 
 Use a single template containing path parameters; unused params become query parameters.
 
@@ -110,7 +110,7 @@ const url = `${baseUrl}/users/${id}/posts?limit=${limit}&offset=${offset}`;
 
 ```javascript
 // ✅ Clean and safe with fast-url
-const url = urlcat(baseUrl, "/users/:id/posts", { id, limit, offset });
+const url = createUrl(baseUrl, "/users/:id/posts", { id, limit, offset });
 ```
 
 fast-url handles:
