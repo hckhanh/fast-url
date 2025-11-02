@@ -1,5 +1,11 @@
 # fast-url
 
+## 5.0.1
+
+### Patch Changes
+
+- d5e9f97: Add documentation and update homepage
+
 ## 5.0.0
 
 ### Major Changes
