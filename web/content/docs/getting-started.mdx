@@ -16,11 +16,32 @@ Get up and running with fast-url in minutes. This guide will walk you through in
 
 Install fast-url using your preferred package manager:
 
-<Tabs items={['bun', 'npm', 'yarn', 'pnpm']}>
-  <Tab value="bun">```bash bun add fast-url ```</Tab>
-  <Tab value="npm">```bash npm install fast-url ```</Tab>
-  <Tab value="yarn">```bash yarn add fast-url ```</Tab>
-  <Tab value="pnpm">```bash pnpm add fast-url ```</Tab>
+<Tabs items={['bun', 'pnpm', 'yarn', 'npm', 'jsr']}>
+  <Tab value="bun">
+    ```bash
+    bun add fast-url
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm add fast-url
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn add fast-url
+    ```
+  </Tab>
+  <Tab value="npm">
+    ```bash
+    npm install fast-url
+    ```
+  </Tab>
+  <Tab value="jsr">
+    ```bash
+    deno add jsr:@hckhanh/fast-url
+    ```
+  </Tab>
 </Tabs>
 
 <Callout title="TypeScript Support" type="info">
@@ -35,19 +56,17 @@ Install fast-url using your preferred package manager:
 <Tabs items={['ES Modules', 'CommonJS', 'TypeScript']}>
   <Tab value="ES Modules">
     ```javascript
-    import createUrl from 'fast-url';
-    import { query, subst, join } from 'fast-url';
+    import { createUrl } from 'fast-url';
     ```
   </Tab>
   <Tab value="CommonJS">
     ```javascript
-    const createUrl = require('fast-url').default;
-    const { query, subst, join } = require('fast-url');
+    const { createUrl } = require('fast-url');
     ```
   </Tab>
   <Tab value="TypeScript">
     ```typescript
-    import createUrl, { query, subst, join, type ParamMap } from 'fast-url';
+    import { createUrl } from 'fast-url';
     ```
   </Tab>
 </Tabs>
@@ -61,7 +80,7 @@ Here are some common use cases to get you started:
 Replace placeholders in a URL path with actual values:
 
 ```javascript
-import createUrl from 'fast-url';
+import { createUrl } from 'fast-url';
 
 const userId = 123;
 const url = createUrl('https://api.example.com', '/users/:id', { id: userId });
@@ -74,7 +93,7 @@ console.log(url);
 Add query string parameters to a URL:
 
 ```javascript
-import createUrl from 'fast-url';
+import { createUrl } from 'fast-url';
 
 const url = createUrl('https://api.example.com', '/users', {
   limit: 10,
@@ -90,7 +109,7 @@ console.log(url);
 Mix path substitution with query parameters:
 
 ```javascript
-import createUrl from 'fast-url';
+import { createUrl } from 'fast-url';
 
 const url = createUrl('https://api.example.com', '/users/:id/posts', {
   id: 123,
@@ -112,7 +131,7 @@ Let's build a simple REST API client using fast-url:
     Start by creating a basic API client structure:
     
     ```typescript
-    import createUrl from 'fast-url';
+    import { createUrl } from 'fast-url';
     
     class BlogAPI {
       private baseUrl = 'https://api.blog.com';
@@ -194,7 +213,7 @@ Let's build a simple REST API client using fast-url:
 fast-url automatically filters out `null` and `undefined` values:
 
 ```javascript
-import createUrl from 'fast-url';
+import { createUrl } from 'fast-url';
 
 const url = createUrl('https://api.example.com', '/search', {
   q: 'javascript',
@@ -274,7 +293,7 @@ console.log(query);
 fast-url properly handles special characters and Unicode:
 
 ```javascript
-import createUrl from 'fast-url';
+import { createUrl } from 'fast-url';
 
 // Special characters are automatically encoded
 const url1 = createUrl('https://api.example.com', '/search', {
@@ -301,7 +320,7 @@ const url3 = createUrl('https://api.example.com', '/posts', {
 fast-url validates path parameters and throws helpful errors:
 
 ```javascript
-import createUrl from 'fast-url';
+import { createUrl } from 'fast-url';
 
 try {
   // Missing required path parameter

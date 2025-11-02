@@ -1,5 +1,27 @@
-import { stringify } from '@/querystring/stringify'
+/**
+ * Fast URL builder with type safety and performance optimization.
+ *
+ * This module provides utilities to build URLs safely and efficiently,
+ * handling path parameters, query strings, and URL joining operations.
+ *
+ * @example
+ * ```ts
+ * import { createUrl } from "fast-url";
+ *
+ * // Build URL with path and query parameters
+ * createUrl('https://api.example.com', '/users/:id', { id: 42, search: 'foo' })
+ * // -> 'https://api.example.com/users/42?search=foo'
+ * ```
+ *
+ * @module
+ */
 
+import { stringify } from './querystring/stringify.ts'
+
+/**
+ * A map of parameters for URL building.
+ * Used for both path parameters and query string parameters.
+ */
 export type ParamMap = Record<string, unknown>
 
 /**
@@ -13,11 +35,11 @@ export type ParamMap = Record<string, unknown>
  *
  * @example
  * ```ts
- * urlcat('http://api.example.com/users/:id', { id: 42, search: 'foo' })
- * // -> 'http://api.example.com/users/42?search=foo
+ * createUrl('http://api.example.com/users/:id', { id: 42, search: 'foo' })
+ * // -> 'http://api.example.com/users/42?search=foo'
  * ```
  */
-export default function urlcat(baseTemplate: string, params: ParamMap): string
+export function createUrl(baseTemplate: string, params: ParamMap): string
 
 /**
  * Concatenates the base URL and the path specified using `/` as a separator.
@@ -30,11 +52,11 @@ export default function urlcat(baseTemplate: string, params: ParamMap): string
  *
  * @example
  * ```ts
- * urlcat('http://api.example.com/', '/users')
- * // -> 'http://api.example.com/users
+ * createUrl('http://api.example.com/', '/users')
+ * // -> 'http://api.example.com/users'
  * ```
  */
-export default function urlcat(baseUrl: string, path: string): string
+export function createUrl(baseUrl: string, path: string): string
 
 /**
  * Concatenates the base URL and the path specified using `/` as a separator.
@@ -51,24 +73,24 @@ export default function urlcat(baseUrl: string, path: string): string
  *
  * @example
  * ```ts
- * urlcat('http://api.example.com/', '/users/:id', { id: 42, search: 'foo' })
- * // -> 'http://api.example.com/users/42?search=foo
+ * createUrl('http://api.example.com/', '/users/:id', { id: 42, search: 'foo' })
+ * // -> 'http://api.example.com/users/42?search=foo'
  * ```
  */
-export default function urlcat(
+export function createUrl(
   baseUrl: string,
   pathTemplate: string,
   params: ParamMap,
 ): string
 
-export default function urlcat(
+export function createUrl(
   baseUrlOrTemplate: string,
   pathTemplateOrParams: string | ParamMap,
   maybeParams: ParamMap = {},
 ): string {
   return typeof pathTemplateOrParams === 'string'
-    ? urlcatImpl(pathTemplateOrParams, maybeParams, baseUrlOrTemplate)
-    : urlcatImpl(baseUrlOrTemplate, pathTemplateOrParams, undefined)
+    ? createUrlImpl(pathTemplateOrParams, maybeParams, baseUrlOrTemplate)
+    : createUrlImpl(baseUrlOrTemplate, pathTemplateOrParams, undefined)
 }
 
 function joinFullUrl(
@@ -81,7 +103,7 @@ function joinFullUrl(
     : join(baseUrl, '?', pathAndQuery)
 }
 
-function urlcatImpl(
+function createUrlImpl(
   pathTemplate: string,
   params: ParamMap,
   baseUrl: string | undefined,

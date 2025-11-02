@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { encodeString } from '@/querystring/node'
-import { stringify } from '@/querystring/stringify'
+import { encodeString } from '../src/querystring/node.ts'
+import { stringify } from '../src/querystring/stringify.ts'
 
 describe('encodeString', () => {
   describe('Basic encoding', () => {
