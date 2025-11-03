@@ -34,7 +34,7 @@ jobs:
           publish: bun release
           commitMode: 'github-api'
           title: 'Release new version'
-          commit: 'Bump version package'
+          commit: 'chore(release): bump version package'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish to JSR
