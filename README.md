@@ -1,4 +1,4 @@
-# fast-url [![npm version](https://img.shields.io/npm/v/fast-url.svg?style=flat)](https://www.npmjs.com/package/fast-url)
+# fast-url [![NPM Downloads](https://img.shields.io/npm/dw/fast-url)](https://www.npmjs.com/package/fast-url) [![JSR](https://jsr.io/badges/@hckhanh/fast-url/weekly-downloads)](https://jsr.io/@hckhanh/fast-url)
 
 A folk version of the [urlcat](https://github.com/balazsbotond/urlcat) focuses on performance and simplicity.
 Build correct URLs easily. A fast, minimal fork of urlcat focused on performance and simplicity.
