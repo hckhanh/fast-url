@@ -19,8 +19,12 @@ jobs:
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: Setup toolchains
         uses: jdx/mise-action@be3be2260bc02bc3fbf94c5e2fed8b7964baf074 # v3.4.0
+      - name: Setup Socket Firewall
+        uses: SocketDev/action@4337a545deecc20f19a909e52db7a2f6ba292f42 # v1.2.0
+        with:
+          mode: firewall
       - name: Install Dependencies
-        run: bun ci
+        run: sfw bun ci
       - name: Run Knip
         run: bun knip-bun
   deno:
@@ -44,8 +48,12 @@ jobs:
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: Setup toolchains
         uses: jdx/mise-action@be3be2260bc02bc3fbf94c5e2fed8b7964baf074 # v3.4.0
+      - name: Setup Socket Firewall
+        uses: SocketDev/action@4337a545deecc20f19a909e52db7a2f6ba292f42 # v1.2.0
+        with:
+          mode: firewall
       - name: Install Dependencies
-        run: bun ci
+        run: sfw bun ci
       - name: Run Tests
         run: bun run test --coverage --reporter=junit --outputFile=test-report.junit.xml
       - name: Upload coverage reports to Codecov
@@ -65,8 +73,12 @@ jobs:
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: Setup toolchains
         uses: jdx/mise-action@be3be2260bc02bc3fbf94c5e2fed8b7964baf074 # v3.4.0
+      - name: Setup Socket Firewall
+        uses: SocketDev/action@4337a545deecc20f19a909e52db7a2f6ba292f42 # v1.2.0
+        with:
+          mode: firewall
       - name: Install Dependencies
-        run: bun ci
+        run: sfw bun ci
       - name: Run Benchmarks
         uses: CodSpeedHQ/action@4348f634fa7309fe23aac9502e88b999ec90a164 # v4.3.1
         with:
