@@ -134,11 +134,10 @@ await fetch(url);
 
 Here's a visual representation of how fast-url simplifies URL building:
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcSet="/urlcat-basic-usage-dark.svg" />
-  <source media="(prefers-color-scheme: light)" srcSet="/urlcat-basic-usage.svg" />
-  <img src="/urlcat-basic-usage.svg" alt="Basic usage example showing how fast-url builds URLs" />
-</picture>
+<div role="img" aria-label="Basic usage example showing how fast-url builds URLs">
+  <img src="/urlcat-basic-usage.svg" alt="Basic usage example showing how fast-url builds URLs" className="block dark:hidden" aria-hidden="true" />
+  <img src="/urlcat-basic-usage-dark.svg" alt="Basic usage example showing how fast-url builds URLs" className="hidden dark:block" aria-hidden="true" />
+</div>
 
 ## When to Use fast-url
 
