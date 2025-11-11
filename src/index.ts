@@ -109,17 +109,18 @@ function createUrlImpl(
   baseUrl: string | undefined,
 ) {
   const { renderedPath, remainingParams } = path(pathTemplate, params)
-  
+
   // Early return optimization: if no remaining params and path doesn't end with '?'
   // This avoids unnecessary function calls for simple path-only templates
   // Note: We need to process paths ending with '?' through join to remove the trailing '?'
-  if (Object.keys(remainingParams).length === 0 && !renderedPath.endsWith('?')) {
+  if (
+    Object.keys(remainingParams).length === 0 &&
+    !renderedPath.endsWith('?')
+  ) {
     if (!baseUrl) return renderedPath
-    return renderedPath.length
-      ? join(baseUrl, '/', renderedPath)
-      : baseUrl
+    return renderedPath.length ? join(baseUrl, '/', renderedPath) : baseUrl
   }
-  
+
   const cleanParams = removeNullOrUndef(remainingParams)
   const renderedQuery = query(cleanParams)
   const pathAndQuery = join(renderedPath, '?', renderedQuery)
@@ -176,13 +177,13 @@ function path(template: string, params: ParamMap) {
     usedKeys.add(key)
     return encodeURIComponent(params[key] as string | number | boolean)
   })
-  
+
   // Only create remainingParams if we actually used some keys
   // This avoids unnecessary object allocation when no path params exist
   if (usedKeys.size === 0) {
     return { renderedPath, remainingParams: params }
   }
-  
+
   // Build remaining params without object spread for better performance
   const remainingParams: ParamMap = {}
   for (const key in params) {
@@ -190,7 +191,7 @@ function path(template: string, params: ParamMap) {
       remainingParams[key] = params[key]
     }
   }
-  
+
   return { renderedPath, remainingParams }
 }
 
@@ -237,25 +238,29 @@ export function join(part1: string, separator: string, part2: string): string {
   if (!part2) {
     return part1.endsWith(separator) ? part1.slice(0, -separator.length) : part1
   }
-  
+
   // Check if we need to trim separator from boundaries
   const p1EndsWithSep = part1.endsWith(separator)
   const p2StartsWithSep = part2.startsWith(separator)
-  
+
   // Optimize for the common case where no trimming is needed
   if (!p1EndsWithSep && !p2StartsWithSep) {
     return part1 + separator + part2
   }
-  
+
   // Handle cases where we need to trim
   if (p1EndsWithSep && p2StartsWithSep) {
-    return part1.slice(0, -separator.length) + separator + part2.slice(separator.length)
+    return (
+      part1.slice(0, -separator.length) +
+      separator +
+      part2.slice(separator.length)
+    )
   }
-  
+
   if (p1EndsWithSep) {
     return part1 + part2
   }
-  
+
   // p2StartsWithSep
   return part1 + part2
 }
