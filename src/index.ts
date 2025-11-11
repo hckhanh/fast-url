@@ -248,13 +248,10 @@ export function join(part1: string, separator: string, part2: string): string {
     return part1 + separator + part2
   }
 
-  // Handle cases where we need to trim
+  // Optimized: When both have separator, just remove from part2 (avoids slicing part1)
+  // This is the most common case for URL building: "http://example.com/" + "/path"
   if (p1EndsWithSep && p2StartsWithSep) {
-    return (
-      part1.slice(0, -separator.length) +
-      separator +
-      part2.slice(separator.length)
-    )
+    return part1 + part2.slice(separator.length)
   }
 
   if (p1EndsWithSep) {
