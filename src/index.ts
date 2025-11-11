@@ -283,12 +283,7 @@ export function join(part1: string, separator: string, part2: string): string {
  * ```
  */
 function removeNullOrUndef<P extends ParamMap>(params: P) {
-  const result: ParamMap = {}
-  for (const key in params) {
-    const value = params[key]
-    if (value != null) {
-      result[key] = value
-    }
-  }
-  return result as { [K in keyof P]: NonNullable<P[K]> }
+  return Object.fromEntries(
+    Object.entries(params).filter(([, value]) => value != null),
+  ) as { [K in keyof P]: NonNullable<P[K]> }
 }
