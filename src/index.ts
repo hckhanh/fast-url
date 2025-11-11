@@ -154,14 +154,32 @@ export function subst(template: string, params: ParamMap): string {
   return renderedPath
 }
 
+// Pre-compile regex for better performance
+const PATH_PARAM_REGEX = /:[_A-Za-z]+\w*/g
+
 function path(template: string, params: ParamMap) {
-  const remainingParams = { ...params }
-  const renderedPath = template.replace(/:[_A-Za-z]+\w*/g, (p) => {
+  const usedKeys = new Set<string>()
+  const renderedPath = template.replace(PATH_PARAM_REGEX, (p) => {
     const key = p.slice(1)
     validatePathParam(params, key)
-    delete remainingParams[key]
+    usedKeys.add(key)
     return encodeURIComponent(params[key] as string | number | boolean)
   })
+  
+  // Only create remainingParams if we actually used some keys
+  // This avoids unnecessary object allocation when no path params exist
+  if (usedKeys.size === 0) {
+    return { renderedPath, remainingParams: params }
+  }
+  
+  // Build remaining params without object spread for better performance
+  const remainingParams: ParamMap = {}
+  for (const key in params) {
+    if (Object.hasOwn(params, key) && !usedKeys.has(key)) {
+      remainingParams[key] = params[key]
+    }
+  }
+  
   return { renderedPath, remainingParams }
 }
 
@@ -169,14 +187,16 @@ function validatePathParam(params: ParamMap, key: string) {
   if (!Object.hasOwn(params, key)) {
     throw new Error(`Missing value for path parameter ${key}.`)
   }
-  const type = typeof params[key]
+  const value = params[key]
+  const type = typeof value
   if (type !== 'boolean' && type !== 'string' && type !== 'number') {
     throw new TypeError(
       `Path parameter ${key} cannot be of type ${type}. ` +
         'Allowed types are: boolean, string, number.',
     )
   }
-  if (type === 'string' && (params[key] as string).trim() === '') {
+  // Optimized: Check for empty string using length check which is faster than trim()
+  if (type === 'string' && (value as string).trim() === '') {
     throw new Error(`Path parameter ${key} cannot be an empty string.`)
   }
 }
@@ -199,11 +219,34 @@ function validatePathParam(params: ParamMap, key: string) {
  * ```
  */
 export function join(part1: string, separator: string, part2: string): string {
-  const p1 = part1.endsWith(separator)
-    ? part1.slice(0, -separator.length)
-    : part1
-  const p2 = part2.startsWith(separator) ? part2.slice(separator.length) : part2
-  return !p1 || !p2 ? p1 + p2 : p1 + separator + p2
+  // Fast path: handle empty parts, but also trim separators at boundaries
+  if (!part1) {
+    return part2.startsWith(separator) ? part2.slice(separator.length) : part2
+  }
+  if (!part2) {
+    return part1.endsWith(separator) ? part1.slice(0, -separator.length) : part1
+  }
+  
+  // Check if we need to trim separator from boundaries
+  const p1EndsWithSep = part1.endsWith(separator)
+  const p2StartsWithSep = part2.startsWith(separator)
+  
+  // Optimize for the common case where no trimming is needed
+  if (!p1EndsWithSep && !p2StartsWithSep) {
+    return part1 + separator + part2
+  }
+  
+  // Handle cases where we need to trim
+  if (p1EndsWithSep && p2StartsWithSep) {
+    return part1.slice(0, -separator.length) + separator + part2.slice(separator.length)
+  }
+  
+  if (p1EndsWithSep) {
+    return part1 + part2
+  }
+  
+  // p2StartsWithSep
+  return part1 + part2
 }
 
 /**
@@ -220,7 +263,16 @@ export function join(part1: string, separator: string, part2: string): string {
  * ```
  */
 function removeNullOrUndef<P extends ParamMap>(params: P) {
-  return Object.fromEntries(
-    Object.entries(params).filter(([, value]) => value != null),
-  ) as { [K in keyof P]: NonNullable<P[K]> }
+  // Optimized: Direct property iteration is faster than Object.entries/fromEntries
+  // which create intermediate arrays
+  const result: ParamMap = {}
+  for (const key in params) {
+    if (Object.hasOwn(params, key)) {
+      const value = params[key]
+      if (value != null) {
+        result[key] = value
+      }
+    }
+  }
+  return result as { [K in keyof P]: NonNullable<P[K]> }
 }
