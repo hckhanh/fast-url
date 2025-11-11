@@ -165,7 +165,7 @@ export function subst(template: string, params: ParamMap): string {
   return renderedPath
 }
 
-// Pre-compile regex for better performance
+// Pre-compile regex for better performance - avoids recompilation overhead on each call
 const PATH_PARAM_REGEX = /:[_A-Za-z]+\w*/g
 
 function path(template: string, params: ParamMap) {
