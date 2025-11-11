@@ -99,4 +99,23 @@ describe('subst', () => {
     })
     expect(actual).toBe(expected)
   })
+
+  it('Handles Vietnamese characters in substitution', () => {
+    const expected =
+      '/city/%C4%90%C3%A0%20N%E1%BA%B5ng/country/Vi%E1%BB%87t%20Nam'
+    const actual = subst('/city/:city/country/:country', {
+      city: 'Đà Nẵng',
+      country: 'Việt Nam',
+    })
+    expect(actual).toBe(expected)
+  })
+
+  it('Handles Vietnamese names with diacritics', () => {
+    const expected = '/user/Nguy%E1%BB%85n/Tr%E1%BA%A7n'
+    const actual = subst('/user/:first/:last', {
+      first: 'Nguyễn',
+      last: 'Trần',
+    })
+    expect(actual).toBe(expected)
+  })
 })

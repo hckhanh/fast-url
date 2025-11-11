@@ -289,4 +289,31 @@ describe('createUrl', () => {
     })
     expect(actual).toBe(expected)
   })
+
+  it('Handles Vietnamese characters in path parameters', () => {
+    const expected = 'http://example.com/city/%C4%90%C3%A0%20N%E1%BA%B5ng'
+    const actual = createUrl('http://example.com/city/:name', {
+      name: 'Đà Nẵng',
+    })
+    expect(actual).toBe(expected)
+  })
+
+  it('Handles Vietnamese characters in query parameters', () => {
+    const expected =
+      'http://example.com/search?q=Vi%E1%BB%87t%20Nam&city=S%C3%A0i%20G%C3%B2n'
+    const actual = createUrl('http://example.com/search', {
+      q: 'Việt Nam',
+      city: 'Sài Gòn',
+    })
+    expect(actual).toBe(expected)
+  })
+
+  it('Handles Vietnamese characters with path and query together', () => {
+    const expected = 'http://example.com/user/Nguy%E1%BB%85n?name=Tr%E1%BA%A7n'
+    const actual = createUrl('http://example.com/user/:id', {
+      id: 'Nguyễn',
+      name: 'Trần',
+    })
+    expect(actual).toBe(expected)
+  })
 })

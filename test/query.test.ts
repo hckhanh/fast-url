@@ -67,4 +67,17 @@ describe('query', () => {
     const actual = query({ name: 'é', chinese: '中文', check: '✓' })
     expect(actual).toBe(expected)
   })
+
+  it('Handles Vietnamese characters in values', () => {
+    const expected =
+      'country=Vi%E1%BB%87t%20Nam&city=%C4%90%C3%A0%20N%E1%BA%B5ng'
+    const actual = query({ country: 'Việt Nam', city: 'Đà Nẵng' })
+    expect(actual).toBe(expected)
+  })
+
+  it('Handles Vietnamese names with tone marks', () => {
+    const expected = 'firstName=Nguy%E1%BB%85n&lastName=Tr%E1%BA%A7n'
+    const actual = query({ firstName: 'Nguyễn', lastName: 'Trần' })
+    expect(actual).toBe(expected)
+  })
 })
