@@ -37,4 +37,34 @@ describe('query', () => {
     const actual = query({ 'a "special" key': 'value' })
     expect(actual).toBe(expected)
   })
+
+  it('Handles unicode emoji in values', () => {
+    const expected = 'emoji=%F0%9F%9A%80'
+    const actual = query({ emoji: '🚀' })
+    expect(actual).toBe(expected)
+  })
+
+  it('Handles unicode emoji in keys', () => {
+    const expected = '%F0%9F%9A%80=rocket'
+    const actual = query({ '🚀': 'rocket' })
+    expect(actual).toBe(expected)
+  })
+
+  it('Handles multiple unicode characters', () => {
+    const expected = 'a=%F0%9F%9A%80&b=%F0%9F%8C%9F'
+    const actual = query({ a: '🚀', b: '🌟' })
+    expect(actual).toBe(expected)
+  })
+
+  it('Handles unicode mixed with ASCII', () => {
+    const expected = 'text=hello%F0%9F%9A%80world'
+    const actual = query({ text: 'hello🚀world' })
+    expect(actual).toBe(expected)
+  })
+
+  it('Handles various unicode characters (accents, CJK, symbols)', () => {
+    const expected = 'name=%C3%A9&chinese=%E4%B8%AD%E6%96%87&check=%E2%9C%93'
+    const actual = query({ name: 'é', chinese: '中文', check: '✓' })
+    expect(actual).toBe(expected)
+  })
 })
