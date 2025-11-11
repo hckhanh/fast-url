@@ -240,4 +240,80 @@ describe('createUrl', () => {
       }),
     ).toBe('http:1://example.com:8080/path/1/2/3')
   })
+
+  it('Handles unicode emoji in path parameters', () => {
+    const expected = 'http://example.com/path/%F0%9F%9A%80'
+    const actual = createUrl('http://example.com/path/:emoji', { emoji: '🚀' })
+    expect(actual).toBe(expected)
+  })
+
+  it('Handles unicode emoji in query parameters', () => {
+    const expected = 'http://example.com/path?emoji=%F0%9F%9A%80'
+    const actual = createUrl('http://example.com/path', { emoji: '🚀' })
+    expect(actual).toBe(expected)
+  })
+
+  it('Handles multiple unicode characters in path parameters', () => {
+    const expected = 'http://example.com/path/%F0%9F%9A%80/%F0%9F%8C%9F'
+    const actual = createUrl('http://example.com/path/:a/:b', {
+      a: '🚀',
+      b: '🌟',
+    })
+    expect(actual).toBe(expected)
+  })
+
+  it('Handles unicode characters mixed with ASCII in path parameters', () => {
+    const expected = 'http://example.com/path/hello%F0%9F%9A%80world'
+    const actual = createUrl('http://example.com/path/:text', {
+      text: 'hello🚀world',
+    })
+    expect(actual).toBe(expected)
+  })
+
+  it('Handles unicode emoji with path and query parameters together', () => {
+    const expected = 'http://example.com/path/%F0%9F%9A%80?search=%F0%9F%8C%9F'
+    const actual = createUrl('http://example.com/path/:emoji', {
+      emoji: '🚀',
+      search: '🌟',
+    })
+    expect(actual).toBe(expected)
+  })
+
+  it('Handles various unicode characters (emoji, symbols, accents)', () => {
+    const expected =
+      'http://example.com/users/%C3%A9?name=%E4%B8%AD%E6%96%87&symbol=%E2%9C%93'
+    const actual = createUrl('http://example.com/users/:id', {
+      id: 'é',
+      name: '中文',
+      symbol: '✓',
+    })
+    expect(actual).toBe(expected)
+  })
+
+  it('Handles Vietnamese characters in path parameters', () => {
+    const expected = 'http://example.com/city/%C4%90%C3%A0%20N%E1%BA%B5ng'
+    const actual = createUrl('http://example.com/city/:name', {
+      name: 'Đà Nẵng',
+    })
+    expect(actual).toBe(expected)
+  })
+
+  it('Handles Vietnamese characters in query parameters', () => {
+    const expected =
+      'http://example.com/search?q=Vi%E1%BB%87t%20Nam&city=S%C3%A0i%20G%C3%B2n'
+    const actual = createUrl('http://example.com/search', {
+      q: 'Việt Nam',
+      city: 'Sài Gòn',
+    })
+    expect(actual).toBe(expected)
+  })
+
+  it('Handles Vietnamese characters with path and query together', () => {
+    const expected = 'http://example.com/user/Nguy%E1%BB%85n?name=Tr%E1%BA%A7n'
+    const actual = createUrl('http://example.com/user/:id', {
+      id: 'Nguyễn',
+      name: 'Trần',
+    })
+    expect(actual).toBe(expected)
+  })
 })

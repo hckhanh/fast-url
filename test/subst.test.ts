@@ -71,4 +71,51 @@ describe('subst', () => {
   it('Throws if a param is missing', () => {
     expect(() => subst(':p', {})).toThrow()
   })
+
+  it('Handles unicode emoji in params', () => {
+    const expected = '%F0%9F%9A%80'
+    const actual = subst(':p', { p: '🚀' })
+    expect(actual).toBe(expected)
+  })
+
+  it('Handles multiple unicode emojis', () => {
+    const expected = '/%F0%9F%9A%80/%F0%9F%8C%9F'
+    const actual = subst('/:a/:b', { a: '🚀', b: '🌟' })
+    expect(actual).toBe(expected)
+  })
+
+  it('Handles unicode mixed with ASCII', () => {
+    const expected = '/hello%F0%9F%9A%80world'
+    const actual = subst('/:text', { text: 'hello🚀world' })
+    expect(actual).toBe(expected)
+  })
+
+  it('Handles various unicode characters (accents, CJK, symbols)', () => {
+    const expected = '/users/%C3%A9/posts/%E4%B8%AD%E6%96%87/%E2%9C%93'
+    const actual = subst('/users/:name/posts/:title/:status', {
+      name: 'é',
+      title: '中文',
+      status: '✓',
+    })
+    expect(actual).toBe(expected)
+  })
+
+  it('Handles Vietnamese characters in substitution', () => {
+    const expected =
+      '/city/%C4%90%C3%A0%20N%E1%BA%B5ng/country/Vi%E1%BB%87t%20Nam'
+    const actual = subst('/city/:city/country/:country', {
+      city: 'Đà Nẵng',
+      country: 'Việt Nam',
+    })
+    expect(actual).toBe(expected)
+  })
+
+  it('Handles Vietnamese names with diacritics', () => {
+    const expected = '/user/Nguy%E1%BB%85n/Tr%E1%BA%A7n'
+    const actual = subst('/user/:first/:last', {
+      first: 'Nguyễn',
+      last: 'Trần',
+    })
+    expect(actual).toBe(expected)
+  })
 })
