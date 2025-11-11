@@ -155,14 +155,77 @@ export function subst(template: string, params: ParamMap): string {
 }
 
 function path(template: string, params: ParamMap) {
-  const remainingParams = { ...params }
-  const renderedPath = template.replace(/:[_A-Za-z]+\w*/g, (p) => {
-    const key = p.slice(1)
-    validatePathParam(params, key)
-    delete remainingParams[key]
-    return encodeURIComponent(params[key] as string | number | boolean)
-  })
-  return { renderedPath, remainingParams }
+  // Fast path: no parameters in template
+  if (!template.includes(':')) {
+    return { renderedPath: template, remainingParams: params }
+  }
+
+  const usedKeys = new Set<string>()
+  let result = ''
+  let i = 0
+  const len = template.length
+
+  while (i < len) {
+    const char = template[i]
+
+    if (char === ':') {
+      // Found a parameter - extract the key
+      const keyStart = i + 1
+      let keyEnd = keyStart
+
+      // First character must be _ or letter
+      const firstChar = template.charCodeAt(keyStart)
+      if (
+        (firstChar >= 65 && firstChar <= 90) || // A-Z
+        (firstChar >= 97 && firstChar <= 122) || // a-z
+        firstChar === 95 // _
+      ) {
+        keyEnd++
+        // Continue with word characters (letters, digits, _)
+        while (keyEnd < len) {
+          const code = template.charCodeAt(keyEnd)
+          if (
+            (code >= 48 && code <= 57) || // 0-9
+            (code >= 65 && code <= 90) || // A-Z
+            (code >= 97 && code <= 122) || // a-z
+            code === 95 // _
+          ) {
+            keyEnd++
+          } else {
+            break
+          }
+        }
+
+        const key = template.slice(keyStart, keyEnd)
+        validatePathParam(params, key)
+        usedKeys.add(key)
+        result += encodeURIComponent(params[key] as string | number | boolean)
+        i = keyEnd
+      } else {
+        // Invalid parameter format, just add the colon
+        result += char
+        i++
+      }
+    } else {
+      result += char
+      i++
+    }
+  }
+
+  // Build remaining params object (only if there are used keys)
+  const remainingParams: ParamMap = {}
+  if (usedKeys.size > 0) {
+    for (const key in params) {
+      if (!usedKeys.has(key)) {
+        remainingParams[key] = params[key]
+      }
+    }
+  } else {
+    // No parameters used, return original params
+    return { renderedPath: result, remainingParams: params }
+  }
+
+  return { renderedPath: result, remainingParams }
 }
 
 function validatePathParam(params: ParamMap, key: string) {
@@ -220,7 +283,12 @@ export function join(part1: string, separator: string, part2: string): string {
  * ```
  */
 function removeNullOrUndef<P extends ParamMap>(params: P) {
-  return Object.fromEntries(
-    Object.entries(params).filter(([, value]) => value != null),
-  ) as { [K in keyof P]: NonNullable<P[K]> }
+  const result: ParamMap = {}
+  for (const key in params) {
+    const value = params[key]
+    if (value != null) {
+      result[key] = value
+    }
+  }
+  return result as { [K in keyof P]: NonNullable<P[K]> }
 }

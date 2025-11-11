@@ -50,40 +50,57 @@ function getAsPrimitive(value: unknown) {
  * ```
  */
 export function stringify(input: unknown) {
-  let result = ''
-
   if (input === null || typeof input !== 'object') {
-    return result
+    return ''
   }
 
-  const separator = '&'
   const keys = Object.keys(input)
   const keyLength = keys.length
-  let valueLength = 0
 
-  for (let i = 0; i < keyLength; i++) {
-    const key = keys[i]
-    const value = (input as Record<string, unknown>)[key]
-    const encodedKey = encodeString(key) + '='
+  if (keyLength === 0) {
+    return ''
+  }
 
-    if (i) {
-      result += separator
+  let result = ''
+  const inputObj = input as Record<string, unknown>
+
+  // Process first key without separator
+  let key = keys[0]
+  let value = inputObj[key]
+  let encodedKey = encodeString(key)
+
+  if (Array.isArray(value)) {
+    const valueLength = value.length
+    for (let j = 0; j < valueLength; j++) {
+      if (j > 0) result += '&'
+      result += encodedKey
+      result += '='
+      result += getAsPrimitive(value[j])
     }
+  } else {
+    result += encodedKey
+    result += '='
+    result += getAsPrimitive(value)
+  }
+
+  // Process remaining keys with separator prefix
+  for (let i = 1; i < keyLength; i++) {
+    result += '&'
+    key = keys[i]
+    value = inputObj[key]
+    encodedKey = encodeString(key)
 
     if (Array.isArray(value)) {
-      valueLength = value.length
+      const valueLength = value.length
       for (let j = 0; j < valueLength; j++) {
-        if (j) {
-          result += separator
-        }
-
-        // Optimization: Dividing into multiple lines improves the performance.
-        // Since v8 does not need to care about the '+' character if it was one-liner.
+        if (j > 0) result += '&'
         result += encodedKey
+        result += '='
         result += getAsPrimitive(value[j])
       }
     } else {
       result += encodedKey
+      result += '='
       result += getAsPrimitive(value)
     }
   }
