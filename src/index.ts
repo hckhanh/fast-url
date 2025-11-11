@@ -109,6 +109,17 @@ function createUrlImpl(
   baseUrl: string | undefined,
 ) {
   const { renderedPath, remainingParams } = path(pathTemplate, params)
+  
+  // Early return optimization: if no remaining params and path doesn't end with '?'
+  // This avoids unnecessary function calls for simple path-only templates
+  // Note: We need to process paths ending with '?' through join to remove the trailing '?'
+  if (Object.keys(remainingParams).length === 0 && !renderedPath.endsWith('?')) {
+    if (!baseUrl) return renderedPath
+    return renderedPath.length
+      ? join(baseUrl, '/', renderedPath)
+      : baseUrl
+  }
+  
   const cleanParams = removeNullOrUndef(remainingParams)
   const renderedQuery = query(cleanParams)
   const pathAndQuery = join(renderedPath, '?', renderedQuery)
