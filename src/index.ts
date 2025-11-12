@@ -176,13 +176,16 @@ function validatePathParam(params: ParamMap, key: string) {
   if (!Object.hasOwn(params, key)) {
     throw new Error(`Missing value for path parameter ${key}.`)
   }
+
   const type = typeof params[key]
+
   if (type !== 'boolean' && type !== 'string' && type !== 'number') {
     throw new TypeError(
       `Path parameter ${key} cannot be of type ${type}. ` +
         'Allowed types are: boolean, string, number.',
     )
   }
+
   if (type === 'string' && (params[key] as string).trim() === '') {
     throw new Error(`Path parameter ${key} cannot be an empty string.`)
   }
