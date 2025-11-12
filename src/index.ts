@@ -250,28 +250,23 @@ export function join(part1: string, separator: string, part2: string): string {
 function removeNullOrUndef<P extends ParamMap>(params: P) {
   // Optimized: Direct property iteration is faster than Object.entries/fromEntries
   // Fast path: check if any null/undefined exists first
-  let hasNullish = false
   for (const key in params) {
     if (Object.hasOwn(params, key) && params[key] == null) {
-      hasNullish = true
-      break
+      // Build a new object only if needed
+      const result: ParamMap = {}
+      for (const key in params) {
+        if (Object.hasOwn(params, key)) {
+          const value = params[key]
+          if (value != null) {
+            result[key] = value
+          }
+        }
+      }
+
+      return result as { [K in keyof P]: NonNullable<P[K]> }
     }
   }
 
   // If no null/undefined values, return as-is (avoid object allocation)
-  if (!hasNullish) {
-    return params as { [K in keyof P]: NonNullable<P[K]> }
-  }
-
-  // Build new object only if needed
-  const result: ParamMap = {}
-  for (const key in params) {
-    if (Object.hasOwn(params, key)) {
-      const value = params[key]
-      if (value != null) {
-        result[key] = value
-      }
-    }
-  }
-  return result as { [K in keyof P]: NonNullable<P[K]> }
+  return params as { [K in keyof P]: NonNullable<P[K]> }
 }
