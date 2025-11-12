@@ -155,13 +155,22 @@ export function subst(template: string, params: ParamMap): string {
 }
 
 function path(template: string, params: ParamMap) {
+  // Fast path: if the template has no colons, no params to substitute
+  if (template.indexOf(':') === -1) {
+    return { renderedPath: template, remainingParams: params }
+  }
+
   const remainingParams = { ...params }
+
   const renderedPath = template.replace(/:[_A-Za-z]+\w*/g, (p) => {
     const key = p.slice(1)
+
     validatePathParam(params, key)
+
     delete remainingParams[key]
     return encodeURIComponent(params[key] as string | number | boolean)
   })
+
   return { renderedPath, remainingParams }
 }
 
