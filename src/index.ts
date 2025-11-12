@@ -154,10 +154,13 @@ export function subst(template: string, params: ParamMap): string {
   return renderedPath
 }
 
+// Pre-compile regex for better performance - avoids recompilation overhead on each call
+const PATH_PARAM_REGEX = /:[_A-Za-z]+\w*/g
+
 function path(template: string, params: ParamMap) {
   const remainingParams = { ...params }
 
-  const renderedPath = template.replace(/:[_A-Za-z]+\w*/g, (p) => {
+  const renderedPath = template.replace(PATH_PARAM_REGEX, (p) => {
     const key = p.slice(1)
 
     validatePathParam(params, key)
