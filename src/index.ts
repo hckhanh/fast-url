@@ -88,9 +88,14 @@ export function createUrl(
   pathTemplateOrParams: string | ParamMap,
   maybeParams: ParamMap = {},
 ): string {
+  const refinedBaseUrlOrTemplate =
+    baseUrlOrTemplate[baseUrlOrTemplate.length - 1] === '/'
+      ? baseUrlOrTemplate.slice(0, -1)
+      : baseUrlOrTemplate
+
   return typeof pathTemplateOrParams === 'string'
-    ? createUrlImpl(pathTemplateOrParams, maybeParams, baseUrlOrTemplate)
-    : createUrlImpl(baseUrlOrTemplate, pathTemplateOrParams, undefined)
+    ? createUrlImpl(pathTemplateOrParams, maybeParams, refinedBaseUrlOrTemplate)
+    : createUrlImpl(refinedBaseUrlOrTemplate, pathTemplateOrParams, undefined)
 }
 
 function joinFullUrl(
