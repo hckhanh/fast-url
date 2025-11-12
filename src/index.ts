@@ -109,24 +109,6 @@ function createUrlImpl(
   baseUrl: string | undefined,
 ) {
   const { renderedPath, remainingParams } = path(pathTemplate, params)
-
-  // Early return optimization: if no remaining params and path doesn't end with '?'
-  // This avoids unnecessary function calls for simple path-only templates
-  // Note: We need to process paths ending with '?' through join to remove the trailing '?'
-  // Optimized: Check for empty object without creating Object.keys array
-  let hasRemainingParams = false
-  for (const key in remainingParams) {
-    if (Object.hasOwn(remainingParams, key)) {
-      hasRemainingParams = true
-      break
-    }
-  }
-
-  if (!hasRemainingParams && !renderedPath.endsWith('?')) {
-    if (!baseUrl) return renderedPath
-    return renderedPath.length ? join(baseUrl, '/', renderedPath) : baseUrl
-  }
-
   const cleanParams = removeNullOrUndef(remainingParams)
   const renderedQuery = query(cleanParams)
   const pathAndQuery = join(renderedPath, '?', renderedQuery)
@@ -150,13 +132,7 @@ function createUrlImpl(
  * ```
  */
 export function query(params: ParamMap): string {
-  // Optimized: Check for empty object without creating Object.keys array
-  for (const key in params) {
-    if (Object.hasOwn(params, key)) {
-      return stringify(params)
-    }
-  }
-  return ''
+  return Object.keys(params).length ? stringify(params) : ''
 }
 
 /**
@@ -187,28 +163,13 @@ function path(template: string, params: ParamMap) {
     return { renderedPath: template, remainingParams: params }
   }
 
-  const usedKeys = new Set<string>()
+  const remainingParams = { ...params }
   const renderedPath = template.replace(PATH_PARAM_REGEX, (p) => {
     const key = p.slice(1)
     validatePathParam(params, key)
-    usedKeys.add(key)
+    delete remainingParams[key]
     return encodeURIComponent(params[key] as string | number | boolean)
   })
-
-  // Only create remainingParams if we actually used some keys
-  // This avoids unnecessary object allocation when no path params exist
-  if (usedKeys.size === 0) {
-    return { renderedPath, remainingParams: params }
-  }
-
-  // Build remaining params without object spread for better performance
-  const remainingParams: ParamMap = {}
-  for (const key in params) {
-    if (Object.hasOwn(params, key) && !usedKeys.has(key)) {
-      remainingParams[key] = params[key]
-    }
-  }
-
   return { renderedPath, remainingParams }
 }
 
