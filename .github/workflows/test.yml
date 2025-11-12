@@ -84,4 +84,3 @@ jobs:
         with:
           run: bun bench
           mode: 'instrumentation'
-          cache-instruments: false
