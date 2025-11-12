@@ -105,6 +105,26 @@ describe('createUrl benchmarks', () => {
         param15: 'value15',
       })
     })
+
+    bench('Large query string (15 params) with some path params', () => {
+      createUrl('http://example.com/api/data/:param1/demo/:param8/demo/:param15', {
+        param1: 'value1',
+        param2: 'value2',
+        param3: 'value3',
+        param4: 'value4',
+        param5: 'value5',
+        param6: 'value6',
+        param7: 'value7',
+        param8: 'value8',
+        param9: 'value9',
+        param10: 'value10',
+        param11: 'value11',
+        param12: 'value12',
+        param13: 'value13',
+        param14: 'value14',
+        param15: 'value15',
+      })
+    })
   })
 
   describe('Real-world patterns', () => {
