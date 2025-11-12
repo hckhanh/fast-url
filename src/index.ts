@@ -155,11 +155,6 @@ export function subst(template: string, params: ParamMap): string {
 }
 
 function path(template: string, params: ParamMap) {
-  // Fast path: if the template has no colons, no params to substitute
-  if (template.indexOf(':') === -1) {
-    return { renderedPath: template, remainingParams: params }
-  }
-
   const remainingParams = { ...params }
 
   const renderedPath = template.replace(/:[_A-Za-z]+\w*/g, (p) => {
@@ -208,11 +203,34 @@ function validatePathParam(params: ParamMap, key: string) {
  * ```
  */
 export function join(part1: string, separator: string, part2: string): string {
-  const p1 = part1.endsWith(separator)
-    ? part1.slice(0, -separator.length)
-    : part1
-  const p2 = part2.startsWith(separator) ? part2.slice(separator.length) : part2
-  return !p1 || !p2 ? p1 + p2 : p1 + separator + p2
+  const len1 = part1.length
+  const len2 = part2.length
+
+  // Fast path: handle empty parts
+  if (len1 === 0) {
+    return len2 > 0 && part2[0] === separator ? part2.slice(1) : part2
+  }
+  if (len2 === 0) {
+    return part1[len1 - 1] === separator ? part1.slice(0, -1) : part1
+  }
+
+  // Check boundaries using direct character access (faster than endsWith/startsWith)
+  const p1EndsWithSep = part1[len1 - 1] === separator
+  const p2StartsWithSep = part2[0] === separator
+
+  // Optimize for the common case where no trimming is needed
+  if (!p1EndsWithSep && !p2StartsWithSep) {
+    return part1 + separator + part2
+  }
+
+  // Optimized: When both have separator, just remove from part2 (avoids slicing part1)
+  // This is the most common case for URL building: "http://example.com/" + "/path"
+  if (p1EndsWithSep && p2StartsWithSep) {
+    return part1 + part2.slice(1)
+  }
+
+  // One has separator, one doesn't - just concatenate
+  return part1 + part2
 }
 
 /**
