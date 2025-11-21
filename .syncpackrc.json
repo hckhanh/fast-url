@@ -37,9 +37,9 @@
   ],
   "semverGroups": [
     {
-      "label": "All non-peer dependencies must be pinned",
+      "label": "All dependencies must be pinned except peer and resolutions",
       "range": "",
-      "dependencyTypes": ["!peer"],
+      "dependencyTypes": ["!peer", "!resolutions"],
       "dependencies": ["**"],
       "packages": ["**"]
     },
