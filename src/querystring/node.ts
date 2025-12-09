@@ -13,7 +13,7 @@
 // Updated to the latest version with browser and server compatibility
 
 // Hex encoding lookup table
-const hexTable = new Array(256)
+const hexTable = /*#__PURE__*/ new Array(256)
 for (let i = 0; i < 256; ++i) {
   hexTable[i] = '%' + ((i < 16 ? '0' : '') + i.toString(16)).toUpperCase()
 }
@@ -25,7 +25,7 @@ for (let i = 0; i < 256; ++i) {
 // alpha (uppercase)
 // alpha (lowercase)
 // biome-ignore format: the array should not be formatted
-const noEscape = new Int8Array([
+const noEscape = /*#__PURE__*/ new Int8Array([
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 0 - 15
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 16 - 31
   0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, // 32 - 47
