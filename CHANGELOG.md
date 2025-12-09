@@ -1,5 +1,11 @@
 # fast-url
 
+## 6.0.3
+
+### Patch Changes
+
+- 1d1d133: Add PURE annotations to Array and Int8Array constructors for better tree-shaking
+
 ## 6.0.2
 
 ### Patch Changes
