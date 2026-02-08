@@ -46,7 +46,7 @@
     "@vitest/coverage-v8": "4.0.18",
     "knip": "5.83.0",
     "syncpack": "14.0.0-alpha.40",
-    "tsdown": "0.20.2",
+    "tsdown": "0.20.3",
     "typescript": "5.9.3",
     "vitest": "4.0.18"
   },
