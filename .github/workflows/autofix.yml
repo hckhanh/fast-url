@@ -23,8 +23,10 @@ jobs:
         uses: jdx/mise-action@6d1e696aa24c1aa1bcc1adea0212707c71ab78a8 # v3.6.1
       - name: Setup Aikido Safe Chain
         run: curl -fsSL https://github.com/AikidoSec/safe-chain/releases/latest/download/install-safe-chain.sh | sh -s -- --ci
+      - name: Install Dependencies
+        run: bun install
       - name: Format code
-        run: bun ultracite fix
+        run: bun fix
       - name: Fix package.json
         run: bun syncpack fix
       - name: Format package.json
