@@ -24,7 +24,7 @@ jobs:
       - name: Setup Aikido Safe Chain
         run: curl -fsSL https://github.com/AikidoSec/safe-chain/releases/latest/download/install-safe-chain.sh | sh -s -- --ci
       - name: Format code
-        run: bun fix
+        run: bun ultracite fix
       - name: Fix package.json
         run: bun syncpack fix
       - name: Format package.json
