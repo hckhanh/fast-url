@@ -28,7 +28,7 @@ jobs:
       - name: Optimize dependencies with @socketregistry overrides
         run: socket optimize
       - name: Format code
-        run: bun biome check --write
+        run: bun fix
       - name: Fix package.json
         run: bun syncpack fix
       - name: Format package.json
