@@ -39,6 +39,7 @@ jobs:
           commit: 'chore(release): bump version package'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SAFE_CHAIN_MINIMUM_PACKAGE_AGE_HOURS: 0
       - name: Publish to JSR
         run: |
           bun tools/jsr.ts
