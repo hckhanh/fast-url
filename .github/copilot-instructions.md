@@ -172,7 +172,7 @@ fast-url/
 - No Biome linting errors
 - No unused code (verified by Knip)
 - Security scanning via CodeQL and Scorecards
-- Socket Firewall enabled for dependency security
+- Aikido Safe Chain enabled for dependency security
 
 ### Pull Request Requirements
 - PRs must pass all CI checks
