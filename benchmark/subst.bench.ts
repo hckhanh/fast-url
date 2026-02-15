@@ -117,7 +117,7 @@ describe('subst benchmarks', () => {
 
   describe('Real-world patterns', () => {
     bench('REST API resource path', () => {
-      subst('/api/v1/users/:id', { id: 12345 })
+      subst('/api/v1/users/:id', { id: 12_345 })
     })
 
     bench('Nested resource path', () => {

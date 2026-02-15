@@ -226,7 +226,7 @@ export function join(part1: string, separator: string, part2: string): string {
   const p2StartsWithSep = part2[0] === separator
 
   // Optimize for the common case where no trimming is needed
-  if (!p1EndsWithSep && !p2StartsWithSep) {
+  if (!(p1EndsWithSep || p2StartsWithSep)) {
     return part1 + separator + part2
   }
 

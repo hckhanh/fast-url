@@ -63,7 +63,7 @@ describe('subst', () => {
   })
 
   it('Throws if a param is a symbol', () => {
-    expect(() => subst(':p', { p: Symbol() })).toThrowError(
+    expect(() => subst(':p', { p: Symbol('test') })).toThrowError(
       'Path parameter p cannot be of type symbol. Allowed types are: boolean, string, number.',
     )
   })

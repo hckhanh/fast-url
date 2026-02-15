@@ -15,7 +15,7 @@
 // Hex encoding lookup table
 const hexTable = /*#__PURE__*/ new Array(256)
 for (let i = 0; i < 256; ++i) {
-  hexTable[i] = '%' + ((i < 16 ? '0' : '') + i.toString(16)).toUpperCase()
+  hexTable[i] = `%${((i < 16 ? '0' : '') + i.toString(16)).toUpperCase()}`
 }
 
 // These characters do not need escaping when generating query strings:
@@ -41,8 +41,12 @@ const noEscape = /*#__PURE__*/ new Int8Array([
  * Returns original string if no encoding was needed.
  */
 function finalize(str: string, out: string, lastPos: number): string {
-  if (lastPos === 0) return str
-  if (lastPos < str.length) return out + str.slice(lastPos)
+  if (lastPos === 0) {
+    return str
+  }
+  if (lastPos < str.length) {
+    return out + str.slice(lastPos)
+  }
   return out
 }
 
@@ -54,14 +58,14 @@ function encodeMultibyte(
   c: number,
   i: number,
 ): { encoded: string; nextPos: number } {
-  if (c < 0x800) {
+  if (c < 0x8_00) {
     // 2-byte UTF-8
     return {
       encoded: hexTable[0xc0 | (c >> 6)] + hexTable[0x80 | (c & 0x3f)],
       nextPos: i + 1,
     }
   }
-  if (c < 0x10000) {
+  if (c < 0x1_00_00) {
     // 3-byte UTF-8
     return {
       encoded:
@@ -95,7 +99,9 @@ function encodeMultibyte(
  */
 export function encodeString(str: string): string {
   const len = str.length
-  if (len === 0) return ''
+  if (len === 0) {
+    return ''
+  }
 
   let i = 0
   let out = ''
@@ -107,18 +113,25 @@ export function encodeString(str: string): string {
     // Process consecutive ASCII characters (hot path - kept inline)
     while (c < 0x80) {
       if (noEscape[c] !== 1) {
-        if (lastPos < i) out += str.slice(lastPos, i)
+        if (lastPos < i) {
+          out += str.slice(lastPos, i)
+        }
+
         lastPos = i + 1
         out += hexTable[c]
       }
 
-      if (++i === len) return finalize(str, out, lastPos)
+      if (++i === len) {
+        return finalize(str, out, lastPos)
+      }
 
       c = str.codePointAt(i) as number
     }
 
     // Process multibyte character (c >= 0x80)
-    if (lastPos < i) out += str.slice(lastPos, i)
+    if (lastPos < i) {
+      out += str.slice(lastPos, i)
+    }
 
     const result = encodeMultibyte(c, i)
     out += result.encoded

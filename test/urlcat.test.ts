@@ -181,7 +181,7 @@ describe('createUrl', () => {
 
   it('Throws if a path param is a symbol', () => {
     expect(() =>
-      createUrl('http://example.com/path/:p', { p: Symbol() }),
+      createUrl('http://example.com/path/:p', { p: Symbol('test') }),
     ).toThrowError(
       'Path parameter p cannot be of type symbol. Allowed types are: boolean, string, number.',
     )

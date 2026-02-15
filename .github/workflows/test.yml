@@ -11,22 +11,20 @@ permissions:
   contents: read
 
 jobs:
-  knip:
-    name: Knip
+  ultracite:
+    name: Ultracite
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Setup toolchains
         uses: jdx/mise-action@6d1e696aa24c1aa1bcc1adea0212707c71ab78a8 # v3.6.1
-      - name: Setup Socket Firewall
-        uses: SocketDev/action@4337a545deecc20f19a909e52db7a2f6ba292f42 # v1.2.0
-        with:
-          mode: firewall
+      - name: Setup Aikido Safe Chain
+        run: curl -fsSL https://github.com/AikidoSec/safe-chain/releases/latest/download/install-safe-chain.sh | sh -s -- --ci
       - name: Install Dependencies
-        run: sfw bun ci
-      - name: Run Knip
-        run: bun knip-bun
+        run: bun ci
+      - name: Check
+        run: bun check
   deno:
     name: Deno
     runs-on: ubuntu-latest
@@ -37,8 +35,8 @@ jobs:
         uses: denoland/setup-deno@e95548e56dfa95d4e1a28d6f422fafe75c4c26fb # v2.0.3
       - name: Run dependencies type-check
         run: deno check src/index.ts
-  test:
-    name: Test
+  vitest:
+    name: Vitest
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -48,12 +46,10 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Setup toolchains
         uses: jdx/mise-action@6d1e696aa24c1aa1bcc1adea0212707c71ab78a8 # v3.6.1
-      - name: Setup Socket Firewall
-        uses: SocketDev/action@4337a545deecc20f19a909e52db7a2f6ba292f42 # v1.2.0
-        with:
-          mode: firewall
+      - name: Setup Aikido Safe Chain
+        run: curl -fsSL https://github.com/AikidoSec/safe-chain/releases/latest/download/install-safe-chain.sh | sh -s -- --ci
       - name: Install Dependencies
-        run: sfw bun ci
+        run: bun ci
       - name: Run Tests
         run: bun run test --coverage --reporter=junit --outputFile=test-report.junit.xml
       - name: Upload coverage reports to Codecov
@@ -76,12 +72,10 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Setup toolchains
         uses: jdx/mise-action@6d1e696aa24c1aa1bcc1adea0212707c71ab78a8 # v3.6.1
-      - name: Setup Socket Firewall
-        uses: SocketDev/action@4337a545deecc20f19a909e52db7a2f6ba292f42 # v1.2.0
-        with:
-          mode: firewall
+      - name: Setup Aikido Safe Chain
+        run: curl -fsSL https://github.com/AikidoSec/safe-chain/releases/latest/download/install-safe-chain.sh | sh -s -- --ci
       - name: Install Dependencies
-        run: sfw bun ci
+        run: bun ci
       - name: Run Benchmarks
         uses: CodSpeedHQ/action@4deb3275dd364fb96fb074c953133d29ec96f80f # v4.10.6
         with:
