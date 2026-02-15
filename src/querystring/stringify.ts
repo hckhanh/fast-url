@@ -22,10 +22,14 @@ function getAsPrimitive(value: unknown) {
   if (type === 'string') {
     // Length check is handled inside the encodeString function
     return encodeString(value as string)
-  } else if (type === 'bigint' || type === 'boolean') {
-    return '' + value
-  } else if (type === 'number' && Number.isFinite(value)) {
-    return (value as number) < 1e21 ? '' + value : encodeString('' + value)
+  }
+
+  if (type === 'bigint' || type === 'boolean') {
+    return `${value}`
+  }
+
+  if (type === 'number' && Number.isFinite(value)) {
+    return (value as number) < 1e21 ? `${value}` : encodeString(`${value}`)
   }
 
   return ''
@@ -64,7 +68,7 @@ export function stringify(input: unknown) {
   for (let i = 0; i < keyLength; i++) {
     const key = keys[i]
     const value = (input as Record<string, unknown>)[key]
-    const encodedKey = encodeString(key) + '='
+    const encodedKey = `${encodeString(key)}=`
 
     if (i) {
       result += separator

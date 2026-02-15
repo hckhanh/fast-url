@@ -210,9 +210,9 @@ describe('stringify benchmarks', () => {
 
     bench('BigInt values only', () => {
       stringify({
-        userId: BigInt(9007199254740991),
-        timestamp: BigInt(1609459200000),
-        transactionId: BigInt(123456789),
+        userId: BigInt(9_007_199_254_740_991),
+        timestamp: BigInt(1_609_459_200_000),
+        transactionId: BigInt(123_456_789),
         value: BigInt(100),
       })
     })
@@ -223,7 +223,7 @@ describe('stringify benchmarks', () => {
         price: 99.99,
         inStock: true,
         quantity: 5,
-        id: BigInt(12345),
+        id: BigInt(12_345),
         featured: false,
         weight: 2.5,
         available: true,
@@ -407,7 +407,7 @@ describe('stringify benchmarks', () => {
 
     bench('E-commerce cart params', () => {
       stringify({
-        productId: 12345,
+        productId: 12_345,
         quantity: 2,
         color: 'blue',
         size: 'large',
@@ -421,9 +421,9 @@ describe('stringify benchmarks', () => {
     bench('Analytics tracking params', () => {
       stringify({
         event: 'page_view',
-        userId: BigInt(9876543210),
+        userId: BigInt(9_876_543_210),
         sessionId: 'abc123def456',
-        timestamp: 1609459200000,
+        timestamp: 1_609_459_200_000,
         referrer: 'https://google.com',
         campaign: 'summer_sale',
         source: 'email',
@@ -474,8 +474,8 @@ describe('stringify benchmarks', () => {
         negative: -42,
         float: Math.PI,
         nan: Number.NaN,
-        infinity: Infinity,
-        negInfinity: -Infinity,
+        infinity: Number.POSITIVE_INFINITY,
+        negInfinity: Number.NEGATIVE_INFINITY,
       })
     })
   })

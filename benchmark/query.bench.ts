@@ -113,8 +113,8 @@ describe('query benchmarks', () => {
 
     bench('BigInt values', () => {
       query({
-        userId: BigInt(9007199254740991),
-        timestamp: BigInt(1609459200000),
+        userId: BigInt(9_007_199_254_740_991),
+        timestamp: BigInt(1_609_459_200_000),
         value: BigInt(100),
       })
     })

@@ -174,7 +174,7 @@ describe('encodeString', () => {
 
     it('Encodes lone surrogates', () => {
       // Create a string with a lone high surrogate
-      const malformedString = String.fromCodePoint(0xd800)
+      const malformedString = String.fromCodePoint(0xd8_00)
       expect(encodeString(malformedString)).toBe('%ED%A0%80')
     })
 
@@ -192,7 +192,7 @@ describe('encodeString', () => {
 
     it('Handles lone surrogate followed by regular character', () => {
       // Lone high surrogate + ASCII
-      const str = String.fromCodePoint(0xd800) + 'a'
+      const str = `${String.fromCodePoint(0xd8_00)}a`
       expect(encodeString(str)).toBe('%ED%A0%80a')
     })
   })
@@ -240,7 +240,7 @@ describe('stringify', () => {
     })
 
     it('Handles bigint values', () => {
-      expect(stringify({ id: BigInt(12345) })).toBe('id=12345')
+      expect(stringify({ id: BigInt(12_345) })).toBe('id=12345')
     })
 
     it('Handles large bigint values', () => {
@@ -295,11 +295,11 @@ describe('stringify', () => {
     })
 
     it('Handles Infinity as empty string', () => {
-      expect(stringify({ value: Infinity })).toBe('value=')
+      expect(stringify({ value: Number.POSITIVE_INFINITY })).toBe('value=')
     })
 
     it('Handles -Infinity as empty string', () => {
-      expect(stringify({ value: -Infinity })).toBe('value=')
+      expect(stringify({ value: Number.NEGATIVE_INFINITY })).toBe('value=')
     })
 
     it('Handles empty string values', () => {
