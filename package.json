@@ -32,10 +32,10 @@
   "scripts": {
     "bench": "vitest bench",
     "build": "tsdown",
-    "release": "bun run build && changeset publish",
-    "test": "vitest",
     "check": "ultracite check",
-    "fix": "ultracite fix"
+    "fix": "ultracite fix",
+    "release": "bun run build && changeset publish",
+    "test": "vitest"
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.15",
