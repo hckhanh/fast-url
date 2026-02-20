@@ -1,8 +1,13 @@
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared'
 
+export const gitConfig = {
+  user: 'hckhanh',
+  repo: 'fast-url',
+  branch: 'main',
+}
+
 export function baseOptions(): BaseLayoutProps {
   return {
-    githubUrl: 'https://github.com/hckhanh/fast-url',
     nav: {
       title: (
         <span>
@@ -11,5 +16,6 @@ export function baseOptions(): BaseLayoutProps {
       ),
       url: '/docs',
     },
+    githubUrl: `https://github.com/${gitConfig.user}/${gitConfig.repo}`,
   }
 }

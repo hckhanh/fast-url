@@ -8,14 +8,19 @@
   "linter": {
     "rules": {
       "performance": {
-        "noNamespaceImport": "off"
+        "noNamespaceImport": "off",
+        "noBarrelFile": "off"
       },
       "style": {
         "useTemplate": {
           "level": "warn",
           "fix": "safe"
         },
-        "useUnifiedTypeSignatures": "off"
+        "useUnifiedTypeSignatures": "off",
+        "useConsistentCurlyBraces": {
+          "level": "warn",
+          "fix": "safe"
+        }
       },
       "suspicious": {
         "noBitwiseOperators": "off"
