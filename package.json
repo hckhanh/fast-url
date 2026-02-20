@@ -38,7 +38,7 @@
     "test": "vitest"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.4.3",
+    "@biomejs/biome": "2.4.2",
     "@changesets/cli": "2.29.8",
     "@changesets/config": "3.1.2",
     "@codspeed/vitest-plugin": "5.2.0",
