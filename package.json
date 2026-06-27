@@ -46,7 +46,7 @@
     "@types/node": "25.9.4",
     "@vitest/coverage-v8": "4.0.18",
     "knip": "5.88.1",
-    "syncpack": "14.2.0",
+    "syncpack": "14.3.1",
     "tsdown": "0.21.4",
     "typescript": "5.9.3",
     "ultracite": "7.3.2",
