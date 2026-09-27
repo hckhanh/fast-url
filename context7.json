@@ -1,0 +1,14 @@
+{
+  "$schema": "https://context7.com/schema/context7.json",
+  "projectTitle": "fast-url",
+  "description": "A high-performance URL building library that makes constructing URLs safe and convenient.",
+  "folders": [],
+  "excludeFolders": ["node_modules", "dist", "coverage"],
+  "excludeFiles": ["CHANGELOG.md"],
+  "rules": [
+    "Documentation is published at https://docs.khanh.id/fast-url.",
+    "Build URLs with createUrl, query, subst, and join from fast-url."
+  ],
+  "url": "https://context7.com/hckhanh/fast-url",
+  "public_key": "pk_5wVhL0PTjFlXiZPBk058C"
+}

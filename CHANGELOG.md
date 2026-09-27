@@ -1,5 +1,11 @@
 # fast-url
 
+## 6.0.4
+
+### Patch Changes
+
+- Point documentation at https://docs.khanh.id/fast-url and publish the changes already on main since 6.0.3.
+
 ## 6.0.3
 
 ### Patch Changes
