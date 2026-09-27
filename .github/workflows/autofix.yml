@@ -22,9 +22,9 @@ jobs:
       - name: Setup toolchains
         uses: jdx/mise-action@5228313ee0372e111a38da051671ca30fc5a96db # v3.6.3
       - name: Setup Aikido Safe Chain
-        run: curl -fsSL https://github.com/AikidoSec/safe-chain/releases/latest/download/install-safe-chain.sh | sh -s -- --ci
+        uses: ./.github/actions/setup-safe-chain
       - name: Install Dependencies
-        run: bun install
+        run: bun ci
       - name: Format code
         run: bun fix
       - name: Fix package.json
@@ -32,7 +32,7 @@ jobs:
       - name: Format package.json
         run: bun syncpack format
       - name: Update package lock file
-        run: bun install
+        run: bun install --ignore-scripts
       - name: Submit autofix
         uses: autofix-ci/action@c5b2d67aa2274e7b5a18224e8171550871fc7e4a # v1.3.4
         with:

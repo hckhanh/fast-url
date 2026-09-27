@@ -232,7 +232,7 @@ The project uses CodSpeed for continuous performance monitoring in CI.
 
 - **Issues**: https://github.com/hckhanh/fast-url/issues
 - **Email**: hi@khanh.id
-- **Homepage**: https://fast-url.khanh.id
+- **Homepage**: https://docs.khanh.id/fast-url
 
 ## Additional Resources
 

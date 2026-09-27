@@ -1,13 +1,13 @@
 {
   "name": "fast-url",
   "description": "A folk version of the `urlcat` library focus on performance and simplicity.",
-  "version": "6.0.3",
+  "version": "6.0.4",
   "author": {
     "name": "Khánh Hoàng",
     "email": "hi@khanh.id",
     "url": "https://www.khanh.id"
   },
-  "homepage": "https://fast-url.khanh.id",
+  "homepage": "https://docs.khanh.id/fast-url",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hckhanh/fast-url.git"
@@ -53,8 +53,7 @@
     "vitest": "4.0.18"
   },
   "workspaces": [
-    ".",
-    "web"
+    "."
   ],
   "files": [
     "dist"
