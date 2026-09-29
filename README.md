@@ -15,6 +15,10 @@ Build correct URLs easily. A fast, minimal fork of urlcat focused on performance
 
 fast-url is a tiny JavaScript/TypeScript library that makes building URLs convenient and prevents common mistakes.
 
+## Documentation
+
+**[https://docs.khanh.id/fast-url](https://docs.khanh.id/fast-url)**
+
 ## Features
 
 - Lightweight: Only one dependency (fast-querystring) and minimal bundle size
