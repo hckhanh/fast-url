@@ -1,5 +1,11 @@
 # fast-url
 
+## 6.0.5
+
+### Patch Changes
+
+- 045a156: Link the documentation site from the readme.
+
 ## 6.0.4
 
 ### Patch Changes
