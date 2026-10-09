@@ -45,7 +45,7 @@
     "@types/bun": "1.4.2",
     "@types/node": "25.9.8",
     "@vitest/coverage-v8": "4.0.18",
-    "knip": "5.88.1",
+    "knip": "6.40.0",
     "syncpack": "14.3.1",
     "tsdown": "0.23.0",
     "typescript": "5.9.3",
