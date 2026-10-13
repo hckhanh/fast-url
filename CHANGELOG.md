@@ -1,5 +1,11 @@
 # fast-url
 
+## 6.0.6
+
+### Patch Changes
+
+- Preserve source module boundaries in the published ESM output with unbundle mode, while retaining the existing public exports and TypeScript declarations.
+
 ## 6.0.5
 
 ### Patch Changes
