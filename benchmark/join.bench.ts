@@ -1,106 +1,106 @@
-import { bench, describe } from 'vitest'
+import { describe, test } from 'vitest'
 import { join } from '../src'
 
 describe('join benchmarks', () => {
-  describe('Basic joins', () => {
-    bench('Simple join without separators at boundaries', () => {
+  test('Basic joins', { timeout: 120_000 }, async ({ bench }) => {
+    await bench('Simple join without separators at boundaries', () => {
       join('first', ',', 'second')
-    })
+    }).run()
 
-    bench('Join with separator at end of first part', () => {
+    await bench('Join with separator at end of first part', () => {
       join('first,', ',', 'second')
-    })
+    }).run()
 
-    bench('Join with separator at start of second part', () => {
+    await bench('Join with separator at start of second part', () => {
       join('first', ',', ',second')
-    })
+    }).run()
 
-    bench('Both parts have separator at boundary', () => {
+    await bench('Both parts have separator at boundary', () => {
       join('first,', ',', ',second')
-    })
+    }).run()
   })
 
-  describe('URL path separators', () => {
-    bench('Join URL parts with slash', () => {
+  test('URL path separators', { timeout: 120_000 }, async ({ bench }) => {
+    await bench('Join URL parts with slash', () => {
       join('http://example.com', '/', '/path/to/resource')
-    })
+    }).run()
 
-    bench('Join URL with trailing slash', () => {
+    await bench('Join URL with trailing slash', () => {
       join('http://example.com/', '/', 'path')
-    })
+    }).run()
 
-    bench('Join URL parts both with slash', () => {
+    await bench('Join URL parts both with slash', () => {
       join('http://example.com/', '/', '/path')
-    })
+    }).run()
 
-    bench('Join deep URL paths', () => {
+    await bench('Join deep URL paths', () => {
       join('http://example.com/api/v1/', '/', '/users/123/posts')
-    })
+    }).run()
   })
 
-  describe('Query string separators', () => {
-    bench('Join query parts with ampersand', () => {
+  test('Query string separators', { timeout: 120_000 }, async ({ bench }) => {
+    await bench('Join query parts with ampersand', () => {
       join('param1=value1', '&', 'param2=value2')
-    })
+    }).run()
 
-    bench('Join with leading ampersand', () => {
+    await bench('Join with leading ampersand', () => {
       join('param1=value1', '&', '&param2=value2')
-    })
+    }).run()
 
-    bench('Join empty first part with query', () => {
+    await bench('Join empty first part with query', () => {
       join('', '?', '?query=test')
-    })
+    }).run()
 
-    bench('Join URL path with query string', () => {
+    await bench('Join URL path with query string', () => {
       join('http://example.com/path', '?', 'search=test&limit=10')
-    })
+    }).run()
   })
 
-  describe('Edge cases', () => {
-    bench('Both parts empty', () => {
+  test('Edge cases', { timeout: 120_000 }, async ({ bench }) => {
+    await bench('Both parts empty', () => {
       join('', ',', '')
-    })
+    }).run()
 
-    bench('First part empty', () => {
+    await bench('First part empty', () => {
       join('', '/', '/second')
-    })
+    }).run()
 
-    bench('Second part empty', () => {
+    await bench('Second part empty', () => {
       join('first/', '/', '')
-    })
+    }).run()
 
-    bench('Multiple separators in content', () => {
+    await bench('Multiple separators in content', () => {
       join('a|b|c', '|', '|d|e|f')
-    })
+    }).run()
 
-    bench('Long strings with separator', () => {
+    await bench('Long strings with separator', () => {
       join(
         'http://example.com/very/long/path/with/many/segments/',
         '/',
         '/and/more/segments/here',
       )
-    })
+    }).run()
   })
 
-  describe('Different separators', () => {
-    bench('Comma separator', () => {
+  test('Different separators', { timeout: 120_000 }, async ({ bench }) => {
+    await bench('Comma separator', () => {
       join('first', ',', 'second')
-    })
+    }).run()
 
-    bench('Slash separator', () => {
+    await bench('Slash separator', () => {
       join('first', '/', 'second')
-    })
+    }).run()
 
-    bench('Ampersand separator', () => {
+    await bench('Ampersand separator', () => {
       join('first', '&', 'second')
-    })
+    }).run()
 
-    bench('Question mark separator', () => {
+    await bench('Question mark separator', () => {
       join('path', '?', 'query')
-    })
+    }).run()
 
-    bench('Pipe separator', () => {
+    await bench('Pipe separator', () => {
       join('first', '|', 'second')
-    })
+    }).run()
   })
 })

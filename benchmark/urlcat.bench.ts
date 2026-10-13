@@ -1,36 +1,36 @@
-import { bench, describe } from 'vitest'
+import { describe, test } from 'vitest'
 import { createUrl } from '../src'
 
 describe('createUrl benchmarks', () => {
-  describe('Simple cases', () => {
-    bench('Concatenate base URL and path only', () => {
+  test('Simple cases', { timeout: 120_000 }, async ({ bench }) => {
+    await bench('Concatenate base URL and path only', () => {
       createUrl('http://example.com', '/path')
-    })
+    }).run()
 
-    bench('Base URL with trailing slash + path', () => {
+    await bench('Base URL with trailing slash + path', () => {
       createUrl('http://example.com/', '/path')
-    })
+    }).run()
 
-    bench('Single path parameter', () => {
+    await bench('Single path parameter', () => {
       createUrl('http://example.com/', '/users/:id', { id: 123 })
-    })
+    }).run()
 
-    bench('Single query parameter', () => {
+    await bench('Single query parameter', () => {
       createUrl('http://example.com/path', { search: 'test' })
-    })
+    }).run()
   })
 
-  describe('Medium complexity', () => {
-    bench('Two path params + two query params', () => {
+  test('Medium complexity', { timeout: 120_000 }, async ({ bench }) => {
+    await bench('Two path params + two query params', () => {
       createUrl('http://example.com/', '/users/:userId/posts/:postId', {
         userId: 123,
         postId: 456,
         sort: 'date',
         order: 'desc',
       })
-    })
+    }).run()
 
-    bench('Multiple query params (5 params)', () => {
+    await bench('Multiple query params (5 params)', () => {
       createUrl('http://example.com/api/search', {
         q: 'javascript',
         category: 'programming',
@@ -38,18 +38,18 @@ describe('createUrl benchmarks', () => {
         offset: 0,
         sort: 'relevance',
       })
-    })
+    }).run()
 
-    bench('Path params with special characters', () => {
+    await bench('Path params with special characters', () => {
       createUrl('http://example.com/', '/search/:query', {
         query: 'hello world',
         filter: 'tag:important',
       })
-    })
+    }).run()
   })
 
-  describe('Complex cases', () => {
-    bench('Complex URL with many params (original test)', () => {
+  test('Complex cases', { timeout: 120_000 }, async ({ bench }) => {
+    await bench('Complex URL with many params (original test)', () => {
       createUrl(
         'http://example.com/',
         '/users/:userId/posts/:postId/comments',
@@ -68,9 +68,9 @@ describe('createUrl benchmarks', () => {
           numberKey: 256,
         },
       )
-    })
+    }).run()
 
-    bench('Deep path with 5 parameters', () => {
+    await bench('Deep path with 5 parameters', () => {
       createUrl(
         'http://example.com/',
         '/api/:version/users/:userId/projects/:projectId/tasks/:taskId/comments/:commentId',
@@ -84,9 +84,9 @@ describe('createUrl benchmarks', () => {
           fields: 'id,title,body',
         },
       )
-    })
+    }).run()
 
-    bench('Large query string (15 params)', () => {
+    await bench('Large query string (15 params)', () => {
       createUrl('http://example.com/api/data', {
         param1: 'value1',
         param2: 'value2',
@@ -104,9 +104,9 @@ describe('createUrl benchmarks', () => {
         param14: 'value14',
         param15: 'value15',
       })
-    })
+    }).run()
 
-    bench('Large query string (15 params) with some path params', () => {
+    await bench('Large query string (15 params) with some path params', () => {
       createUrl(
         'http://example.com/api/data/:param1/demo/:param8/demo/:param15',
         {
@@ -127,20 +127,20 @@ describe('createUrl benchmarks', () => {
           param15: 'value15',
         },
       )
-    })
+    }).run()
   })
 
-  describe('Real-world patterns', () => {
-    bench('REST API endpoint with pagination', () => {
+  test('Real-world patterns', { timeout: 120_000 }, async ({ bench }) => {
+    await bench('REST API endpoint with pagination', () => {
       createUrl('http://api.example.com/', '/v1/users', {
         page: 1,
         limit: 50,
         sort: 'created_at',
         order: 'desc',
       })
-    })
+    }).run()
 
-    bench('Search endpoint with filters', () => {
+    await bench('Search endpoint with filters', () => {
       createUrl('http://api.example.com/', '/search', {
         q: 'typescript',
         type: 'repository',
@@ -148,50 +148,50 @@ describe('createUrl benchmarks', () => {
         stars: '>1000',
         sort: 'stars',
       })
-    })
+    }).run()
 
-    bench('Resource with ID and nested resource', () => {
+    await bench('Resource with ID and nested resource', () => {
       createUrl('http://api.example.com/', '/users/:id/posts/:postId', {
         id: 42,
         postId: 123,
         include: 'comments,author',
       })
-    })
+    }).run()
 
-    bench('URL with port number', () => {
+    await bench('URL with port number', () => {
       createUrl('http://localhost:8080/', '/api/:version/health', {
         version: 'v1',
         verbose: true,
       })
-    })
+    }).run()
   })
 
-  describe('Edge cases', () => {
-    bench('Base template only (no path)', () => {
+  test('Edge cases', { timeout: 120_000 }, async ({ bench }) => {
+    await bench('Base template only (no path)', () => {
       createUrl('http://example.com/:resource', {
         resource: 'users',
         page: 1,
       })
-    })
+    }).run()
 
-    bench('Empty params object', () => {
+    await bench('Empty params object', () => {
       createUrl('http://example.com/', '/path')
-    })
+    }).run()
 
-    bench('Boolean and number params', () => {
+    await bench('Boolean and number params', () => {
       createUrl('http://example.com/', '/settings/:feature', {
         feature: 'dark-mode',
         enabled: true,
         opacity: 0.8,
         count: 100,
       })
-    })
+    }).run()
 
-    bench('Array in query params', () => {
+    await bench('Array in query params', () => {
       createUrl('http://example.com/filter', {
         tags: ['javascript', 'typescript', 'node'],
         active: true,
       })
-    })
+    }).run()
   })
 })

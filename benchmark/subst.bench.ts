@@ -1,25 +1,25 @@
-import { bench, describe } from 'vitest'
+import { describe, test } from 'vitest'
 import { subst } from '../src'
 
 describe('subst benchmarks', () => {
-  describe('Parameter count scaling', () => {
-    bench('Empty template', () => {
+  test('Parameter count scaling', { timeout: 120_000 }, async ({ bench }) => {
+    await bench('Empty template', () => {
       subst('', {})
-    })
+    }).run()
 
-    bench('Single parameter', () => {
+    await bench('Single parameter', () => {
       subst(':id', { id: 42 })
-    })
+    }).run()
 
-    bench('Two parameters', () => {
+    await bench('Two parameters', () => {
       subst('/:userId/:postId', { userId: 123, postId: 456 })
-    })
+    }).run()
 
-    bench('Three parameters (original)', () => {
+    await bench('Three parameters (original)', () => {
       subst('/:p/:q/:r', { p: 1, q: 'a', r: false })
-    })
+    }).run()
 
-    bench('Five parameters', () => {
+    await bench('Five parameters', () => {
       subst('/:a/:b/:c/:d/:e', {
         a: 'first',
         b: 'second',
@@ -27,9 +27,9 @@ describe('subst benchmarks', () => {
         d: 'fourth',
         e: 'fifth',
       })
-    })
+    }).run()
 
-    bench('Ten parameters', () => {
+    await bench('Ten parameters', () => {
       subst('/:p1/:p2/:p3/:p4/:p5/:p6/:p7/:p8/:p9/:p10', {
         p1: 1,
         p2: 2,
@@ -42,66 +42,66 @@ describe('subst benchmarks', () => {
         p9: 9,
         p10: 10,
       })
-    })
+    }).run()
   })
 
-  describe('Different value types', () => {
-    bench('String values', () => {
+  test('Different value types', { timeout: 120_000 }, async ({ bench }) => {
+    await bench('String values', () => {
       subst('/:firstName/:lastName', {
         firstName: 'John',
         lastName: 'Doe',
       })
-    })
+    }).run()
 
-    bench('Number values', () => {
+    await bench('Number values', () => {
       subst('/:id/:page/:limit', {
         id: 123,
         page: 1,
         limit: 50,
       })
-    })
+    }).run()
 
-    bench('Boolean values', () => {
+    await bench('Boolean values', () => {
       subst('/:enabled/:verified', {
         enabled: true,
         verified: false,
       })
-    })
+    }).run()
 
-    bench('Mixed value types', () => {
+    await bench('Mixed value types', () => {
       subst('/:name/:count/:active', {
         name: 'test',
         count: 42,
         active: true,
       })
-    })
+    }).run()
   })
 
-  describe('Template patterns', () => {
-    bench('Parameter at beginning', () => {
+  test('Template patterns', { timeout: 120_000 }, async ({ bench }) => {
+    await bench('Parameter at beginning', () => {
       subst(':resource/items', { resource: 'users' })
-    })
+    }).run()
 
-    bench('Parameter at end', () => {
+    await bench('Parameter at end', () => {
       subst('/api/v1/:resource', { resource: 'posts' })
-    })
+    }).run()
 
-    bench('Parameters with static segments', () => {
+    await bench('Parameters with static segments', () => {
       subst('/users/:userId/posts/:postId/comments', {
         userId: 123,
         postId: 456,
       })
-    })
+    }).run()
 
-    bench('Consecutive parameters', () => {
+    await bench('Consecutive parameters', () => {
       subst('/:year/:month/:day', {
         year: 2024,
         month: 10,
         day: 30,
       })
-    })
+    }).run()
 
-    bench('Long template with many segments', () => {
+    await bench('Long template with many segments', () => {
       subst(
         '/api/:version/org/:orgId/project/:projectId/repo/:repoId/branch/:branchId',
         {
@@ -112,96 +112,96 @@ describe('subst benchmarks', () => {
           branchId: 'main',
         },
       )
-    })
+    }).run()
   })
 
-  describe('Real-world patterns', () => {
-    bench('REST API resource path', () => {
+  test('Real-world patterns', { timeout: 120_000 }, async ({ bench }) => {
+    await bench('REST API resource path', () => {
       subst('/api/v1/users/:id', { id: 12_345 })
-    })
+    }).run()
 
-    bench('Nested resource path', () => {
+    await bench('Nested resource path', () => {
       subst('/users/:userId/posts/:postId', {
         userId: 123,
         postId: 456,
       })
-    })
+    }).run()
 
-    bench('Deep nesting with IDs', () => {
+    await bench('Deep nesting with IDs', () => {
       subst('/orgs/:orgId/teams/:teamId/members/:memberId', {
         orgId: 'acme',
         teamId: 'engineering',
         memberId: 'john',
       })
-    })
+    }).run()
 
-    bench('Date-based path', () => {
+    await bench('Date-based path', () => {
       subst('/archive/:year/:month/:day/:slug', {
         year: 2024,
         month: 10,
         day: 30,
         slug: 'article-title',
       })
-    })
+    }).run()
 
-    bench('Versioned API endpoint', () => {
+    await bench('Versioned API endpoint', () => {
       subst('/:version/:resource/:id', {
         version: 'v2',
         resource: 'users',
         id: 789,
       })
-    })
+    }).run()
   })
 
-  describe('Special characters', () => {
-    bench('Values with spaces', () => {
+  test('Special characters', { timeout: 120_000 }, async ({ bench }) => {
+    await bench('Values with spaces', () => {
       subst('/:title', { title: 'hello world' })
-    })
+    }).run()
 
-    bench('Values with special chars', () => {
+    await bench('Values with special chars', () => {
       subst('/:email/:tag', {
         email: 'user@example.com',
         tag: 'important!',
       })
-    })
+    }).run()
 
-    bench('Long parameter values', () => {
+    await bench('Long parameter values', () => {
       subst('/:description', {
         description:
           'This is a very long description that contains many characters',
       })
-    })
+    }).run()
 
-    bench('Unicode in values', () => {
+    await bench('Unicode in values', () => {
       subst('/:name/:emoji', {
         name: '日本語',
         emoji: '🚀',
       })
-    })
+    }).run()
   })
 
-  describe('Template complexity', () => {
-    bench('Simple single-segment template', () => {
+  test('Template complexity', { timeout: 120_000 }, async ({ bench }) => {
+    await bench('Simple single-segment template', () => {
       subst(':id', { id: 42 })
-    })
+    }).run()
 
-    bench('Medium complexity template', () => {
+    await bench('Medium complexity template', () => {
       subst('/api/:version/resource/:id', {
         version: 'v1',
         id: 123,
       })
-    })
+    }).run()
 
-    bench('Complex multi-level template', () => {
+    await bench('Complex multi-level template', () => {
       subst('/:category/:subcategory/:itemId/details/:section', {
         category: 'electronics',
         subcategory: 'laptops',
         itemId: 'mbp-2024',
         section: 'specs',
       })
-    })
+    }).run()
 
-    bench('Very deep template (8 levels)', () => {
+    await bench('Very deep template (8 levels)', () => {
       subst('/:l1/:l2/:l3/:l4/:l5/:l6/:l7/:l8', {
         l1: 'a',
         l2: 'b',
@@ -212,36 +212,36 @@ describe('subst benchmarks', () => {
         l7: 'g',
         l8: 'h',
       })
-    })
+    }).run()
   })
 
-  describe('Parameter name patterns', () => {
-    bench('Short parameter names', () => {
+  test('Parameter name patterns', { timeout: 120_000 }, async ({ bench }) => {
+    await bench('Short parameter names', () => {
       subst('/:a/:b/:c', { a: 1, b: 2, c: 3 })
-    })
+    }).run()
 
-    bench('Long parameter names', () => {
+    await bench('Long parameter names', () => {
       subst('/:userId/:articleId/:commentId', {
         userId: 123,
         articleId: 456,
         commentId: 789,
       })
-    })
+    }).run()
 
-    bench('CamelCase parameter names', () => {
+    await bench('CamelCase parameter names', () => {
       subst('/:firstName/:lastName/:emailAddress', {
         firstName: 'John',
         lastName: 'Doe',
         emailAddress: 'john@example.com',
       })
-    })
+    }).run()
 
-    bench('Underscore parameter names', () => {
+    await bench('Underscore parameter names', () => {
       subst('/:user_id/:post_id/:comment_id', {
         user_id: 1,
         post_id: 2,
         comment_id: 3,
       })
-    })
+    }).run()
   })
 })
