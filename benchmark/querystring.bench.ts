@@ -1,122 +1,124 @@
-import { bench, describe } from 'vitest'
+import { describe, test } from 'vitest'
 import { encodeString } from '../src/querystring/node.ts'
 import { stringify } from '../src/querystring/stringify.ts'
 
 describe('encodeString benchmarks', () => {
-  describe('String length scaling', () => {
-    bench('Empty string', () => {
+  test('String length scaling', { timeout: 120_000 }, async ({ bench }) => {
+    await bench('Empty string', () => {
       encodeString('')
-    })
+    }).run()
 
-    bench('Short ASCII string (10 chars)', () => {
+    await bench('Short ASCII string (10 chars)', () => {
       encodeString('helloworld')
-    })
+    }).run()
 
-    bench('Medium ASCII string (50 chars)', () => {
+    await bench('Medium ASCII string (50 chars)', () => {
       encodeString('The quick brown fox jumps over the lazy dog twice')
-    })
+    }).run()
 
-    bench('Long ASCII string (200 chars)', () => {
+    await bench('Long ASCII string (200 chars)', () => {
       encodeString(
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.',
       )
-    })
+    }).run()
 
-    bench('Very long ASCII string (1000 chars)', () => {
+    await bench('Very long ASCII string (1000 chars)', () => {
       encodeString('a'.repeat(1000))
-    })
+    }).run()
   })
 
-  describe('Character type variations', () => {
-    bench('Pure alphanumeric (no encoding needed)', () => {
+  test('Character type variations', { timeout: 120_000 }, async ({ bench }) => {
+    await bench('Pure alphanumeric (no encoding needed)', () => {
       encodeString(
         'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
       )
-    })
+    }).run()
 
-    bench('Safe special characters (no encoding needed)', () => {
+    await bench('Safe special characters (no encoding needed)', () => {
       encodeString('test-file_name.extension~version1.0!(hello)*')
-    })
+    }).run()
 
-    bench('All spaces (maximum encoding)', () => {
+    await bench('All spaces (maximum encoding)', () => {
       encodeString('     ')
-    })
+    }).run()
 
-    bench('Mixed safe and unsafe (50% encoding)', () => {
+    await bench('Mixed safe and unsafe (50% encoding)', () => {
       encodeString('hello world & goodbye universe @ tomorrow')
-    })
+    }).run()
 
-    bench('Heavy special characters (75% encoding)', () => {
+    await bench('Heavy special characters (75% encoding)', () => {
       encodeString(String.raw`!@#$%^&*()+={}[]|\:;"'<>?,/`)
-    })
+    }).run()
   })
 
-  describe('Unicode and multi-byte characters', () => {
-    bench('2-byte UTF-8 characters', () => {
+  test('Unicode and multi-byte characters', { timeout: 120_000 }, async ({
+    bench,
+  }) => {
+    await bench('2-byte UTF-8 characters', () => {
       encodeString('café résumé naïve')
-    })
+    }).run()
 
-    bench('3-byte UTF-8 characters (CJK)', () => {
+    await bench('3-byte UTF-8 characters (CJK)', () => {
       encodeString('日本語中文한국어')
-    })
+    }).run()
 
-    bench('4-byte UTF-8 characters (emojis)', () => {
+    await bench('4-byte UTF-8 characters (emojis)', () => {
       encodeString('🚀🎉💯👍🔥')
-    })
+    }).run()
 
-    bench('Mixed ASCII and Unicode', () => {
+    await bench('Mixed ASCII and Unicode', () => {
       encodeString('Hello 世界! Welcome to 日本 🚀')
-    })
+    }).run()
 
-    bench('Various language scripts', () => {
+    await bench('Various language scripts', () => {
       encodeString(
         'English Español Français Deutsch 日本語 中文 العربية Русский',
       )
-    })
+    }).run()
   })
 
-  describe('Real-world patterns', () => {
-    bench('Email address', () => {
+  test('Real-world patterns', { timeout: 120_000 }, async ({ bench }) => {
+    await bench('Email address', () => {
       encodeString('user.name+tag@example.com')
-    })
+    }).run()
 
-    bench('URL path', () => {
+    await bench('URL path', () => {
       encodeString('https://example.com/path/to/resource?query=value')
-    })
+    }).run()
 
-    bench('JSON-like string', () => {
+    await bench('JSON-like string', () => {
       encodeString('{"key":"value","number":123,"bool":true}')
-    })
+    }).run()
 
-    bench('SQL-like query', () => {
+    await bench('SQL-like query', () => {
       encodeString("SELECT * FROM users WHERE name = 'John' AND age > 25")
-    })
+    }).run()
 
-    bench('File path with spaces', () => {
+    await bench('File path with spaces', () => {
       encodeString('/Users/username/My Documents/important file (copy).pdf')
-    })
+    }).run()
 
-    bench('Search query with special chars', () => {
+    await bench('Search query with special chars', () => {
       encodeString('how to use "quotes" & special chars?')
-    })
+    }).run()
   })
 })
 
 describe('stringify benchmarks', () => {
-  describe('Parameter count scaling', () => {
-    bench('Empty object', () => {
+  test('Parameter count scaling', { timeout: 120_000 }, async ({ bench }) => {
+    await bench('Empty object', () => {
       stringify({})
-    })
+    }).run()
 
-    bench('Single parameter', () => {
+    await bench('Single parameter', () => {
       stringify({ key: 'value' })
-    })
+    }).run()
 
-    bench('Two parameters', () => {
+    await bench('Two parameters', () => {
       stringify({ key1: 'value1', key2: 'value2' })
-    })
+    }).run()
 
-    bench('Five parameters', () => {
+    await bench('Five parameters', () => {
       stringify({
         param1: 'value1',
         param2: 'value2',
@@ -124,9 +126,9 @@ describe('stringify benchmarks', () => {
         param4: 'value4',
         param5: 'value5',
       })
-    })
+    }).run()
 
-    bench('Ten parameters', () => {
+    await bench('Ten parameters', () => {
       stringify({
         param1: 'value1',
         param2: 'value2',
@@ -139,9 +141,9 @@ describe('stringify benchmarks', () => {
         param9: 'value9',
         param10: 'value10',
       })
-    })
+    }).run()
 
-    bench('Twenty parameters', () => {
+    await bench('Twenty parameters', () => {
       stringify({
         param1: 'value1',
         param2: 'value2',
@@ -164,9 +166,9 @@ describe('stringify benchmarks', () => {
         param19: 'value19',
         param20: 'value20',
       })
-    })
+    }).run()
 
-    bench('Fifty parameters', () => {
+    await bench('Fifty parameters', () => {
       const params: Record<`param${number}`, `value${number}`> = {}
 
       for (let i = 1; i <= 50; i++) {
@@ -174,11 +176,11 @@ describe('stringify benchmarks', () => {
       }
 
       stringify(params)
-    })
+    }).run()
   })
 
-  describe('Value types', () => {
-    bench('String values only', () => {
+  test('Value types', { timeout: 120_000 }, async ({ bench }) => {
+    await bench('String values only', () => {
       stringify({
         firstName: 'John',
         lastName: 'Doe',
@@ -186,9 +188,9 @@ describe('stringify benchmarks', () => {
         city: 'New York',
         country: 'USA',
       })
-    })
+    }).run()
 
-    bench('Number values only', () => {
+    await bench('Number values only', () => {
       stringify({
         age: 25,
         score: 98,
@@ -196,9 +198,9 @@ describe('stringify benchmarks', () => {
         rating: 4,
         price: 19.99,
       })
-    })
+    }).run()
 
-    bench('Boolean values only', () => {
+    await bench('Boolean values only', () => {
       stringify({
         active: true,
         verified: false,
@@ -206,18 +208,18 @@ describe('stringify benchmarks', () => {
         deleted: false,
         featured: true,
       })
-    })
+    }).run()
 
-    bench('BigInt values only', () => {
+    await bench('BigInt values only', () => {
       stringify({
         userId: BigInt(9_007_199_254_740_991),
         timestamp: BigInt(1_609_459_200_000),
         transactionId: BigInt(123_456_789),
         value: BigInt(100),
       })
-    })
+    }).run()
 
-    bench('Mixed primitive types', () => {
+    await bench('Mixed primitive types', () => {
       stringify({
         name: 'Product',
         price: 99.99,
@@ -228,45 +230,45 @@ describe('stringify benchmarks', () => {
         weight: 2.5,
         available: true,
       })
-    })
+    }).run()
   })
 
-  describe('Array values', () => {
-    bench('Small array (3 items)', () => {
+  test('Array values', { timeout: 120_000 }, async ({ bench }) => {
+    await bench('Small array (3 items)', () => {
       stringify({
         tags: ['javascript', 'typescript', 'node'],
       })
-    })
+    }).run()
 
-    bench('Medium array (10 items)', () => {
+    await bench('Medium array (10 items)', () => {
       stringify({
         items: Array.from({ length: 10 }, (_, i) => `item${i}`),
       })
-    })
+    }).run()
 
-    bench('Large array (50 items)', () => {
+    await bench('Large array (50 items)', () => {
       stringify({
         ids: Array.from({ length: 50 }, (_, i) => i),
       })
-    })
+    }).run()
 
-    bench('Multiple arrays', () => {
+    await bench('Multiple arrays', () => {
       stringify({
         tags: ['a', 'b', 'c'],
         categories: ['cat1', 'cat2'],
         ids: [1, 2, 3, 4, 5],
       })
-    })
+    }).run()
 
-    bench('Array of mixed types', () => {
+    await bench('Array of mixed types', () => {
       stringify({
         values: ['text', 42, true, 'another', 99, false],
       })
-    })
+    }).run()
   })
 
-  describe('Value length scaling', () => {
-    bench('Short values (5 chars each)', () => {
+  test('Value length scaling', { timeout: 120_000 }, async ({ bench }) => {
+    await bench('Short values (5 chars each)', () => {
       stringify({
         key1: 'short',
         key2: 'value',
@@ -274,78 +276,80 @@ describe('stringify benchmarks', () => {
         key4: 'data',
         key5: 'quick',
       })
-    })
+    }).run()
 
-    bench('Medium values (20 chars each)', () => {
+    await bench('Medium values (20 chars each)', () => {
       stringify({
         key1: 'a medium length value',
         key2: 'another medium value',
         key3: 'yet another one here',
         key4: 'more medium content!',
       })
-    })
+    }).run()
 
-    bench('Long values (50 chars each)', () => {
+    await bench('Long values (50 chars each)', () => {
       stringify({
         description: 'This is a very long description that contains many words',
         content: 'Another long string with lots of characters in it here',
         text: 'Yet another really long value to test performance with',
       })
-    })
+    }).run()
 
-    bench('Very long values (200 chars each)', () => {
+    await bench('Very long values (200 chars each)', () => {
       stringify({
         data: 'a'.repeat(200),
         content: 'b'.repeat(200),
         text: 'c'.repeat(200),
       })
-    })
+    }).run()
   })
 
-  describe('Special characters and encoding', () => {
-    bench('No encoding needed (pure alphanumeric)', () => {
+  test('Special characters and encoding', { timeout: 120_000 }, async ({
+    bench,
+  }) => {
+    await bench('No encoding needed (pure alphanumeric)', () => {
       stringify({
         key1: 'simplevalue',
         key2: 'anothervalue',
         key3: 'testdata',
       })
-    })
+    }).run()
 
-    bench('Light encoding (spaces only)', () => {
+    await bench('Light encoding (spaces only)', () => {
       stringify({
         search: 'hello world',
         title: 'my title',
         description: 'some description',
       })
-    })
+    }).run()
 
-    bench('Medium encoding (common special chars)', () => {
+    await bench('Medium encoding (common special chars)', () => {
       stringify({
         email: 'user@example.com',
         url: 'https://example.com/path',
         query: 'key=value&other=test',
       })
-    })
+    }).run()
 
-    bench('Heavy encoding (many special chars)', () => {
+    await bench('Heavy encoding (many special chars)', () => {
       stringify({
         'key[1]': 'value',
         'filter[status]': 'active',
         'data{nested}': 'test',
         'query<tag>': 'value',
       })
-    })
+    }).run()
 
-    bench('Unicode characters', () => {
+    await bench('Unicode characters', () => {
       stringify({
         name: '日本語',
         emoji: '🚀',
         text: 'Héllo Wörld',
         greeting: '你好世界',
       })
-    })
+    }).run()
 
-    bench('Mixed encoding complexity', () => {
+    await bench('Mixed encoding complexity', () => {
       stringify({
         simple: 'value',
         withSpaces: 'hello world',
@@ -353,11 +357,11 @@ describe('stringify benchmarks', () => {
         unicode: '日本語',
         emoji: '🚀',
       })
-    })
+    }).run()
   })
 
-  describe('Real-world use cases', () => {
-    bench('Pagination params', () => {
+  test('Real-world use cases', { timeout: 120_000 }, async ({ bench }) => {
+    await bench('Pagination params', () => {
       stringify({
         page: 1,
         limit: 50,
@@ -365,9 +369,9 @@ describe('stringify benchmarks', () => {
         sort: 'created_at',
         order: 'desc',
       })
-    })
+    }).run()
 
-    bench('Search with filters', () => {
+    await bench('Search with filters', () => {
       stringify({
         q: 'laptop',
         category: 'electronics',
@@ -378,9 +382,9 @@ describe('stringify benchmarks', () => {
         rating: 4,
         freeShipping: true,
       })
-    })
+    }).run()
 
-    bench('API query with includes', () => {
+    await bench('API query with includes', () => {
       stringify({
         include: 'author,comments,tags',
         fields: 'id,title,body,created_at',
@@ -388,9 +392,9 @@ describe('stringify benchmarks', () => {
         page: 1,
         limit: 20,
       })
-    })
+    }).run()
 
-    bench('Form submission data', () => {
+    await bench('Form submission data', () => {
       stringify({
         firstName: 'John',
         lastName: 'Doe',
@@ -403,9 +407,9 @@ describe('stringify benchmarks', () => {
         country: 'USA',
         newsletter: true,
       })
-    })
+    }).run()
 
-    bench('E-commerce cart params', () => {
+    await bench('E-commerce cart params', () => {
       stringify({
         productId: 12_345,
         quantity: 2,
@@ -416,9 +420,9 @@ describe('stringify benchmarks', () => {
         couponCode: 'SAVE20',
         shipping: 'express',
       })
-    })
+    }).run()
 
-    bench('Analytics tracking params', () => {
+    await bench('Analytics tracking params', () => {
       stringify({
         event: 'page_view',
         userId: BigInt(9_876_543_210),
@@ -429,46 +433,46 @@ describe('stringify benchmarks', () => {
         source: 'email',
         medium: 'newsletter',
       })
-    })
+    }).run()
 
-    bench('Multi-select filter params', () => {
+    await bench('Multi-select filter params', () => {
       stringify({
         categories: ['electronics', 'computers', 'accessories'],
         brands: ['Apple', 'Dell', 'HP'],
         priceRanges: ['0-500', '500-1000', '1000-2000'],
         features: ['wifi', 'bluetooth', 'touchscreen'],
       })
-    })
+    }).run()
   })
 
-  describe('Edge cases', () => {
-    bench('Empty arrays', () => {
+  test('Edge cases', { timeout: 120_000 }, async ({ bench }) => {
+    await bench('Empty arrays', () => {
       stringify({
         items: [],
         tags: [],
         categories: [],
       })
-    })
+    }).run()
 
-    bench('Null and undefined values', () => {
+    await bench('Null and undefined values', () => {
       stringify({
         key1: null,
         key2: undefined,
         key3: 'value',
         key4: null,
       })
-    })
+    }).run()
 
-    bench('Empty string values', () => {
+    await bench('Empty string values', () => {
       stringify({
         key1: '',
         key2: '',
         key3: '',
         key4: 'value',
       })
-    })
+    }).run()
 
-    bench('Special numeric values', () => {
+    await bench('Special numeric values', () => {
       stringify({
         zero: 0,
         negative: -42,
@@ -477,10 +481,10 @@ describe('stringify benchmarks', () => {
         infinity: Number.POSITIVE_INFINITY,
         negInfinity: Number.NEGATIVE_INFINITY,
       })
-    })
+    }).run()
   })
 
-  describe('Comparison scenarios', () => {
+  test('Comparison scenarios', { timeout: 120_000 }, async ({ bench }) => {
     const smallObject = {
       page: 1,
       limit: 20,
@@ -509,16 +513,16 @@ describe('stringify benchmarks', () => {
       shippingOptions: ['standard', 'express', 'overnight'],
     }
 
-    bench('Small object (2 params)', () => {
+    await bench('Small object (2 params)', () => {
       stringify(smallObject)
-    })
+    }).run()
 
-    bench('Medium object (10 params)', () => {
+    await bench('Medium object (10 params)', () => {
       stringify(mediumObject)
-    })
+    }).run()
 
-    bench('Large object (16 params with arrays)', () => {
+    await bench('Large object (16 params with arrays)', () => {
       stringify(largeObject)
-    })
+    }).run()
   })
 })
