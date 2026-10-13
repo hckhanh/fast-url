@@ -150,14 +150,14 @@ export function query(params: ParamMap): string {
  * ```
  */
 export function subst(template: string, params: ParamMap): string {
-  const { renderedPath } = path(template, params)
+  const { renderedPath } = path(template, params, false)
   return renderedPath
 }
 
 // Pre-compile regex for better performance - avoids recompilation overhead on each call
 const PATH_PARAM_REGEX = /:[_A-Za-z]+\w*/g
 
-function path(template: string, params: ParamMap) {
+function path(template: string, params: ParamMap, removePathParams = true) {
   const remainingParams = { ...params }
 
   const renderedPath = template.replace(PATH_PARAM_REGEX, (p) => {
@@ -165,7 +165,9 @@ function path(template: string, params: ParamMap) {
 
     validatePathParam(params, key)
 
-    delete remainingParams[key]
+    if (removePathParams) {
+      delete remainingParams[key]
+    }
     return encodeURIComponent(params[key] as string | number | boolean)
   })
 

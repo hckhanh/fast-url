@@ -2,6 +2,29 @@ import { describe, expect, it } from 'vitest'
 import { subst } from '../src'
 
 describe('subst', () => {
+  it('preserves parameter getter evaluation when substituting', () => {
+    let reads = 0
+    const params = {
+      get id() {
+        return String(++reads)
+      },
+    }
+    expect(subst('/:id/:id', params)).toBe('/4/7')
+  })
+
+  it('reuses repeated parameters without changing a frozen input', () => {
+    const params = Object.freeze({ id: 'a/b', extra: true })
+    expect(subst('/users/:id/copy/:id', params)).toBe('/users/a%2Fb/copy/a%2Fb')
+    expect(params).toEqual({ id: 'a/b', extra: true })
+  })
+
+  it('rejects inherited path parameters', () => {
+    const params = Object.create({ id: 123 })
+    expect(() => subst('/users/:id', params)).toThrow(
+      'Missing value for path parameter id.',
+    )
+  })
+
   it('Returns empty string if the template is empty and there are no params', () => {
     const expected = ''
     const actual = subst('', {})
