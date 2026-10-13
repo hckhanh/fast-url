@@ -13,8 +13,10 @@ timing. The larger `benchmark/` suite remains available for focused diagnostics.
 - CodSpeed action 5.4.2 with runner **5.4.0**, cycle estimation enabled, and
   allocation costs included.
 
-The dedicated workflow measures simulation and walltime on Ubuntu 24.04.
-Manual dispatch and reusable workflow calls can select either instrument.
+Routine CI measures simulation on Ubuntu 24.04, matching vn-number.
+Manual dispatch and reusable workflow calls can explicitly select walltime or
+both instruments. Use matching hardware for walltime comparisons; shared hosted
+runners can introduce timing noise.
 Run locally only through an authenticated CodSpeed CLI:
 
 ```sh
