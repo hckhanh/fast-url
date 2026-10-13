@@ -1,5 +1,11 @@
 # fast-url
 
+## 7.0.0
+
+### Major Changes
+
+- a16b68d: Improve URL construction and path substitution performance while preserving parameter and getter behavior.
+
 ## 6.0.6
 
 ### Patch Changes
