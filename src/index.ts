@@ -159,6 +159,9 @@ const PATH_PARAM_REGEX = /:[_A-Za-z]+\w*/g
 
 function path(template: string, params: ParamMap, removePathParams = true) {
   const remainingParams = { ...params }
+  if (typeof template === 'string' && !template.includes(':')) {
+    return { renderedPath: template, remainingParams }
+  }
 
   const renderedPath = template.replace(PATH_PARAM_REGEX, (p) => {
     const key = p.slice(1)
