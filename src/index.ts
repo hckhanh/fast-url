@@ -150,17 +150,28 @@ export function query(params: ParamMap): string {
  * ```
  */
 export function subst(template: string, params: ParamMap): string {
-  const { renderedPath } = path(template, params, false)
-  return renderedPath
+  return path(template, params, false)
 }
 
 // Pre-compile regex for better performance - avoids recompilation overhead on each call
 const PATH_PARAM_REGEX = /:[_A-Za-z]+\w*/g
 
+function path(
+  template: string,
+  params: ParamMap,
+  removePathParams: false,
+): string
+function path(
+  template: string,
+  params: ParamMap,
+): { renderedPath: string; remainingParams: ParamMap }
 function path(template: string, params: ParamMap, removePathParams = true) {
+  // Preserve enumerable getter evaluation before rendering the path.
   const remainingParams = { ...params }
   if (typeof template === 'string' && !template.includes(':')) {
-    return { renderedPath: template, remainingParams }
+    return removePathParams
+      ? { renderedPath: template, remainingParams }
+      : template
   }
 
   const renderedPath = template.replace(PATH_PARAM_REGEX, (p) => {
@@ -174,7 +185,7 @@ function path(template: string, params: ParamMap, removePathParams = true) {
     return encodeURIComponent(params[key] as string | number | boolean)
   })
 
-  return { renderedPath, remainingParams }
+  return removePathParams ? { renderedPath, remainingParams } : renderedPath
 }
 
 function validatePathParam(params: ParamMap, key: string) {
