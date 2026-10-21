@@ -150,28 +150,23 @@ export function query(params: ParamMap): string {
  * ```
  */
 export function subst(template: string, params: ParamMap): string {
-  return path(template, params, false)
+  if (typeof template === 'string' && !template.includes(':')) {
+    // biome-ignore lint/complexity/noVoid: Preserve getter side effects without retaining the parameter copy.
+    void { ...params }
+    return template
+  }
+
+  const { renderedPath } = path(template, params, false)
+  return renderedPath
 }
 
 // Pre-compile regex for better performance - avoids recompilation overhead on each call
 const PATH_PARAM_REGEX = /:[_A-Za-z]+\w*/g
 
-function path(
-  template: string,
-  params: ParamMap,
-  removePathParams: false,
-): string
-function path(
-  template: string,
-  params: ParamMap,
-): { renderedPath: string; remainingParams: ParamMap }
 function path(template: string, params: ParamMap, removePathParams = true) {
-  // Preserve enumerable getter evaluation before rendering the path.
   const remainingParams = { ...params }
   if (typeof template === 'string' && !template.includes(':')) {
-    return removePathParams
-      ? { renderedPath: template, remainingParams }
-      : template
+    return { renderedPath: template, remainingParams }
   }
 
   const renderedPath = template.replace(PATH_PARAM_REGEX, (p) => {
@@ -185,7 +180,7 @@ function path(template: string, params: ParamMap, removePathParams = true) {
     return encodeURIComponent(params[key] as string | number | boolean)
   })
 
-  return removePathParams ? { renderedPath, remainingParams } : renderedPath
+  return { renderedPath, remainingParams }
 }
 
 function validatePathParam(params: ParamMap, key: string) {
