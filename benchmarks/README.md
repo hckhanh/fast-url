@@ -26,17 +26,6 @@ Routine CI measures simulation on Ubuntu 24.04, matching vn-number.
 Manual dispatch and reusable workflow calls can explicitly select walltime or
 both instruments. Use matching hardware for walltime comparisons; shared hosted
 runners can introduce timing noise.
-Set `baseline-ref` to measure a baseline revision before the selected revision
-within the same job. The workflow requires matching dependencies, toolchains,
-and benchmark files, and keeps the same installation for both measurements:
-
-```sh
-gh workflow run codspeed.yml --ref your-branch \
-  -f mode=simulation,walltime -f baseline-ref=BASELINE_COMMIT
-```
-
-This removes CPU-model differences between the two runs; shared-runner load can
-still introduce walltime noise.
 Run locally only through an authenticated CodSpeed CLI:
 
 ```sh
