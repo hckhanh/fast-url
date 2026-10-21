@@ -6,6 +6,9 @@ on:
       mode:
         type: string
         default: simulation
+      baseline-ref:
+        type: string
+        default: ''
   workflow_dispatch:
     inputs:
       mode:
@@ -16,6 +19,10 @@ on:
           - walltime
           - simulation,walltime
         default: simulation
+      baseline-ref:
+        description: Optional baseline revision to measure on the same runner
+        type: string
+        default: ''
   push:
     branches: [main]
   pull_request:
@@ -46,6 +53,37 @@ jobs:
           sh "$RUNNER_TEMP/install-safe-chain.sh" --ci
       - name: Install dependencies
         run: bun ci
+      - name: Check out comparison baseline
+        if: inputs.baseline-ref != ''
+        id: comparison
+        env:
+          BASELINE_REF: ${{ inputs.baseline-ref }}
+        run: |
+          candidate_sha=$(git rev-parse HEAD)
+          git fetch --no-tags --depth=1 -- origin "$BASELINE_REF"
+          baseline_sha=$(git rev-parse 'FETCH_HEAD^{commit}')
+          if ! git diff --quiet "$baseline_sha" "$candidate_sha" -- \
+            package.json bun.lock bunfig.toml mise.toml tsconfig.json \
+            vitest.config.mts benchmarks/ ':!benchmarks/README.md'; then
+            echo 'Comparison requires identical dependencies, toolchains, and benchmark workloads.' >&2
+            exit 1
+          fi
+          echo "candidate-sha=$candidate_sha" >> "$GITHUB_OUTPUT"
+          git checkout --detach "$baseline_sha"
+      - name: Measure comparison baseline
+        if: inputs.baseline-ref != ''
+        uses: CodSpeedHQ/action@f842b9a3ffe213dbb81768fd7f7eeb4dfcf1c369 # v5.4.2
+        with:
+          runner-version: '5.4.0'
+          cycle-estimation: 'true'
+          exclude-allocations: 'false'
+          run: bun run bench
+          mode: ${{ inputs.mode || 'simulation' }}
+      - name: Restore candidate revision
+        if: inputs.baseline-ref != ''
+        env:
+          CANDIDATE_SHA: ${{ steps.comparison.outputs.candidate-sha }}
+        run: git checkout --detach "$CANDIDATE_SHA"
       - name: Run benchmarks
         uses: CodSpeedHQ/action@f842b9a3ffe213dbb81768fd7f7eeb4dfcf1c369 # v5.4.2
         with:
