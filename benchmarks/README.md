@@ -10,7 +10,7 @@ timing. The larger `benchmark/` suite remains available for focused diagnostics.
 - Node 24.21.0 and Vitest 5.0.4.
 - `@codspeed/vitest-plugin` 6.1.0, supporting Node 24 and Vitest 5.
 - Vite 8.3.4.
-- CodSpeed action 5.4.2 with runner **5.4.0**, cycle estimation enabled, and
+- CodSpeed action 5.5.0 with runner **5.5.0**, cycle estimation enabled, and
   allocation costs included.
 
 Vitest 5 benchmarks use the `bench` fixture inside an async `test`, awaiting
@@ -24,8 +24,16 @@ production-library speedup. See the
 
 Routine CI measures simulation on Ubuntu 24.04, matching vn-number.
 Manual dispatch and reusable workflow calls can explicitly select walltime or
-both instruments. Use matching hardware for walltime comparisons; shared hosted
-runners can introduce timing noise.
+both CPU instruments. They can also select `memory` or
+`simulation,walltime,memory` for the optional memory pilot. Use matching hardware
+for walltime comparisons; shared hosted runners can introduce timing noise.
+
+Memory profiling reuses the same eight workloads and 100-call batches on the
+Linux CI runner. It reports allocator activity, allocation stacks, and peak
+resident memory; allocation counts are not exact JavaScript object counts.
+Inspect the results before using this pilot as a memory regression gate or
+extending it to other libraries. Routine CI continues to use simulation.
+
 Run locally only through an authenticated CodSpeed CLI:
 
 ```sh
