@@ -150,6 +150,12 @@ export function query(params: ParamMap): string {
  * ```
  */
 export function subst(template: string, params: ParamMap): string {
+  if (typeof template === 'string' && !template.includes(':')) {
+    // biome-ignore lint/complexity/noVoid: Preserve getter side effects without retaining the parameter copy.
+    void { ...params }
+    return template
+  }
+
   const { renderedPath } = path(template, params, false)
   return renderedPath
 }

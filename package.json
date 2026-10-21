@@ -41,17 +41,17 @@
     "@biomejs/biome": "2.4.6",
     "@changesets/cli": "2.31.1",
     "@changesets/config": "3.1.4",
-    "@codspeed/vitest-plugin": "6.0.0-beta.2",
+    "@codspeed/vitest-plugin": "6.1.0",
     "@types/bun": "1.4.3",
     "@types/node": "25.9.9",
-    "@vitest/coverage-v8": "4.1.11",
+    "@vitest/coverage-v8": "5.0.4",
     "knip": "5.88.1",
     "syncpack": "14.3.1",
     "tsdown": "0.23.0",
     "typescript": "5.9.3",
     "ultracite": "7.8.3",
     "vite": "8.3.4",
-    "vitest": "4.1.11"
+    "vitest": "5.0.4"
   },
   "workspaces": [
     "."

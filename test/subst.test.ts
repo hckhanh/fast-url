@@ -2,6 +2,35 @@ import { describe, expect, it } from 'vitest'
 import { subst } from '../src'
 
 describe('subst', () => {
+  it('evaluates enumerable parameter getters once for a static path', () => {
+    const reads: string[] = []
+    const symbol = Symbol('extra')
+    const params = {
+      get unused() {
+        reads.push('unused')
+        return 'value'
+      },
+      get [symbol]() {
+        reads.push('symbol')
+        return 'value'
+      },
+    }
+
+    expect(subst('/users', params)).toBe('/users')
+    expect(reads).toEqual(['unused', 'symbol'])
+  })
+
+  it('propagates parameter getter errors for a static path', () => {
+    const error = new Error('Cannot read the parameter')
+    const params = {
+      get unused(): string {
+        throw error
+      },
+    }
+
+    expect(() => subst('/users', params)).toThrow(error)
+  })
+
   it('preserves parameter getter evaluation when substituting', () => {
     let reads = 0
     const params = {

@@ -1,4 +1,4 @@
-import { afterAll, bench, describe, expect } from 'vitest'
+import { afterAll, expect, test } from 'vitest'
 import { createUrl, join, query, subst } from '../src/index.ts'
 
 const batchSize = 100
@@ -19,26 +19,26 @@ const largeInput = Object.fromEntries(
 )
 let consumed = 0
 
-describe('public URL workloads', () => {
-  bench('join base and path - 100 calls', () => {
+test('public URL workloads', { timeout: 120_000 }, async ({ bench }) => {
+  await bench('join base and path - 100 calls', () => {
     for (let i = 0; i < batchSize; i++) {
       consumed += join('https://api.example.com/', '/', '/users').length
     }
-  })
+  }).run()
 
-  bench('static URL - 100 calls', () => {
+  await bench('static URL - 100 calls', () => {
     for (let i = 0; i < batchSize; i++) {
       consumed += createUrl('https://api.example.com/', '/users').length
     }
-  })
+  }).run()
 
-  bench('query-only URL - 100 calls', () => {
+  await bench('query-only URL - 100 calls', () => {
     for (const input of queryInputs) {
       consumed += createUrl('https://api.example.com/users', input).length
     }
-  })
+  }).run()
 
-  bench('path and query URL - 100 calls', () => {
+  await bench('path and query URL - 100 calls', () => {
     for (const input of pathInputs) {
       consumed += createUrl(
         'https://api.example.com',
@@ -46,31 +46,31 @@ describe('public URL workloads', () => {
         input,
       ).length
     }
-  })
+  }).run()
 
-  bench('substitute two path parameters - 100 calls', () => {
+  await bench('substitute two path parameters - 100 calls', () => {
     for (const input of pathInputs) {
       consumed += subst('/users/:id/:name', input).length
     }
-  })
+  }).run()
 
-  bench('substitute static path - 100 calls', () => {
+  await bench('substitute static path - 100 calls', () => {
     for (const input of pathInputs) {
       consumed += subst('/users', input).length
     }
-  })
+  }).run()
 
-  bench('mixed query values - 100 calls', () => {
+  await bench('mixed query values - 100 calls', () => {
     for (const input of queryInputs) {
       consumed += query(input).length
     }
-  })
+  }).run()
 
-  bench('50 query parameters - 100 calls', () => {
+  await bench('50 query parameters - 100 calls', () => {
     for (let i = 0; i < batchSize; i++) {
       consumed += query(largeInput).length
     }
-  })
+  }).run()
 })
 
 afterAll(() => {
