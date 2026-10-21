@@ -1,5 +1,12 @@
 # fast-url
 
+## 7.0.1
+
+### Patch Changes
+
+- 0b1aa4b: Avoid the shared path helper and result object when substituting static paths,
+  while preserving parameter getter side effects.
+
 ## 7.0.0
 
 ### Major Changes
