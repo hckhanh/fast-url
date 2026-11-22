@@ -50,7 +50,7 @@
     "tsdown": "0.23.7",
     "typescript": "5.9.3",
     "ultracite": "7.8.3",
-    "vite": "8.3.5",
+    "vite": "8.3.8",
     "vitest": "5.0.5"
   },
   "workspaces": [
@@ -70,6 +70,6 @@
   "license": "MIT",
   "overrides": {
     "postcss": "8.5.33",
-    "vite": "8.3.5"
+    "vite": "8.3.8"
   }
 }
